@@ -23,6 +23,7 @@ public class XiangqiGame extends Game implements Serializable{
 
 	// internal representation of the game state
 	// TODO: insert additional game data here
+	private String boardState = "rheagaesr/9/1c5c1/s1s1s1s1s/9/9/S1S1S1S1S/1C5C1/9/RHEAGAEHR";
 
 	/************************
 	 * constructors
@@ -206,19 +207,47 @@ public class XiangqiGame extends Game implements Serializable{
 		// Note: This method is for automatic testing. A regular game would not start at some artificial state.
 		//       It can be assumed that the state supplied is a regular board that can be reached during a game.
 		// TODO: implement
+		boardState = state;
 	}
 
 	@Override
 	public String getBoard() {
 		// TODO: implement
-		return "rheagaehr/9/1c5c1/s1s1s1s1s/9/9/S1S1S1S1S/1C5C1/9/RHEAGAEHR";
+		return boardState;
 	}
 
 	@Override
 	public boolean tryMove(String moveString, Player player) {
 		// TODO: implement
-
-		return false;
+		Move move = new Move(moveString, boardState, player);
+		
+		String currentMove = moveString.split("-")[0];
+		String wantedMove = moveString.split("-")[1];
+		
+		//check whether format of move is correct
+		if (!moveString.matches("[gaehrcsGAEHRCS]\\d-[gaehrcsGAEHRCS]\\d")) {
+			return false;
+		}
+		
+		//check whether correct player does a move
+		if ((isRedNext() && (player != redPlayer)) || ((!isRedNext()) && (player != blackPlayer)))  {
+			return false;
+		}
+		
+		// check whether a figure itself moved
+		if (currentMove.charAt(0) != wantedMove.charAt(0)) {
+			return false;
+		}
+			
+		// in the end of the game turn the side
+		if (player == redPlayer) {
+			nextPlayer = blackPlayer;
+		}
+		else {
+			nextPlayer = redPlayer;
+		}
+		
+		return true;
 	}
 
 }
