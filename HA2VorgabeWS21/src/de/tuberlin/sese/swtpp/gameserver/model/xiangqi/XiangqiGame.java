@@ -23,6 +23,7 @@ public class XiangqiGame extends Game implements Serializable{
 
 	// internal representation of the game state
 	// TODO: insert additional game data here
+	private Board boardConfig;
 
 	/************************
 	 * constructors
@@ -211,7 +212,7 @@ public class XiangqiGame extends Game implements Serializable{
 	@Override
 	public String getBoard() {
 		// TODO: implement
-		return "rheagaehr/9/1c5c1/s1s1s1s1s/9/9/S1S1S1S1S/1C5C1/9/RHEAGAEHR";
+		return boardConfig.getBoard();
 	}
 
 	@Override
