@@ -5,6 +5,7 @@ import de.tuberlin.sese.swtpp.gameserver.model.*;
 
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 public class XiangqiGame extends Game implements Serializable{
 
@@ -23,7 +24,7 @@ public class XiangqiGame extends Game implements Serializable{
 
 	// internal representation of the game state
 	// TODO: insert additional game data here
-	private String boardState = "rheagaesr/9/1c5c1/s1s1s1s1s/9/9/S1S1S1S1S/1C5C1/9/RHEAGAEHR";
+	private Board board = new Board("rheagaehr/9/1c5c1/s1s1s1s1s/9/9/S1S1S1S1S/1C5C1/9/RHEAGAEHR");
 
 	/************************
 	 * constructors
@@ -207,19 +208,19 @@ public class XiangqiGame extends Game implements Serializable{
 		// Note: This method is for automatic testing. A regular game would not start at some artificial state.
 		//       It can be assumed that the state supplied is a regular board that can be reached during a game.
 		// TODO: implement
-		boardState = state;
+		board = new Board(state);
 	}
 
 	@Override
 	public String getBoard() {
 		// TODO: implement
-		return boardState;
+		return board.getBoardState();
 	}
 
 	@Override
 	public boolean tryMove(String moveString, Player player) {
 		// TODO: implement
-		Move move = new Move(moveString, boardState, player);
+		Move move = new Move(moveString, board.getBoardState(), player);
 		
 		String currentMove = moveString.split("-")[0];
 		String wantedMove = moveString.split("-")[1];
@@ -248,6 +249,17 @@ public class XiangqiGame extends Game implements Serializable{
 		}
 		
 		return true;
+	}
+	
+	public static Position stringToPosition(String positionString) {
+		int row = positionString.charAt(1) - '0';
+		int column = positionString.charAt(0) - 97;
+		return new Position(row, column);
+	}
+	
+	public static void main(String[] args) {
+		System.out.print(stringToPosition("c1").getRow());
+		System.out.print(stringToPosition("c1").getColumn());
 	}
 
 }
