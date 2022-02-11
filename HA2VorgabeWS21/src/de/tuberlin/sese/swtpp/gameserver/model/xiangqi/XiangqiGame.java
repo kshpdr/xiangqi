@@ -5,6 +5,7 @@ import de.tuberlin.sese.swtpp.gameserver.model.*;
 
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class XiangqiGame extends Game implements Serializable{
 
@@ -23,15 +24,15 @@ public class XiangqiGame extends Game implements Serializable{
 
 	// internal representation of the game state
 	// TODO: insert additional game data here
-	private Board boardConfig;
-
+	private String board = "rhea1a1h1/4g4/1c3r3/7cs/s1s1C4/9/S1S3SCS/R8/4A4/1HE1GAEHR";
+	private char[][] boardMatrix = parseBoard(board);
 	/************************
 	 * constructors
 	 ***********************/
 
 	public XiangqiGame() {
 		super();
-
+		
 		// TODO: initialization of game state can go here
 	}
 
@@ -201,6 +202,27 @@ public class XiangqiGame extends Game implements Serializable{
 	/*******************************************
 	 * !!!!!!!!! To be implemented !!!!!!!!!!!!
 	 ******************************************/
+	public char[][] parseBoard(String board) {
+		String[] boardArray = board.split("/");
+		char[][] boardMatrix = new char[10][9];
+		for(int a = 0; a<boardArray.length; a++) {		//substrings (rows)
+			char[] lineOfBoard = boardArray[a].toCharArray();
+			int counter = 0;
+			for(char c: lineOfBoard) {
+				if(Character.isDigit(c) == true) {
+					for(int i =counter; i<counter+Character.getNumericValue(c); i++) {
+						boardMatrix[a][i] = c;
+						counter = i;
+					}
+				}
+				else boardMatrix[a][counter] = '0';
+				counter++;
+				
+			}
+		}
+		return boardMatrix;
+		
+	}
 
 	@Override
 	public void setBoard(String state) {
@@ -212,13 +234,23 @@ public class XiangqiGame extends Game implements Serializable{
 	@Override
 	public String getBoard() {
 		// TODO: implement
-		return boardConfig.getBoard();
+		return board;
 	}
 
 	@Override
 	public boolean tryMove(String moveString, Player player) {
 		// TODO: implement
-
+		
+		String[] moveArray = moveString.split("-");		//Ascii for 'a' = 97
+		//get a numeric position of start and goal position
+		int startC = moveArray[0].charAt(0) - 97;			//char of start
+		int startI = moveArray[0].charAt(1);				//int of start
+		
+		int goalC = moveArray[1].charAt(0) - 97;			//char of start
+		int goalI = moveArray[1].charAt(1);					//int of start
+		
+		
+		
 		return false;
 	}
 
