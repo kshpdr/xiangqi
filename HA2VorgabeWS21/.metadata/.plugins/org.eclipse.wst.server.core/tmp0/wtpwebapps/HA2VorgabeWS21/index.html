@@ -1,0 +1,179 @@
+<!DOCTYPE html> 
+<html>
+<head>
+	<link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>SWTPP Game Server: Login</title>
+  <meta name="viewport" content="width=980px, initial-scale=1">
+  
+  <script src="js/jquery-1.10.1.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/login.css">
+</head>
+
+<!-- Start with the body of the html as the rest is in head.jsp. -->
+<body id="ts">
+<nav class="navbar navbar-inverse navbar-fixed-top">
+	<div class="container">
+		<div class="navbar-header">
+			<a class="navbar-brand" href="main.html">SWTPP Game Server</a>
+		</div>
+	</div>
+</nav>
+
+<div class="container">
+
+	<!-- Form für die Anmeldung -->
+	<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="false">
+		<div class="panel panel-default">
+			<div class="panel-heading" role="tab" id="tabLoginHeading">
+			  <h2>
+			  	<a class="form-login-heading" role="button" 
+			  	    data-toggle="collapse" data-parent="#accordion" href="#tabLogin"
+			  	    aria-expanded="true" aria-controls="tabLogin">
+			  	Already registered?
+			  	</a>
+			  </h2>
+			</div>
+			<div id="tabLogin" class="panel-collapse collapse in" role="tabpanel" 
+					aria-labelledby="tabLoginHeading">
+				<div class="panel-body">
+					<!-- A form of this kind is forwarded by the browser to our servlet.
+						 All form inputs are parameters in the request that arrives in the doGet method of the servlet. -->
+					<form id="form-login" class="form-login">
+						<div class="form-group"></div>
+						<label class="sr-only" for="input-login-id">ID</label>
+						<input id="input-login-id" class="form-control input-top input-lg" type="text" name="id" placeholder="ID" required autofocus></input>
+						
+						<!--  To make it simple, the passwort is just submitted unencrypted in the request. Of course this would be done differently in a real application. -->
+						<label class="sr-only" for="input-login-pass">Password</label>
+						<input id="input-login-pass" class="form-control input-bot input-lg" type="password" name="password" placeholder="Passwort" required></input>
+						
+						<div id="error-login" class="help-block collapse">User/Password unknown</div>
+						
+						<!--  this is the button that launches the action. -->
+						<input class="btn btn-lg btn-primary btn-block" type="submit" value="Login"></input>
+					</form>
+				</div>
+			</div>
+		</div>
+		
+		<!-- Form für die Registrierung -->
+		<div class="panel panel-default">
+			<div class="panel-heading" role="tab" id="tabRegisterHeading">
+			  <h2>
+			  	<a class="form-login-heading" role="button" 
+			  	    data-toggle="collapse" data-parent="#accordion" href="#tabRegister"
+			  	    aria-expanded="false" aria-controls="tabRegister">
+			  	Not registered yet?
+			  	</a>
+			  </h2>
+			</div>
+			<div id="tabRegister" class="panel-collapse collapse" role="tabpanel"
+					aria-labelledby="tabRegisterHeading">
+				<div class="panel-body">
+					<form id="form-register" class="form-login">
+						<div class="form-group">
+						<label class="sr-only" for="input-register-id">Name</label>
+						<input id="input-register-name" class="form-control input-lg" type="text" name="name" placeholder="Name" required autofocus></input>
+						<div id="error-register-name" class="help-block collapse">Bad input. Fields must not be empty. A name consists of letters and spaces.</div>
+						</div>
+						
+						<div class="form-group">
+						<label class="sr-only" for="input-register-id">ID</label>
+						<input id="input-register-id" class="form-control input-lg" type="text" name="id" placeholder="ID" required autofocus></input>
+						<div id="error-register-id" class="help-block collapse">User already registered.</div>
+						</div>
+						
+						<div class="form-group">
+						<label class="sr-only" for="input-register-pass">Password</label>
+						<input id="input-register-pass" class="form-control input-lg" type="password" name="password" placeholder="Passwort" required></input>
+						</div>
+						
+						<input class="btn btn-lg btn-primary btn-block" type="submit" value="Register"></input>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<script>
+
+function displayError(error) {
+	if (error == 'unknown') {
+		$('#input-login-id').parent().addClass('has-error');
+		$('#error-login').removeClass('collapse');
+	} else {
+		$('#input-login-id').parent().removeClass('has-error');
+		$('#error-login').addClass('collapse');
+	}
+	
+	if (error == 'exists') {
+		$('#input-register-id').parent().addClass('has-error');
+		$('#error-register-id').removeClass('collapse');
+	} else {
+		$('#input-register-id').parent().removeClass('has-error');
+		$('#error-register-id').addClass('collapse');
+	}
+		
+	if (error == 'badinput') {
+		$('#input-register-name').parent().addClass('has-error');
+		$('#error-register-name').removeClass('collapse') ;
+	} else {
+		$('#input-register-name').parent().removeClass('has-error');
+		$('#error-register-name').addClass('collapse') ;
+	}
+}
+
+/*
+ * Event handler for login form. Creates login request and parses server reponse. Redirects to main if successful. 
+ */
+
+ $('#form-login').submit(event => {
+	event.preventDefault(); // Don't let the browser submit this form, we'll handle it with JavaScript
+	 
+	const form = event.target;
+	const params = 'usecase=login&id=' + form.id.value + '&password=' + form.password.value;
+
+	$.post('/GameServer/GameServerServlet?' + params, params, result => {
+		if (result == '') {
+			window.location.href = "main.html";
+		} else {
+			displayError('unknown')
+		}
+	});
+	
+	return false;
+ });
+
+
+/*
+ * Function event handler of register form. creates login request and parses server reponse. Redirects to main if successful. 
+ */
+$('#form-register').submit(event => {
+	event.preventDefault(); // Don't let the browser submit this form, we'll handle it with JavaScript
+	
+	const form = event.target;
+	const params = 'usecase=register&name=' + form.name.value + '&id=' + form.id.value + '&password=' + form.password.value;
+	
+	$.post('/GameServer/GameServerServlet?' + params, params, result => {
+		if (result == '') {
+			window.location.href = "/GameServer/main.html";
+		} else {
+			displayError(result);
+		}
+	});
+	
+	return false;	
+});
+
+
+</script>
+</body>
+</html>
+
+

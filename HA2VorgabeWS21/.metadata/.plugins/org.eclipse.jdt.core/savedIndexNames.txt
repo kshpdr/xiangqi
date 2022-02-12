@@ -1,0 +1,6 @@
+INDEX VERSION 1.131+/Users/paulin/Documents/2021 SSWTP/swtpp_ha/HA2VorgabeWS21/.metadata/.plugins/org.eclipse.jdt.core
+2155015707.index
+757474350.index
+3897171833.index
+1014786842.index
+2259773393.index
