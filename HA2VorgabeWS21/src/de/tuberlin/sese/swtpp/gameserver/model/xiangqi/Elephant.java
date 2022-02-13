@@ -17,10 +17,8 @@ public class Elephant implements Figur {
 		// creates moveString:
 		String stringRow = "9876543210";
 		String stringCol = "abcdefghi";
-		
 		char x = stringRow.charAt(row);
-		char y = stringCol.charAt(col);
-		
+		char y = stringCol.charAt(col);		
 		String moveString = y + x + "-";
 		
 		ArrayList<Move> possibleMoves = new ArrayList<Move>();
@@ -33,13 +31,13 @@ public class Elephant implements Figur {
 		int[][] posArray = {{row+2,col+2},{row-2,col-2},{row+2,col-2},{row-2,col+2}};
 		
 		for(int i = 0; i < 4; i++) {
-			// checks if position is on board:
+			// checks whether position is on board:
 			if(posArray[i][0] >= 0 && posArray[i][0] <= 10 && posArray[i][1] >= 0 && posArray[i][1] <= 9) {
-				// checks if river is being crossed:
+				// checks whether river is being crossed:
 				if((row <= 4 && posArray[i][0] <= 4) || (row > 4 && posArray[i][0] > 4)) {
 					
-					// checks if field is free or occupied by other player:
-					if(board.boardMatrix[posArray[i][0]][posArray[i][1]] == '0') {
+					// checks whether field is free or occupied by other player:
+					if(board.getBoardMatrix()[posArray[i][0]][posArray[i][1]] == '0') {
 						moveString = moveString + stringCol.charAt(posArray[i][1]) + stringRow.charAt(posArray[i][0]);
 						possibleMoves.add(new Move(moveString, board.boardState, player));
 					}

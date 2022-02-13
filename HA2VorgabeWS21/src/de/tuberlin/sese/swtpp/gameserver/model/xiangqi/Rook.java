@@ -16,11 +16,9 @@ public class Rook implements Figur {
 		
 		// creates moveString:
 		String stringRow = "9876543210";
-		String stringCol = "abcdefghi";
-		
+		String stringCol = "abcdefghi";	
 		char x = stringRow.charAt(row);
 		char y = stringCol.charAt(col);
-		
 		String moveString = y + x + "-";
 		
 		ArrayList<Move> possibleMoves = new ArrayList<Move>(); 
@@ -31,8 +29,8 @@ public class Rook implements Figur {
 		 */
 		
 		// right:
-		for(int i = col + 1; i < board.boardMatrix[0].length; i++) {
-			if(board.boardMatrix[row][i] == '0') {
+		for(int i = col + 1; i < board.getBoardMatrix()[0].length; i++) {
+			if(board.getBoardMatrix()[row][i] == '0') {
 				possibleMoves.add(new Move(moveString + stringCol.charAt(i) + x, board.boardState, player));
 			}
 			else if(position.isRed(board) && !(new Position(row,i).isRed(board))) {
@@ -50,7 +48,7 @@ public class Rook implements Figur {
 		
 		// left:
 		for(int i = col - 1; i >= 0; i--) {
-			if(board.boardMatrix[row][i] == '0') {
+			if(board.getBoardMatrix()[row][i] == '0') {
 				possibleMoves.add(new Move(moveString + stringCol.charAt(i) + x, board.boardState, player));
 			}
 			else if(position.isRed(board) && !(new Position(row,i).isRed(board))) {
@@ -68,7 +66,7 @@ public class Rook implements Figur {
 		
 		// up:
 		for(int i = row - 1; i >= 0; i--) {
-			if(board.boardMatrix[i][col] == '0') {
+			if(board.getBoardMatrix()[i][col] == '0') {
 				possibleMoves.add(new Move(moveString + y + stringRow.charAt(i), board.boardState, player));
 			}
 			else if(position.isRed(board) && !(new Position(i,col).isRed(board))) {
@@ -85,8 +83,8 @@ public class Rook implements Figur {
 		}
 		
 		// down:
-		for(int i = row + 1; i < board.boardMatrix.length; i++) {
-			if(board.boardMatrix[i][col] == '0') {
+		for(int i = row + 1; i < board.getBoardMatrix().length; i++) {
+			if(board.getBoardMatrix()[i][col] == '0') {
 				possibleMoves.add(new Move(moveString + y + stringRow.charAt(i), board.boardState, player));
 			}
 			else if(position.isRed(board) && !(new Position(i,col).isRed(board))) {

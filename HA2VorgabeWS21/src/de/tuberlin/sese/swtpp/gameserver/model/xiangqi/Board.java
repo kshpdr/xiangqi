@@ -3,12 +3,12 @@ package de.tuberlin.sese.swtpp.gameserver.model.xiangqi;
 import java.util.Arrays;
 
 public class Board {
-	char[][] boardMatrix;
+	private char[][] boardMatrix;
 	String boardState;
 	
 	public Board(String state) {
 		char[][] boardMatrix = boardFromState(state);
-		this.boardMatrix = boardMatrix;
+		this.setBoardMatrix(boardMatrix);
 		this.boardState = state;
 	}
 	
@@ -47,10 +47,18 @@ public class Board {
 	}
 	
 	public char[][] getCurrentBoard(){
-		return boardMatrix;
+		return getBoardMatrix();
 	}
 	
 	public static void main(String[] args) {
 		System.out.print(Arrays.deepToString(boardFromState("rhea1a1h1/4g4/1c3r3/7cs/s1s1C4/9/S1S3SCS/R8/4A4/1HE1GAEHR")));
+	}
+
+	public char[][] getBoardMatrix() {
+		return boardMatrix;
+	}
+
+	public void setBoardMatrix(char[][] boardMatrix) {
+		this.boardMatrix = boardMatrix;
 	}
 }
