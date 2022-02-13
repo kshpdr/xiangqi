@@ -14,7 +14,7 @@ public class Rook implements Figur {
 		int row = position.getRow();
 		int col = position.getColumn();
 		
-		// creates moveString from current position:
+		// creates moveString:
 		String stringRow = "9876543210";
 		String stringCol = "abcdefghi";
 		
@@ -26,7 +26,7 @@ public class Rook implements Figur {
 		ArrayList<Move> possibleMoves = new ArrayList<Move>(); 
 		
 		/*
-		 * rook can do multiple steps up/down and left/right 
+		 * rook can do multiple steps up/down or left/right 
 		 * (but can not jump over other figures):
 		 */
 		
