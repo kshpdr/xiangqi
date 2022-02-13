@@ -41,5 +41,12 @@ public class Position {
 	public static void main(String[] args) {
 		System.out.print(positionToString(new Position(9, 0)));
 	}
+	
+	public boolean isRed(Board board) {
+		char Fig = board.boardMatrix[this.getRow()][this.getColumn()];	
+		if ("GAEHRCS".indexOf(Fig) != -1) return true;
+		return false;
+	}
+	
 
 }
