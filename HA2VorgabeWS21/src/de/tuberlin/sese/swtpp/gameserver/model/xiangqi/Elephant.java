@@ -14,13 +14,6 @@ public class Elephant implements Figur {
 		int row = position.getRow();
 		int col = position.getColumn();
 		
-		// creates moveString:
-		String stringRow = "9876543210";
-		String stringCol = "abcdefghi";
-		char x = stringRow.charAt(row);
-		char y = stringCol.charAt(col);		
-		String moveString = y + x + "-";
-		
 		ArrayList<Move> possibleMoves = new ArrayList<Move>();
 		
 		/*
@@ -30,24 +23,27 @@ public class Elephant implements Figur {
 		
 		int[][] posArray = {{row+2,col+2},{row-2,col-2},{row+2,col-2},{row-2,col+2}};
 		
+		// iterates over possible positions in posArray:
 		for(int i = 0; i < 4; i++) {
+			
 			// checks whether position is on board:
-			if(posArray[i][0] >= 0 && posArray[i][0] <= 10 && posArray[i][1] >= 0 && posArray[i][1] <= 9) {
+			if(new Position(posArray[i][0],posArray[i][1]).onBoard()) {
+				
+				// new position:
+				Position newPos = new Position(posArray[i][0],posArray[i][1]);
+				
 				// checks whether river is being crossed:
 				if((row <= 4 && posArray[i][0] <= 4) || (row > 4 && posArray[i][0] > 4)) {
 					
 					// checks whether field is free or occupied by other player:
 					if(board.getBoardMatrix()[posArray[i][0]][posArray[i][1]] == '0') {
-						moveString = moveString + stringCol.charAt(posArray[i][1]) + stringRow.charAt(posArray[i][0]);
-						possibleMoves.add(new Move(moveString, board.boardState, player));
+						possibleMoves.add(new Move(position.moveString(newPos), board.boardState, player));
 					}
-					else if(position.isRed(board) && !(new Position(posArray[i][0],posArray[i][1]).isRed(board))) {
-						moveString = moveString + stringCol.charAt(posArray[i][1]) + stringRow.charAt(posArray[i][0]);
-						possibleMoves.add(new Move(moveString, board.boardState, player));	
+					else if(position.isRed(board) && !newPos.isRed(board)) {
+						possibleMoves.add(new Move(position.moveString(newPos), board.boardState, player));	
 					}
-					else if(!position.isRed(board) && (new Position(posArray[i][0],posArray[i][1]).isRed(board))) {
-						moveString = moveString + stringCol.charAt(posArray[i][1]) + stringRow.charAt(posArray[i][0]);
-						possibleMoves.add(new Move(moveString, board.boardState, player));	
+					else if(!position.isRed(board) && newPos.isRed(board)) {
+						possibleMoves.add(new Move(position.moveString(newPos), board.boardState, player));	
 					}	
 				}		
 			}

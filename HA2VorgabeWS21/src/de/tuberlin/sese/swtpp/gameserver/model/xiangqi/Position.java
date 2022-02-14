@@ -50,9 +50,21 @@ public class Position {
 		return false;
 	}
 	
+	public boolean onBoard() {
+		
+		int row = this.row;
+		int col = this.column;
+		
+		if(row >= 0 && row <= 10 && col >= 0 && col <= 9) {
+			return true;
+		}
+		
+		return false;
+	}
+	
 	public String moveString(Position newPosition) {
 		
-		// returns oldColum oldRow - newColumn newRow
+		// returns oldColumn oldRow - newColumn newRow
 		String stringRow = "9876543210";
 		String stringCol = "abcdefghi";
 		

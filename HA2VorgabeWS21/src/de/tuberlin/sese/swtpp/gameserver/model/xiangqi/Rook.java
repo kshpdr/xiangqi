@@ -14,13 +14,6 @@ public class Rook implements Figur {
 		int row = position.getRow();
 		int col = position.getColumn();
 		
-		// creates moveString:
-		String stringRow = "9876543210";
-		String stringCol = "abcdefghi";	
-		char x = stringRow.charAt(row);
-		char y = stringCol.charAt(col);
-		String moveString = y + x + "-";
-		
 		ArrayList<Move> possibleMoves = new ArrayList<Move>(); 
 		
 		/*
@@ -31,14 +24,14 @@ public class Rook implements Figur {
 		// right:
 		for(int i = col + 1; i < board.getBoardMatrix()[0].length; i++) {
 			if(board.getBoardMatrix()[row][i] == '0') {
-				possibleMoves.add(new Move(moveString + stringCol.charAt(i) + x, board.boardState, player));
+				possibleMoves.add(new Move(position.moveString(new Position(row,i)), board.boardState, player));
 			}
 			else if(position.isRed(board) && !(new Position(row,i).isRed(board))) {
-				possibleMoves.add(new Move(moveString + stringCol.charAt(i) + x, board.boardState, player));
+				possibleMoves.add(new Move(position.moveString(new Position(row,i)), board.boardState, player));
 				break;
 			}
 			else if(!position.isRed(board) && (new Position(row,i).isRed(board))) {
-				possibleMoves.add(new Move(moveString + stringCol.charAt(i) + x, board.boardState, player));
+				possibleMoves.add(new Move(position.moveString(new Position(row,i)), board.boardState, player));
 				break;
 			}
 			else {
@@ -49,14 +42,14 @@ public class Rook implements Figur {
 		// left:
 		for(int i = col - 1; i >= 0; i--) {
 			if(board.getBoardMatrix()[row][i] == '0') {
-				possibleMoves.add(new Move(moveString + stringCol.charAt(i) + x, board.boardState, player));
+				possibleMoves.add(new Move(position.moveString(new Position(row,i)), board.boardState, player));
 			}
 			else if(position.isRed(board) && !(new Position(row,i).isRed(board))) {
-				possibleMoves.add(new Move(moveString + stringCol.charAt(i) + x, board.boardState, player));
+				possibleMoves.add(new Move(position.moveString(new Position(row,i)), board.boardState, player));
 				break;
 			}
 			else if(!position.isRed(board) && (new Position(row,i).isRed(board))) {
-				possibleMoves.add(new Move(moveString + stringCol.charAt(i) + x, board.boardState, player));
+				possibleMoves.add(new Move(position.moveString(new Position(row,i)), board.boardState, player));
 				break;
 			}
 			else {
@@ -67,14 +60,14 @@ public class Rook implements Figur {
 		// up:
 		for(int i = row - 1; i >= 0; i--) {
 			if(board.getBoardMatrix()[i][col] == '0') {
-				possibleMoves.add(new Move(moveString + y + stringRow.charAt(i), board.boardState, player));
+				possibleMoves.add(new Move(position.moveString(new Position(i,col)), board.boardState, player));
 			}
 			else if(position.isRed(board) && !(new Position(i,col).isRed(board))) {
-				possibleMoves.add(new Move(moveString + y + stringRow.charAt(i), board.boardState, player));
+				possibleMoves.add(new Move(position.moveString(new Position(i,col)), board.boardState, player));
 				break;
 			}
 			else if(!position.isRed(board) && (new Position(i,col).isRed(board))) {
-				possibleMoves.add(new Move(moveString + y + stringRow.charAt(i), board.boardState, player));
+				possibleMoves.add(new Move(position.moveString(new Position(i,col)), board.boardState, player));
 				break;
 			}
 			else {
@@ -85,14 +78,14 @@ public class Rook implements Figur {
 		// down:
 		for(int i = row + 1; i < board.getBoardMatrix().length; i++) {
 			if(board.getBoardMatrix()[i][col] == '0') {
-				possibleMoves.add(new Move(moveString + y + stringRow.charAt(i), board.boardState, player));
+				possibleMoves.add(new Move(position.moveString(new Position(i,col)), board.boardState, player));
 			}
 			else if(position.isRed(board) && !(new Position(i,col).isRed(board))) {
-				possibleMoves.add(new Move(moveString + y + stringRow.charAt(i), board.boardState, player));
+				possibleMoves.add(new Move(position.moveString(new Position(i,col)), board.boardState, player));
 				break;
 			}
 			else if(!position.isRed(board) && (new Position(i,col).isRed(board))) {
-				possibleMoves.add(new Move(moveString + y + stringRow.charAt(i), board.boardState, player));
+				possibleMoves.add(new Move(position.moveString(new Position(i,col)), board.boardState, player));
 				break;
 			}
 			else {
