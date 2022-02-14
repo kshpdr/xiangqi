@@ -35,7 +35,7 @@ public class Elephant implements Figur {
 				// checks whether river is being crossed:
 				if((row <= 4 && posArray[i][0] <= 4) || (row > 4 && posArray[i][0] > 4)) {
 					
-					// checks whether field is free or occupied by other player:
+					// checks whether position is free or occupied by other player:
 					if(board.getBoardMatrix()[posArray[i][0]][posArray[i][1]] == '0') {
 						possibleMoves.add(new Move(position.moveString(newPos), board.boardState, player));
 					}

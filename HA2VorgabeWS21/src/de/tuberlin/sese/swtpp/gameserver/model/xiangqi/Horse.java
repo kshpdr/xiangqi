@@ -32,7 +32,7 @@ public class Horse implements Figur {
 			// checks whether position is on board:
 			if(new Position(checkArray[i][0], checkArray[i][1]).onBoard()) {
 				
-				// checks whether field on board is free (horse can't jump):
+				// checks whether position is free (horse can't jump):
 				if(board.getBoardMatrix()[checkArray[i][0]][checkArray[i][1]] == '0') {
 					
 					// checks possible moves for each direction:

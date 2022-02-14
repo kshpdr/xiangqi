@@ -55,7 +55,7 @@ public class Position {
 		int row = this.row;
 		int col = this.column;
 		
-		if(row >= 0 && row <= 10 && col >= 0 && col <= 9) {
+		if(row >= 0 && row < 10 && col >= 0 && col < 9) {
 			return true;
 		}
 		
