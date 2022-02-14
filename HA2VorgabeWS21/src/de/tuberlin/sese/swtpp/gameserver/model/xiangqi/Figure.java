@@ -28,5 +28,4 @@ public class Figure {
 	public Boolean figureInGame() {
 		return inGame;
 	}
-	
 }

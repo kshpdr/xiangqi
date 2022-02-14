@@ -60,4 +60,9 @@ public class General extends Figure {
 		}
 		return board;
 	}
+	public boolean isTodesblick(char[][]board) {
+		
+		
+		return false;
+	}
 }
