@@ -1,5 +1,7 @@
 package de.tuberlin.sese.swtpp.gameserver.model.xiangqi;
 
+import de.tuberlin.sese.swtpp.gameserver.model.Move;
+
 public class Position {
 	private int row;
 	private int column;
@@ -46,6 +48,21 @@ public class Position {
 		char Fig = board.getBoardMatrix()[this.getRow()][this.getColumn()];	
 		if ("GAEHRCS".indexOf(Fig) != -1) return true;
 		return false;
+	}
+	
+	public String moveString(Position newPosition) {
+		
+		// returns oldColum oldRow - newColumn newRow
+		String stringRow = "9876543210";
+		String stringCol = "abcdefghi";
+		
+		int x1 = this.getRow();
+		int y1 = this.getColumn();
+		
+		int x2 = newPosition.getRow();
+		int y2 = newPosition.getColumn();
+		
+		return stringCol.charAt(y1) + stringRow.charAt(x1) + "-" + stringCol.charAt(y2) + stringRow.charAt(x2);
 	}
 	
 
