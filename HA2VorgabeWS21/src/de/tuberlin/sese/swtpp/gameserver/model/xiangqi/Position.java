@@ -52,10 +52,7 @@ public class Position {
 	
 	public boolean onBoard() {
 		
-		int row = this.row;
-		int col = this.column;
-		
-		if(row >= 0 && row < 10 && col >= 0 && col < 9) {
+		if(this.row >= 0 && this.row < 10 && this.column >= 0 && this.column < 9) {
 			return true;
 		}
 		
@@ -68,8 +65,8 @@ public class Position {
 		String stringRow = "9876543210";
 		String stringCol = "abcdefghi";
 		
-		int x1 = this.getRow();
-		int y1 = this.getColumn();
+		int x1 = this.row;
+		int y1 = this.column;
 		
 		int x2 = newPosition.getRow();
 		int y2 = newPosition.getColumn();
