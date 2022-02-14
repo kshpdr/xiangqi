@@ -55,7 +55,6 @@ public class Position {
 		if(this.row >= 0 && this.row < 10 && this.column >= 0 && this.column < 9) {
 			return true;
 		}
-		
 		return false;
 	}
 	

@@ -49,7 +49,6 @@ public class Horse implements Figur {
 							// checks whether field is free or occupied by other player:
 							if(board.getBoardMatrix()[moves[j][0]][moves[j][1]] == '0') {
 								possibleMoves.add(new Move(position.moveString(newPos), board.boardState, player));
-								// position.moveString(new Position(moves[i][0], moves[i][1]))
 							}
 							else if(position.isRed(board) && !newPos.isRed(board)) {
 								possibleMoves.add(new Move(position.moveString(newPos), board.boardState, player));	
