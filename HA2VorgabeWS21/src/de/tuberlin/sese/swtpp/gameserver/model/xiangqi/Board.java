@@ -6,6 +6,10 @@ public class Board {
 	private char[][] boardMatrix;
 	String boardState;
 	
+	private General blackGeneral;
+	private General redGeneral;
+
+	
 	public Board(String state) {
 		char[][] boardMatrix = boardFromState(state);
 		this.setBoardMatrix(boardMatrix);
@@ -61,4 +65,14 @@ public class Board {
 	public void setBoardMatrix(char[][] boardMatrix) {
 		this.boardMatrix = boardMatrix;
 	}
+	
+	public General getFriendGeneral(Position position) {
+		if (Character.isLowerCase(boardMatrix[position.getRow()][position.getColumn()])) {
+			return blackGeneral;
+		}
+		else {
+			return redGeneral;
+		}
+	}
+
 }

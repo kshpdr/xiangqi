@@ -16,6 +16,8 @@ public class Rook implements Figur {
 		
 		ArrayList<Move> possibleMoves = new ArrayList<Move>(); 
 		
+		General myGeneral = board.getFriendGeneral(position);
+		
 		/*
 		 * rook can do multiple steps up/down or left/right 
 		 * (but can not jump over other figures):
@@ -23,15 +25,18 @@ public class Rook implements Figur {
 		
 		// right:
 		for(int i = col + 1; i < board.getBoardMatrix()[0].length; i++) {
-			if(board.getBoardMatrix()[row][i] == '0') {
-				possibleMoves.add(new Move(position.moveString(new Position(row,i)), board.boardState, player));
+			// new Position:
+			Position newPos = new Position(row,i);
+			
+			if(board.getBoardMatrix()[row][i] == '0' && !myGeneral.isThreatened(position.moveString(newPos))) {
+				possibleMoves.add(new Move(position.moveString(newPos), board.boardState, player));
 			}
-			else if(position.isRed(board) && !(new Position(row,i).isRed(board))) {
-				possibleMoves.add(new Move(position.moveString(new Position(row,i)), board.boardState, player));
+			else if(position.isRed(board) && !newPos.isRed(board) && !myGeneral.isThreatened(position.moveString(newPos))) {
+				possibleMoves.add(new Move(position.moveString(newPos), board.boardState, player));
 				break;
 			}
-			else if(!position.isRed(board) && (new Position(row,i).isRed(board))) {
-				possibleMoves.add(new Move(position.moveString(new Position(row,i)), board.boardState, player));
+			else if(!position.isRed(board) && newPos.isRed(board) && !myGeneral.isThreatened(position.moveString(newPos))) {
+				possibleMoves.add(new Move(position.moveString(newPos), board.boardState, player));
 				break;
 			}
 			else {
@@ -41,56 +46,67 @@ public class Rook implements Figur {
 		
 		// left:
 		for(int i = col - 1; i >= 0; i--) {
-			if(board.getBoardMatrix()[row][i] == '0') {
+			// new Position:
+			Position newPos = new Position(row,i);
+			
+			if(board.getBoardMatrix()[row][i] == '0' && !myGeneral.isThreatened(position.moveString(newPos))) {	
 				possibleMoves.add(new Move(position.moveString(new Position(row,i)), board.boardState, player));
-			}
-			else if(position.isRed(board) && !(new Position(row,i).isRed(board))) {
+				}
+			else if(position.isRed(board) && !newPos.isRed(board) && !myGeneral.isThreatened(position.moveString(newPos))) {
 				possibleMoves.add(new Move(position.moveString(new Position(row,i)), board.boardState, player));
 				break;
-			}
-			else if(!position.isRed(board) && (new Position(row,i).isRed(board))) {
+				}
+			else if(!position.isRed(board) && newPos.isRed(board) && !myGeneral.isThreatened(position.moveString(newPos))) {
 				possibleMoves.add(new Move(position.moveString(new Position(row,i)), board.boardState, player));
 				break;
-			}
+				}
 			else {
 				break;
-			}
+				}
+	
 		}
 		
 		// up:
 		for(int i = row - 1; i >= 0; i--) {
-			if(board.getBoardMatrix()[i][col] == '0') {
-				possibleMoves.add(new Move(position.moveString(new Position(i,col)), board.boardState, player));
+			// new Position:
+			Position newPos = new Position(i,col);
+						
+			if(board.getBoardMatrix()[i][col] == '0' && !myGeneral.isThreatened(position.moveString(newPos))) {
+				possibleMoves.add(new Move(position.moveString(newPos), board.boardState, player));
 			}
-			else if(position.isRed(board) && !(new Position(i,col).isRed(board))) {
-				possibleMoves.add(new Move(position.moveString(new Position(i,col)), board.boardState, player));
+			else if(position.isRed(board) && !newPos.isRed(board) && !myGeneral.isThreatened(position.moveString(newPos))) {
+				possibleMoves.add(new Move(position.moveString(newPos), board.boardState, player));
 				break;
 			}
-			else if(!position.isRed(board) && (new Position(i,col).isRed(board))) {
-				possibleMoves.add(new Move(position.moveString(new Position(i,col)), board.boardState, player));
+			else if(!position.isRed(board) && newPos.isRed(board) && !myGeneral.isThreatened(position.moveString(newPos))) {
+				possibleMoves.add(new Move(position.moveString(newPos), board.boardState, player));
 				break;
 			}
 			else {
 				break;
 			}
+			
 		}
 		
 		// down:
 		for(int i = row + 1; i < board.getBoardMatrix().length; i++) {
-			if(board.getBoardMatrix()[i][col] == '0') {
-				possibleMoves.add(new Move(position.moveString(new Position(i,col)), board.boardState, player));
+			// new Position:
+			Position newPos = new Position(i,col);
+						
+			if(board.getBoardMatrix()[i][col] == '0' && !myGeneral.isThreatened(position.moveString(newPos))) {		
+				possibleMoves.add(new Move(position.moveString(newPos), board.boardState, player));
 			}
-			else if(position.isRed(board) && !(new Position(i,col).isRed(board))) {
-				possibleMoves.add(new Move(position.moveString(new Position(i,col)), board.boardState, player));
+			else if(position.isRed(board) && !newPos.isRed(board) && !myGeneral.isThreatened(position.moveString(newPos))) {
+				possibleMoves.add(new Move(position.moveString(newPos), board.boardState, player));
 				break;
 			}
-			else if(!position.isRed(board) && (new Position(i,col).isRed(board))) {
-				possibleMoves.add(new Move(position.moveString(new Position(i,col)), board.boardState, player));
+			else if(!position.isRed(board) && newPos.isRed(board) && !myGeneral.isThreatened(position.moveString(newPos))) {
+				possibleMoves.add(new Move(position.moveString(newPos), board.boardState, player));
 				break;
 			}
 			else {
 				break;
-			}
+			}	
 		}
 	
 		return possibleMoves;
