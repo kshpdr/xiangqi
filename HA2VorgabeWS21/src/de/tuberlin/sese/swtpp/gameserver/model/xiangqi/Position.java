@@ -24,5 +24,22 @@ public class Position {
 	public void setColumn(int column) {
 		this.column = column;
 	}
+	
+	public static Position stringToPosition(String positionString) {
+		int row = positionString.charAt(1) - '0';
+		int column = positionString.charAt(0) - 97;
+		return new Position(row, column);
+	}
+	
+	public static String positionToString(Position position) {
+		String positionString = "";
+		positionString += (char)(position.getColumn() + 97);
+		positionString += 9 - position.getRow();
+		return positionString;
+	}
+	
+	public static void main(String[] args) {
+		System.out.print(positionToString(new Position(9, 0)));
+	}
 
 }

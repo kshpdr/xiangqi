@@ -1,13 +1,26 @@
 package de.tuberlin.sese.swtpp.gameserver.model.xiangqi;
 
+import java.util.ArrayList;
+
+import de.tuberlin.sese.swtpp.gameserver.model.Move;
+import de.tuberlin.sese.swtpp.gameserver.model.Player;
+
 public class General implements Figur {
 	
-	private static String currentState;
+	private Position position;
 
 	@Override
-	public String getPossibleMoves() {
+	public ArrayList<Move> getPossibleMoves(Position position, Board board, Player player) {
 		// TODO Auto-generated method stub
-		return null;
+		return new ArrayList<Move>();
+	}
+	
+	public boolean isThreatened(String move) {
+		return true;
+	}
+	
+	public Position getPosition() {
+		return position;
 	}
 
 }

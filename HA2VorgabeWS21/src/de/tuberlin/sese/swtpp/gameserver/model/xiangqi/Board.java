@@ -1,14 +1,20 @@
 package de.tuberlin.sese.swtpp.gameserver.model.xiangqi;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
+import de.tuberlin.sese.swtpp.gameserver.model.Player;
+
 public class Board {
-	char[][] currentBoard;
-	String boardState;
+	private char[][] boardMatrix;
+	private String boardState;
+	
+	private General blackGeneral;
+	private General redGeneral;
 	
 	public Board(String state) {
-		char[][] currentBoard = boardFromState(state);
-		this.currentBoard = currentBoard;
+		char[][] boardMatrix = boardFromState(state);
+		this.boardMatrix = boardMatrix;
 		this.boardState = state;
 	}
 	
@@ -47,8 +53,34 @@ public class Board {
 	}
 	
 	public char[][] getCurrentBoard(){
-		return currentBoard;
+		return boardMatrix;
 	}
+	
+	public General getRedGeneral() {
+		return redGeneral;
+	}
+	
+	public General getBlackGeneral() {
+		return blackGeneral;
+	}
+	
+	public General getFriendGeneral(Position position) {
+		if (Character.isLowerCase(boardMatrix[position.getRow()][position.getColumn()])) {
+			return blackGeneral;
+		}
+		else {
+			return redGeneral;
+		}
+	};
+	
+	public General getEnemyGeneral(Position position) {
+		if (Character.isLowerCase(boardMatrix[position.getRow()][position.getColumn()])) {
+			return blackGeneral;
+		}
+		else {
+			return redGeneral;
+		}
+	};
 	
 	public static void main(String[] args) {
 		System.out.print(Arrays.deepToString(boardFromState("rhea1a1h1/4g4/1c3r3/7cs/s1s1C4/9/S1S3SCS/R8/4A4/1HE1GAEHR")));
