@@ -1,15 +1,20 @@
 package de.tuberlin.sese.swtpp.gameserver.model.xiangqi;
 
-public class General extends Figure {
+import java.util.ArrayList;
+
+import de.tuberlin.sese.swtpp.gameserver.model.Move;
+import de.tuberlin.sese.swtpp.gameserver.model.Player;
+
+public class General implements Figur {
 	//attributes
-	private String colour;
+	private Position position;
 	
-	public General(String colour) {			//braucht man ueberhaupt?
+	public General() {			//braucht man ueberhaupt?
 		super();
-		this.colour = colour;
+		
 	}
 	
-	public static boolean isMoveOk(String move, char[][] board) {
+	/*public static boolean isMoveOk(String move, char[][] board) {
 		String[] moveArray = move.split("-");		//Ascii for 'a' = 97
 		//get a numeric position of start and goal position
 		int startC = moveArray[0].charAt(0) - 97;			//char of start
@@ -59,10 +64,69 @@ public class General extends Figure {
 			board[startI][startC] = '0';
 		}
 		return board;
-	}
-	public boolean isTodesblick(char[][]board) {
-		
+	}*/
+	
+	public boolean isTodesblick(Position position, char[][]board) {
+		int col = position.getColumn();
+		int row = position.getRow();
+		if(row > 2) {							//black
+			for(int i = row; i >= 0; i--) {
+				if(board[i][col] != 'G' && board[i][col] != '0') { 	//we meet some other figure on way down
+					return false;
+				}
+				if(board[i][col] == 'G') {
+					return true;
+				}
+			}
+		}
+		else {									//red
+			for(int i = row; i <= 9; i++) {		
+				if(board[i][col] != 'g' && board[i][col] != '0') { 	//we meet some other figure on way up
+					return false;
+				}
+				if(board[i][col] == 'g') {
+					return true;
+				}
+			}
+		}
 		
 		return false;
+	}
+	public void setPosition(Position pos) {
+		this.position = pos;
+	}
+	public Position getPosition() {
+		return position;
+	}
+	public ArrayList<Move> getPossibleMoves(Position position, Board board, Player player){
+		ArrayList<Move> moves = new ArrayList<>();
+		int reihe = 0;
+		int column = 3;
+		if(!position.isRed(board)) {
+			reihe = 7;
+		}
+		for(int row = reihe; row <= reihe +2; row++) {
+			for(int col = column; col <= column + 2; col++) {
+				if(row == position.getRow() && col == position.getColumn()) {
+					continue;
+				}
+				if(reihe > 2) {			//means we are playing black, else red
+					if(String.valueOf(board.getBoardMatrix()[row][col]).matches("[gaehrcs]")) {
+						continue;
+					}
+				}
+				else if(String.valueOf(board.getBoardMatrix()[row][col]).matches("[GAEHRCS]")) {
+					continue;
+				}
+				else if (!isTodesblick(position, board.getBoardMatrix())) {
+					Position possibleGoal = new Position(row, col);
+					String moveString = Position.positionToString(position);
+					moveString += '-' + Position.positionToString(possibleGoal);
+					Move move = new Move(moveString, board.boardState, player);
+					moves.add(move);
+				}
+			}
+		}
+		return moves;
 	}
 }

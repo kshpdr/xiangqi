@@ -1,16 +1,41 @@
 package de.tuberlin.sese.swtpp.gameserver.model.xiangqi;
 
-public class Advisor extends Figure {
-	public static boolean isMoveOk(String move) {
-		String[] moveArray = move.split("-");		//Ascii for 'a' = 97
-		//get a numeric position of start and goal position
-		int startC = moveArray[0].charAt(0) - 97;			//char of start
-		int startI = moveArray[0].charAt(1);				//int of start
-		
-		int goalC = moveArray[1].charAt(0) - 97;			//char of start
-		int goalI = moveArray[1].charAt(1);					//int of start
-		
-		
-		return false;
+import java.util.ArrayList;
+
+
+import de.tuberlin.sese.swtpp.gameserver.model.Move;
+import de.tuberlin.sese.swtpp.gameserver.model.Player;
+
+public class Advisor implements Figur {
+	private Position position;
+	
+	public ArrayList<Move> getPossibleMoves(Position position, Board board, Player player){
+		ArrayList<Move> moves = new ArrayList<>();
+		int reihe = 0;
+		int spalte = 3;
+		if(!position.isRed(board)) {
+			reihe = 7;
+		}
+		for(int row = reihe; row <= reihe + 2; row++) {
+			for(int col = spalte; col <= spalte + 2; col++) {
+				String match = "[gaehrcs]";
+				if(!position.isRed(board)) {
+					match = "[GAEHRCS]";
+				}
+				if((Math.abs(position.getRow() - row) == 1) && (Math.abs(position.getColumn() - col) == 1) && String.valueOf(board.boardMatrix[row][col]).matches(match) /* && not todesblick*/) {
+					Position goal = new Position(row, col);
+					String moveString = Position.positionToString(position) + '-' + Position.positionToString(goal);
+					Move move = new Move(moveString, board.boardState, player);
+					moves.add(move);
+				}
+			}
+		}
+		return moves;
+	}
+	public Position getPosition() {
+		return position;
+	}
+	public void setPosition(Position position) {
+		this.position = position;
 	}
 }
