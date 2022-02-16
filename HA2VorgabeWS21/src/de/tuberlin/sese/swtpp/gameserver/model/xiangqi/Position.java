@@ -58,6 +58,14 @@ public class Position {
 		return false;
 	}
 	
+	public boolean otherPlayerOnTargetField(Board board, Position newPosition) {
+		
+		if((this.isRed(board) && !newPosition.isRed(board)) || (!this.isRed(board) && newPosition.isRed(board))) {
+			return true;
+		}
+		return false;
+	}
+	
 	public String moveString(Position newPosition) {
 		
 		// returns oldColumn oldRow - newColumn newRow

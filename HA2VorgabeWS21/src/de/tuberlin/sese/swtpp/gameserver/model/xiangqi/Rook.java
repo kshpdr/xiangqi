@@ -31,11 +31,7 @@ public class Rook implements Figur {
 			if(board.getBoardMatrix()[row][i] == '0' && !myGeneral.isThreatened(position.moveString(newPos))) {
 				possibleMoves.add(new Move(position.moveString(newPos), board.boardState, player));
 			}
-			else if(position.isRed(board) && !newPos.isRed(board) && !myGeneral.isThreatened(position.moveString(newPos))) {
-				possibleMoves.add(new Move(position.moveString(newPos), board.boardState, player));
-				break;
-			}
-			else if(!position.isRed(board) && newPos.isRed(board) && !myGeneral.isThreatened(position.moveString(newPos))) {
+			else if(position.otherPlayerOnTargetField(board, newPos) && !myGeneral.isThreatened(position.moveString(newPos))) {
 				possibleMoves.add(new Move(position.moveString(newPos), board.boardState, player));
 				break;
 			}
@@ -52,11 +48,7 @@ public class Rook implements Figur {
 			if(board.getBoardMatrix()[row][i] == '0' && !myGeneral.isThreatened(position.moveString(newPos))) {	
 				possibleMoves.add(new Move(position.moveString(new Position(row,i)), board.boardState, player));
 				}
-			else if(position.isRed(board) && !newPos.isRed(board) && !myGeneral.isThreatened(position.moveString(newPos))) {
-				possibleMoves.add(new Move(position.moveString(new Position(row,i)), board.boardState, player));
-				break;
-				}
-			else if(!position.isRed(board) && newPos.isRed(board) && !myGeneral.isThreatened(position.moveString(newPos))) {
+			else if(position.otherPlayerOnTargetField(board, newPos) && !myGeneral.isThreatened(position.moveString(newPos))) {
 				possibleMoves.add(new Move(position.moveString(new Position(row,i)), board.boardState, player));
 				break;
 				}
@@ -74,11 +66,7 @@ public class Rook implements Figur {
 			if(board.getBoardMatrix()[i][col] == '0' && !myGeneral.isThreatened(position.moveString(newPos))) {
 				possibleMoves.add(new Move(position.moveString(newPos), board.boardState, player));
 			}
-			else if(position.isRed(board) && !newPos.isRed(board) && !myGeneral.isThreatened(position.moveString(newPos))) {
-				possibleMoves.add(new Move(position.moveString(newPos), board.boardState, player));
-				break;
-			}
-			else if(!position.isRed(board) && newPos.isRed(board) && !myGeneral.isThreatened(position.moveString(newPos))) {
+			else if(position.otherPlayerOnTargetField(board, newPos) && !myGeneral.isThreatened(position.moveString(newPos))) {
 				possibleMoves.add(new Move(position.moveString(newPos), board.boardState, player));
 				break;
 			}
@@ -96,11 +84,7 @@ public class Rook implements Figur {
 			if(board.getBoardMatrix()[i][col] == '0' && !myGeneral.isThreatened(position.moveString(newPos))) {		
 				possibleMoves.add(new Move(position.moveString(newPos), board.boardState, player));
 			}
-			else if(position.isRed(board) && !newPos.isRed(board) && !myGeneral.isThreatened(position.moveString(newPos))) {
-				possibleMoves.add(new Move(position.moveString(newPos), board.boardState, player));
-				break;
-			}
-			else if(!position.isRed(board) && newPos.isRed(board) && !myGeneral.isThreatened(position.moveString(newPos))) {
+			else if(position.otherPlayerOnTargetField(board, newPos) && !myGeneral.isThreatened(position.moveString(newPos))) {
 				possibleMoves.add(new Move(position.moveString(newPos), board.boardState, player));
 				break;
 			}

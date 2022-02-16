@@ -16,6 +16,8 @@ public class Horse implements Figur {
 		
 		ArrayList<Move> possibleMoves = new ArrayList<Move>();
 		
+		General myGeneral = board.getFriendGeneral(position);
+		
 		/*
 		 * Horse moves like knight in chess (one step up/down/left/right and then one step diagonal):
 		 */
@@ -45,17 +47,18 @@ public class Horse implements Figur {
 						
 						// checks whether position is on board:
 						if(newPos.onBoard()) {
-						
-							// checks whether field is free or occupied by other player:
-							if(board.getBoardMatrix()[moves[j][0]][moves[j][1]] == '0') {
-								possibleMoves.add(new Move(position.moveString(newPos), board.boardState, player));
+							
+							// checks whether myGeneral is threatened:
+							if(!myGeneral.isThreatened(position.moveString(newPos))) {
+								
+								// checks whether field is free or occupied by other player:
+								if(board.getBoardMatrix()[moves[j][0]][moves[j][1]] == '0') {
+									possibleMoves.add(new Move(position.moveString(newPos), board.boardState, player));
+								}
+								else if(position.otherPlayerOnTargetField(board, newPos)) {
+									possibleMoves.add(new Move(position.moveString(newPos), board.boardState, player));	
+								}
 							}
-							else if(position.isRed(board) && !newPos.isRed(board)) {
-								possibleMoves.add(new Move(position.moveString(newPos), board.boardState, player));	
-							}
-							else if(!position.isRed(board) && newPos.isRed(board)) {
-								possibleMoves.add(new Move(position.moveString(newPos), board.boardState, player));	
-							}	
 						}
 					}	
 				}
