@@ -38,6 +38,19 @@ public class Position {
 		return positionString;
 	}
 	
+	public boolean isRed(Board board) {
+		char fig = board.getCurrentBoard()[this.row][this.column];	
+		if ("GAEHRCS".indexOf(fig) != -1) return true;
+		return false;
+	}
+	
+	public boolean onBoard() {
+		if(this.row >= 0 && this.row < 10 && this.column >= 0 && this.column < 9) {
+			return true;
+		}
+		return false;
+	}
+	
 	public static void main(String[] args) {
 		System.out.print(positionToString(new Position(9, 0)));
 	}

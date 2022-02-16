@@ -258,7 +258,6 @@ public class XiangqiGame extends Game implements Serializable{
 		return new Position(row, column);
 	}
 	
-	
 	public static void main(String[] args) {
 		//System.out.print(stringToPosition("c1").getRow());
 		//System.out.print(stringToPosition("c1").getColumn());
@@ -266,12 +265,13 @@ public class XiangqiGame extends Game implements Serializable{
 		Rook rook = new Rook(new Position(7, 0));
 		Cannon cannon = new Cannon(new Position(6, 7));
 		Soldier soldier = new Soldier(new Position(6, 2));
-		Board board = new Board("rhea1a1h1/4g4/1c3r3/7cs/s1s1C4/9/S1S3SCS/R8/4A4/1HE1GAEHR");
+		Board board = new Board("r2a1aeCr/9/e1h2g1c1/s1s5s/2S4s1/S8/7sS/1C4H2/4A4/1RE1GAE1R");
 		Player redPlayer = new Player(new User("Denis", "5"), new XiangqiGame());
+		Player blackPlayer = new Player(new User("Daniil", "6"), new XiangqiGame());
 		
-		ArrayList<Move> rookMoves = rook.getPossibleMoves(new Position(7, 0), board, redPlayer);
-		ArrayList<Move> cannonMoves = cannon.getPossibleMoves(new Position(6, 7), board, redPlayer);
-		ArrayList<Move> soldierMoves = soldier.getPossibleMoves(new Position(6, 2), board, redPlayer);
+		ArrayList<Move> rookMoves = rook.getPossibleMoves(new Position(0, 8), board, blackPlayer);
+		ArrayList<Move> cannonMoves = cannon.getPossibleMoves(new Position(0, 7), board, redPlayer);
+		ArrayList<Move> soldierMoves = soldier.getPossibleMoves(new Position(4, 2), board, redPlayer);
 
 		
 		System.out.println("Moves for Rook: ");
