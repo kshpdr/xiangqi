@@ -217,42 +217,52 @@ public class XiangqiGame extends Game implements Serializable{
 		// TODO: implement
 		return "rheagaehr/9/1c5c1/s1s1s1s1s/9/9/S1S1S1S1S/1C5C1/9/RHEAGAEHR";
 	}
-
-	@Override
-	public boolean tryMove(String moveString, Player player) {
+	
+	public boolean cheatCheck(String moveString, Player player) {
 		
 		// start Position of moveString:
 		int row = "9876543210".indexOf(moveString.charAt(1));
 		int col = "abcdefghi".indexOf(moveString.charAt(0));
-		Position startPos = new Position(row,col);
+		Position pos = new Position(row,col);
 				
 		// --> checks whether redPlayer starts:
 		if(this.getHistory().isEmpty() && player != this.redPlayer) {
 			return false;
 		}
-		
 		// --> checks whether player tries to move playing-piece of other player:
-		if(player == this.redPlayer && !startPos.isRed(board)) {
+		if(player == this.redPlayer && !pos.isRed(board)) {
 			return false;
 		}
-		if(player != this.redPlayer && startPos.isRed(board)) {
+		if(player != this.redPlayer && pos.isRed(board)) {
 			return false;
 		}	
-		
 		// --> checks whether start Position of moveString is empty:
 		if(this.board.getBoardMatrix()[row][col] == '0') {
 			return false;
 		}
-		
 		// --> checks whether it's player's turn:
 		if((player == this.redPlayer && !isRedNext()) || (player != this.redPlayer && isRedNext())) {
 			return false;
 		}
+		
+		return true;
+	}
 
+	@Override
+	public boolean tryMove(String moveString, Player player) {
 		
 		
-		
-		
+		if(cheatCheck(moveString, player)) {
+			/*
+			 * tryMove(String moveString, Player player):
+			 * 
+			 *  1.) prüfe welche Figur auf Position pos steht
+			 *  2.) rufe tryPossibleMoves für Figur auf
+			 *  3.) checke, ob moveString in Liste enthalten
+			 *  4.) wenn ja, gebe true zurück
+			 */	
+		}
+				
 		return false;
 	}
 	
