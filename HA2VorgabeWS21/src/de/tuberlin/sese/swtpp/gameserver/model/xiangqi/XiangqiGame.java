@@ -221,6 +221,12 @@ public class XiangqiGame extends Game implements Serializable{
 	@Override
 	public boolean tryMove(String moveString, Player player) {
 		
+		// checks whether redPlayer starts:
+		if(this.getHistory().isEmpty() && player != this.redPlayer) {
+			return false;
+		}
+		
+		
 		// start Position of moveString:
 		int row = "9876543210".indexOf(moveString.charAt(1));
 		int col = "abcdefghi".indexOf(moveString.charAt(0));
@@ -234,10 +240,12 @@ public class XiangqiGame extends Game implements Serializable{
 			return false;
 		}
 		
+		
 		// checks whether start Position is empty:
 		if(this.board.getBoardMatrix()[row][col] == '0') {
 			return false;
 		}
+		
 		
 		// checks whether it's player's turn:
 		if((player == this.redPlayer && !isRedNext()) || (player != this.redPlayer && isRedNext())) {
