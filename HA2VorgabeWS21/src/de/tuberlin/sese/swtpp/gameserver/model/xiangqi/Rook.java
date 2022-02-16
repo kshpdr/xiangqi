@@ -13,23 +13,12 @@ public class Rook implements Figur {
 		this.position = position;
 	}
 
-	@Override
-	public ArrayList<Move> getPossibleMoves(Position position, Board board, Player player) {
-		
-		// current row/column:
-		int row = position.getRow();
-		int col = position.getColumn();
+	
+	// right:
+	public ArrayList<Move> moveR(int row, int col, Board board, Player player, General myGeneral) {
 		
 		ArrayList<Move> possibleMoves = new ArrayList<Move>(); 
 		
-		General myGeneral = board.getFriendGeneral(position);
-		
-		/*
-		 * rook can do multiple steps up/down or left/right 
-		 * (but can not jump over other figures):
-		 */
-		
-		// right:
 		for(int i = col + 1; i < board.getBoardMatrix()[0].length; i++) {
 			// new Position:
 			Position newPos = new Position(row,i);
@@ -46,25 +35,39 @@ public class Rook implements Figur {
 			}
 		}
 		
-		// left:
+		return possibleMoves;
+	}
+		
+	// left:
+	public ArrayList<Move> moveL(int row, int col, Board board, Player player, General myGeneral) {
+		
+		ArrayList<Move> possibleMoves = new ArrayList<Move>(); 
+		
 		for(int i = col - 1; i >= 0; i--) {
 			// new Position:
 			Position newPos = new Position(row,i);
 			
 			if(board.getBoardMatrix()[row][i] == '0' && !myGeneral.isThreatened(position.moveString(newPos))) {	
 				possibleMoves.add(new Move(position.moveString(new Position(row,i)), board.boardState, player));
-				}
+			}
 			else if(position.otherPlayerOnTargetField(board, newPos) && !myGeneral.isThreatened(position.moveString(newPos))) {
 				possibleMoves.add(new Move(position.moveString(new Position(row,i)), board.boardState, player));
 				break;
-				}
+			}
 			else {
 				break;
-				}
-	
+			}
 		}
 		
-		// up:
+		return possibleMoves;
+		
+	}
+	
+	// up:
+	public ArrayList<Move> moveU(int row, int col, Board board, Player player, General myGeneral) {
+		
+		ArrayList<Move> possibleMoves = new ArrayList<Move>(); 
+		
 		for(int i = row - 1; i >= 0; i--) {
 			// new Position:
 			Position newPos = new Position(i,col);
@@ -78,11 +81,17 @@ public class Rook implements Figur {
 			}
 			else {
 				break;
-			}
-			
-		}
+			}		
+		}	
 		
-		// down:
+		return possibleMoves;
+	}
+	
+	// down:
+	public ArrayList<Move> moveD(int row, int col, Board board, Player player, General myGeneral) {
+		
+		ArrayList<Move> possibleMoves = new ArrayList<Move>(); 
+
 		for(int i = row + 1; i < board.getBoardMatrix().length; i++) {
 			// new Position:
 			Position newPos = new Position(i,col);
@@ -97,9 +106,34 @@ public class Rook implements Figur {
 			else {
 				break;
 			}	
-		}
-	
+		}	
+		
 		return possibleMoves;
 	}
+		
+	
+	
+	@Override  
+	public ArrayList<Move> getPossibleMoves(Position position, Board board, Player player) {
+		
+		// current row/column:
+		int row = position.getRow();
+		int col = position.getColumn();
+		
+		ArrayList<Move> possibleMoves = new ArrayList<Move>(); 
+		
+		General myGeneral = board.getFriendGeneral(position);
+		
+		/*
+		 * rook can do multiple steps up/down or left/right 
+		 * (but can not jump over other figures):
+		 */
+		
+		possibleMoves.addAll(moveU(row,col,board,player,myGeneral));
+		possibleMoves.addAll(moveD(row,col,board,player,myGeneral));
+		possibleMoves.addAll(moveL(row,col,board,player,myGeneral));
+		possibleMoves.addAll(moveR(row,col,board,player,myGeneral));
 
+		return possibleMoves;
+	}
 }

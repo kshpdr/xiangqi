@@ -245,6 +245,7 @@ public class XiangqiGame extends Game implements Serializable{
 			return false;
 		}
 		
+		
 		return true;
 	}
 
