@@ -6,6 +6,13 @@ import de.tuberlin.sese.swtpp.gameserver.model.Move;
 import de.tuberlin.sese.swtpp.gameserver.model.Player;
 
 public class Horse implements Figur {
+	
+	Position position;
+
+	public Horse(Position position) {
+		this.position = position;
+	}
+
 
 	@Override
 	public ArrayList<Move> getPossibleMoves(Position position, Board board, Player player) {
@@ -48,7 +55,7 @@ public class Horse implements Figur {
 						// checks whether position is on board:
 						if(newPos.onBoard()) {
 							
-							// checks whether myGeneral is threatened:
+							// checks whether myGeneral is not threatened:
 							if(!myGeneral.isThreatened(position.moveString(newPos))) {
 								
 								// checks whether field is free or occupied by other player:

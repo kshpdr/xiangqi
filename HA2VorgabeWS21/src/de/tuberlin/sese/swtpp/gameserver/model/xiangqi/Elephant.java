@@ -6,6 +6,12 @@ import de.tuberlin.sese.swtpp.gameserver.model.Move;
 import de.tuberlin.sese.swtpp.gameserver.model.Player;
 
 public class Elephant implements Figur {
+	
+	Position position;
+
+	public Elephant(Position position) {
+		this.position = position;
+	}
 
 	@Override
 	public ArrayList<Move> getPossibleMoves(Position position, Board board, Player player) {

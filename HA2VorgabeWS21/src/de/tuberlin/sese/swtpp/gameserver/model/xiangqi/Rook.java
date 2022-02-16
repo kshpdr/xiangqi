@@ -6,6 +6,12 @@ import de.tuberlin.sese.swtpp.gameserver.model.Move;
 import de.tuberlin.sese.swtpp.gameserver.model.Player;
 
 public class Rook implements Figur {
+	
+	Position position;
+
+	public Rook(Position position) {
+		this.position = position;
+	}
 
 	@Override
 	public ArrayList<Move> getPossibleMoves(Position position, Board board, Player player) {

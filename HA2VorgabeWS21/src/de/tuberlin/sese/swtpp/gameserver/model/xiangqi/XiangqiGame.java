@@ -6,6 +6,7 @@ import de.tuberlin.sese.swtpp.gameserver.model.*;
 
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class XiangqiGame extends Game implements Serializable{
 
@@ -21,6 +22,7 @@ public class XiangqiGame extends Game implements Serializable{
 	// just for better comprehensibility of the code: assign red and black player
 	private Player blackPlayer;
 	private Player redPlayer;
+	private Board board;
 
 	// internal representation of the game state
 	// TODO: insert additional game data here
@@ -29,8 +31,9 @@ public class XiangqiGame extends Game implements Serializable{
 	 * constructors
 	 ***********************/
 
-	public XiangqiGame() {
+	public XiangqiGame(Board board) {
 		super();
+		this.board = board;
 
 		// TODO: initialization of game state can go here
 	}
@@ -217,9 +220,42 @@ public class XiangqiGame extends Game implements Serializable{
 
 	@Override
 	public boolean tryMove(String moveString, Player player) {
-		// TODO: implement
+		
+		// checks whether player tries to move playing-piece of other player:
+		int row = "9876543210".indexOf(moveString.charAt(1));
+		int col = "abcdefghi".indexOf(moveString.charAt(0));
+		Position startPos = new Position(row,col);
+		
+		if(player == this.redPlayer && !startPos.isRed(board)) {
+			return false;
+		}
+		if(player != this.redPlayer && startPos.isRed(board)) {
+			return false;
+		}
+		
+		// checks whether it's player's turn:
+		if((player == this.redPlayer && !isRedNext()) || (player != this.redPlayer && isRedNext())) {
+			return false;
+		}
 
+		
+		
+		
+		
 		return false;
 	}
-
+	
+	public static void main(String[] args) {
+	
+		Rook rook = new Rook(new Position(7, 0));
+		Board board = new Board("rhea1a1h1/4g4/1c3r3/7cs/s1s1C4/9/S1S3SCS/R8/4A4/1HE1GAEHR");
+		Player redPlay = new Player(new User("Pau", "5"), new XiangqiGame(board));
+		
+		ArrayList<Move> rookMoves = rook.getPossibleMoves(new Position(7, 0), board, redPlay);
+	
+		System.out.println("Rook-moves: ");
+		for (Move i : rookMoves) {
+			System.out.println(i.getMove());
+		}
+	}
 }
