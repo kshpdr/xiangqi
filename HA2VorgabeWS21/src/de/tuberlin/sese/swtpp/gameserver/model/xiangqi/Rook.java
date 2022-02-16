@@ -13,7 +13,6 @@ public class Rook implements Figur {
 		this.position = position;
 	}
 
-	
 	// right:
 	public ArrayList<Move> moveR(int row, int col, Board board, Player player, General myGeneral) {
 		

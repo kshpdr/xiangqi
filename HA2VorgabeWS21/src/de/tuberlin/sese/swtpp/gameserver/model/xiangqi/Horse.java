@@ -30,10 +30,7 @@ public class Horse implements Figur {
 		 */
 		
 		int[][] checkArray = {{row+1,col},{row,col+1},{row-1,col},{row,col-1}};
-		int[][] movesArray = {{row+2,col-1},{row+2,col+1},
-							  {row+1,col+2},{row-1,col+2},
-							  {row-2,col+1},{row-2,col-1},
-							  {row-1,col-2},{row+1,col-2}};
+		int[][] movesArray = {{row+2,col-1},{row+2,col+1},{row+1,col+2},{row-1,col+2},{row-2,col+1},{row-2,col-1},{row-1,col-2},{row+1,col-2}};
 
 		// iterates over checkArray:
 		for(int i = 0; i < 4; i++) {
@@ -45,27 +42,22 @@ public class Horse implements Figur {
 				if(board.getBoardMatrix()[checkArray[i][0]][checkArray[i][1]] == '0') {
 					
 					// checks possible moves for each direction:
-					int[][] moves = {movesArray[2*i], movesArray[2*i+1]};
 							
 					for(int j = 0; j < 2; j++) {
 						
 						// new position:
-						Position newPos = new Position(moves[j][0],moves[j][1]);
+						Position newPos = new Position(movesArray[2*i+j][0],movesArray[2*i+j][1]);
 						
 						// checks whether position is on board:
 						if(newPos.onBoard()) {
 							
-							// checks whether myGeneral is not threatened:
-							if(!myGeneral.isThreatened(position.moveString(newPos))) {
-								
-								// checks whether field is free or occupied by other player:
-								if(board.getBoardMatrix()[moves[j][0]][moves[j][1]] == '0') {
-									possibleMoves.add(new Move(position.moveString(newPos), board.boardState, player));
-								}
-								else if(position.otherPlayerOnTargetField(board, newPos)) {
-									possibleMoves.add(new Move(position.moveString(newPos), board.boardState, player));	
-								}
+							// checks whether field is free or occupied by other player:
+							if(board.getBoardMatrix()[movesArray[2*i+j][0]][movesArray[2*i+j][1]] == '0' && !myGeneral.isThreatened(position.moveString(newPos))) {
+								possibleMoves.add(new Move(position.moveString(newPos), board.boardState, player));
 							}
+							else if(position.otherPlayerOnTargetField(board, newPos) && !myGeneral.isThreatened(position.moveString(newPos))) {
+								possibleMoves.add(new Move(position.moveString(newPos), board.boardState, player));	
+							}	
 						}
 					}	
 				}
