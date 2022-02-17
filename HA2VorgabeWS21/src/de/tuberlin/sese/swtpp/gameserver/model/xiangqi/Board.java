@@ -15,11 +15,20 @@ public class Board {
 	private General blackGeneral;
 	private General redGeneral;
 	ArrayList<Figur> figures = new ArrayList<>();
+	ArrayList<Figur> blackFigures = new ArrayList<>();
+	ArrayList<Figur> redFigures = new ArrayList<>();
+
 	
 	public Board(String state) {
 		char[][] boardMatrix = boardFromState(state);
 		this.boardMatrix = boardMatrix;
 		this.boardState = state;
+		this.figures = getFiguresFromBoard(boardMatrix);
+		this.blackFigures = getBlackFiguresFromBoard(boardMatrix);
+		this.redFigures = getRedFiguresFromBoard(boardMatrix);
+		this.blackGeneral = getBlackGeneralFromBoard();
+		this.redGeneral = getRedGeneralFromBoard();
+
 	}
 	
 	public static char[][] boardFromState(String state) {
@@ -87,58 +96,70 @@ public class Board {
 			return redGeneral;
 		}
 	};
-	public boolean isThreatened(Move move) {
-		char[][] boardBuf = boardMatrix.clone();			//copy of board
-		//get a numeric position of start and goal position
-		Position start = Position.stringToPosition(move.getMove().split("-")[0]);
-		Position goal = Position.stringToPosition(move.getMove().split("-")[1]);
-		//make move
-		boardBuf[goal.getRow()][goal.getColumn()] = boardBuf[start.getRow()][start.getColumn()];
-		boardBuf[start.getRow()][start.getColumn()] = '0';
-		
-		if(blackGeneral.getPosition().getColumn() == redGeneral.getPosition().getColumn()) { 	// if generals are on the same column, start check for threatening
-			for( int i = blackGeneral.getPosition().getRow(); i < 10; i++) {					//go through each row on column of blackGeneral and check for other figures
-				if(!String.valueOf(boardBuf[i][blackGeneral.getPosition().getColumn()]).matches("[G0]")) {	//if we find some other figure on the way, return false
-					return false;
-				}
-				if(boardBuf[i][blackGeneral.getPosition().getColumn()] == 'G') {
-					return true;
-				}																			// we find enemy general
-				
-			}
-		}
-		return false;
-	}
-	public boolean isCheck(Player player) {
-		for(Figur afigure : figures) {
-			ArrayList<Move> possibleMoves = afigure.getPossibleMoves(afigure.getPosition(), this, player);
-			for(Move amove : possibleMoves) {													//iterate through all possible moves of figure and 
-				if(amove.getMove().split("-")[1] == Position.positionToString(afigure.getPosition())) {		//check if the goal position equals position of general, return true if so
-					return true;
-				}
-			}
-		}
-		return false;
-	}
+	
 	public ArrayList<Figur> getFiguresFromBoard(char[][] boardMatrix){
 		ArrayList<Figur> figures = new ArrayList<>();
+		figures.addAll(getRedFiguresFromBoard(boardMatrix));
+		figures.addAll(getBlackFiguresFromBoard(boardMatrix));	
+		return figures;
+	}
+	
+	public ArrayList<Figur> getRedFiguresFromBoard(char[][] boardMatrix){
+		ArrayList<Figur> redFigures = new ArrayList<>();
 		// go through board and add corresponding figures
 		for (int i = 0; i < boardMatrix.length; i++) {
 			for (int j = 0; j < boardMatrix[0].length; j++) {
 				switch (boardMatrix[i][j]) {
-					case 'g': case 'G': figures.add(new General(new Position(i, j)));
-					case 'a': case 'A': figures.add(new Advisor(new Position(i, j)));
-					//case 'e': case 'E': figures.add(new Elephant(new Position(i, j)));
-					//case 'h': case 'H': figures.add(new Horse(new Position(i, j)));
-					case 'r': case 'R': figures.add(new Rook(new Position(i, j)));
-					case 'c': case 'C': figures.add(new Cannon(new Position(i, j)));
-					
+					case 'G': redFigures.add(new General(new Position(i, j))); break;
+					//case 'A': redFigures.add(new Advisor(new Position(i, j)));
+					//case 'E': redFigures.add(new Elephant(new Position(i, j)));
+					//case 'H': redFigures.add(new Horse(new Position(i, j)));
+					case 'R': redFigures.add(new Rook(new Position(i, j))); break;
+					case 'C': redFigures.add(new Cannon(new Position(i, j))); break;
+					//case 'S': redFigures.add(new Soldier(new Position(i, j))); break;
 				}
 			}
 		}
-		
-		return figures;
+		return redFigures;
 	}
+	
+	public ArrayList<Figur> getBlackFiguresFromBoard(char[][] boardMatrix){
+		ArrayList<Figur> blackFigures = new ArrayList<>();
+		// go through board and add corresponding figures
+		for (int i = 0; i < boardMatrix.length; i++) {
+			for (int j = 0; j < boardMatrix[0].length; j++) {
+				switch (boardMatrix[i][j]) {
+					case 'G': blackFigures.add(new General(new Position(i, j))); break;
+					//case 'A': blackFigures.add(new Advisor(new Position(i, j)));
+					//case 'E': blackFigures.add(new Elephant(new Position(i, j)));
+					//case 'H': blackFigures.add(new Horse(new Position(i, j)));
+					case 'R': blackFigures.add(new Rook(new Position(i, j))); break;
+					case 'C': blackFigures.add(new Cannon(new Position(i, j))); break;
+					//case 'S': blackFigures.add(new Soldier(new Position(i, j))); break;
+				}
+			}
+		}
+		return blackFigures;
+	}
+	public General getRedGeneralFromBoard() {
+		for (Figur figure : figures) {
+			if (boardMatrix[figure.getPosition().getRow()][figure.getPosition().getColumn()] == 'G') {
+				return (General) figure;
+			}
+		}
+		return null;
+	}
+	
+	public General getBlackGeneralFromBoard() {
+		for (Figur figure : figures) {
+			if (boardMatrix[figure.getPosition().getRow()][figure.getPosition().getColumn()] == 'g') {
+				return (General) figure;
+			}
+		}
+		return null;
+	}
+
+
 
 	public static void main(String[] args) {
 		

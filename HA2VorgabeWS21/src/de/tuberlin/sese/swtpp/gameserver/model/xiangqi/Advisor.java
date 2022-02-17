@@ -27,9 +27,9 @@ public class Advisor implements Figur {
 					match = "[GAEHRCS]";
 				}
 				Position goal = new Position(row, col);
-				String moveString = Position.positionToString(position) + '-' + Position.positionToString(goal);
+				String moveString = Position.positionToString(position) + '-' + Position.positionToString(goal);	//make new possible move and check if this is diagonal move and will not threaten General
 				Move move = new Move(moveString, board.boardState, player);
-				if((Math.abs(position.getRow() - row) == 1) && (Math.abs(position.getColumn() - col) == 1) && !String.valueOf(board.boardMatrix[row][col]).matches(match) && !board.isThreatened(move)) {
+				if((Math.abs(position.getRow() - row) == 1) && (Math.abs(position.getColumn() - col) == 1) && !String.valueOf(board.boardMatrix[row][col]).matches(match) && !board.getFriendGeneral(position).isThreatened(board,move)) {
 					moves.add(move);
 				}
 			}
