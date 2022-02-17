@@ -25,7 +25,7 @@ public class Soldier implements Figur {
 	}
 	
 	public boolean isRiverCrossed (Position position, Board board) {
-		char[][] boardMatrix = board.getCurrentBoard();
+		char[][] boardMatrix = board.getBoardMatrix();
 		if (Character.isLowerCase(boardMatrix[position.getRow()][position.getColumn()])){
 			if (position.getRow() >= 5) {
 				return true;
@@ -63,7 +63,7 @@ public class Soldier implements Figur {
 			String moveForward = createMoveFromPositions(position, targetForward);
 			
 			// check if friendly figure stays on the forward target position
-			if (!Character.toString(board.getCurrentBoard()[targetForward.getRow()][targetForward.getColumn()]).matches(figurePattern)) {
+			if (!Character.toString(board.getBoardMatrix()[targetForward.getRow()][targetForward.getColumn()]).matches(figurePattern)) {
 				//if (!friendGeneral.isThreatened(move)) {
 				if (true) {
 					possibleMoves.add(new Move(moveForward, board.getBoardState(), player));
@@ -86,7 +86,7 @@ public class Soldier implements Figur {
 			String moveLeft = createMoveFromPositions(position, targetLeft);
 			
 			// check if friendly figure stays on the left target position
-			if (!Character.toString(board.getCurrentBoard()[targetLeft.getRow()][targetLeft.getColumn()]).matches(figurePattern)) {
+			if (!Character.toString(board.getBoardMatrix()[targetLeft.getRow()][targetLeft.getColumn()]).matches(figurePattern)) {
 				//if (!friendGeneral.isThreatened(move)) {
 				if (true) {
 					possibleMoves.add(new Move(moveLeft, board.getBoardState(), player));
@@ -109,7 +109,7 @@ public class Soldier implements Figur {
 			String moveRight = createMoveFromPositions(position, targetRight);
 			
 			// check if friendly figure stays on the left target position
-			if (!Character.toString(board.getCurrentBoard()[targetRight.getRow()][targetRight.getColumn()]).matches(figurePattern)) {
+			if (!Character.toString(board.getBoardMatrix()[targetRight.getRow()][targetRight.getColumn()]).matches(figurePattern)) {
 				//if (!friendGeneral.isThreatened(move)) {
 				if (true) {
 					possibleMoves.add(new Move(moveRight, board.getBoardState(), player));

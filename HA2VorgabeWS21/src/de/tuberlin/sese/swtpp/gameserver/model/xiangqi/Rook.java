@@ -49,12 +49,12 @@ public class Rook implements Figur {
 		ArrayList<Move> possibleMoves = new ArrayList<Move>();
 		General friendGeneral = board.getFriendGeneral(position);
 		// right horizontal
-		for (int i = position.getColumn() + 1; i < board.getCurrentBoard()[0].length; i++) {
+		for (int i = position.getColumn() + 1; i < board.getBoardMatrix()[0].length; i++) {
 			Position target = new Position(position.getRow(), i);
 			String move = createMoveFromPositions(position, target);
 			
 			// check whether other friendly figures on the way: if so, break.
-			if ((position.isRed(board) && Character.toString(board.getCurrentBoard()[position.getRow()][i]).matches("[GAEHRCS]")) || (!position.isRed(board) && Character.toString(board.getCurrentBoard()[position.getRow()][i]).matches("[gaehrcs]"))){
+			if ((position.isRed(board) && Character.toString(board.getBoardMatrix()[position.getRow()][i]).matches("[GAEHRCS]")) || (!position.isRed(board) && Character.toString(board.getBoardMatrix()[position.getRow()][i]).matches("[gaehrcs]"))){
 				break; // stop after first friendly figure found on the way
 			}		
 			
@@ -75,7 +75,7 @@ public class Rook implements Figur {
 			String move = createMoveFromPositions(position, target);
 			
 			// check whether other friendly figures on the way: if so, break.
-			if ((position.isRed(board) && Character.toString(board.getCurrentBoard()[position.getRow()][i]).matches("[GAEHRCS]")) || (!position.isRed(board) && Character.toString(board.getCurrentBoard()[position.getRow()][i]).matches("[aehrcs]"))){
+			if ((position.isRed(board) && Character.toString(board.getBoardMatrix()[position.getRow()][i]).matches("[GAEHRCS]")) || (!position.isRed(board) && Character.toString(board.getBoardMatrix()[position.getRow()][i]).matches("[aehrcs]"))){
 				break; // stop after first friendly figure found on the way
 			}			
 			
@@ -96,7 +96,7 @@ public class Rook implements Figur {
 			String move = createMoveFromPositions(position, target);
 			
 			// check whether other friendly figures on the way: if so, break.
-			if ((position.isRed(board) && Character.toString(board.getCurrentBoard()[i][position.getColumn()]).matches("[GAEHRCS]")) || (!position.isRed(board) && Character.toString(board.getCurrentBoard()[i][position.getColumn()]).matches("[gaehrcs]"))){
+			if ((position.isRed(board) && Character.toString(board.getBoardMatrix()[i][position.getColumn()]).matches("[GAEHRCS]")) || (!position.isRed(board) && Character.toString(board.getBoardMatrix()[i][position.getColumn()]).matches("[gaehrcs]"))){
 				break; // stop after first friendly figure found on the way
 			}			
 			
@@ -112,12 +112,12 @@ public class Rook implements Figur {
 	public ArrayList<Move> backwardMoves(Position position, Board board, Player player) {
 		ArrayList<Move> possibleMoves = new ArrayList<Move>();
 		General friendGeneral = board.getFriendGeneral(position);
-		for (int i = position.getRow() + 1; i < board.getCurrentBoard().length; i++) {
+		for (int i = position.getRow() + 1; i < board.getBoardMatrix().length; i++) {
 			Position target = new Position(i, position.getColumn());
 			String move = createMoveFromPositions(position, target);
 			
 			// check whether other friendly figures on the way: if so, break.
-			if ((position.isRed(board) && Character.toString(board.getCurrentBoard()[i][position.getColumn()]).matches("[GAEHRCS]")) || (!position.isRed(board) && Character.toString(board.getCurrentBoard()[i][position.getColumn()]).matches("[gaehrcs]"))){
+			if ((position.isRed(board) && Character.toString(board.getBoardMatrix()[i][position.getColumn()]).matches("[GAEHRCS]")) || (!position.isRed(board) && Character.toString(board.getBoardMatrix()[i][position.getColumn()]).matches("[gaehrcs]"))){
 				break; // stop after first friendly figure found on the way
 			}			
 			

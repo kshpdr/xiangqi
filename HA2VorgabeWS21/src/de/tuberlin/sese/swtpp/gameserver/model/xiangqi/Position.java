@@ -39,7 +39,7 @@ public class Position {
 	}
 	
 	public boolean isRed(Board board) {
-		char fig = board.getCurrentBoard()[this.row][this.column];	
+		char fig = board.getBoardMatrix()[this.row][this.column];	
 		if ("GAEHRCS".indexOf(fig) != -1) return true;
 		return false;
 	}
