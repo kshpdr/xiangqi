@@ -24,8 +24,8 @@ public class XiangqiGame extends Game implements Serializable{
 
 	// internal representation of the game state
 	// TODO: insert additional game data here
-	private String board = "rhea1a1h1/4g4/1c3r3/7cs/s1s1C4/9/S1S3SCS/R8/4A4/1HE1GAEHR";
-	private char[][] boardMatrix = parseBoard(board);
+	private Board board = new Board ("rhea1a1h1/4g4/1c3r3/7cs/s1s1C4/9/S1S3SCS/R8/4A4/1HE1GAEHR");
+	
 	/************************
 	 * constructors
 	 ***********************/
@@ -234,7 +234,7 @@ public class XiangqiGame extends Game implements Serializable{
 	@Override
 	public String getBoard() {
 		// TODO: implement
-		return board;
+		return board.getBoardState();
 	}
 
 	@Override
