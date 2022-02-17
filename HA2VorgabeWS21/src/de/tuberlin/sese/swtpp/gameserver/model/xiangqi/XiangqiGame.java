@@ -218,13 +218,32 @@ public class XiangqiGame extends Game implements Serializable{
 		return "rheagaehr/9/1c5c1/s1s1s1s1s/9/9/S1S1S1S1S/1C5C1/9/RHEAGAEHR";
 	}
 	
+	public boolean moveStringFormatCheck(String moveString) {
+		
+		// checks format of moveString (eg. "c5-a5"):
+		if("abcdefghi".indexOf(moveString.charAt(0)) == -1 || "abcdefghi".indexOf(moveString.charAt(3)) == -1) {
+			return false;
+		}
+		if("9876543210".indexOf(moveString.charAt(1)) == -1 || "9876543210".indexOf(moveString.charAt(4)) == -1) {
+			return false;
+		}
+		if(moveString.charAt(2) != '-') {
+			return false;
+		}	
+		return true;
+	}
 	public boolean cheatCheck(String moveString, Player player) {
 		
 		// start Position of moveString:
 		int row = "9876543210".indexOf(moveString.charAt(1));
 		int col = "abcdefghi".indexOf(moveString.charAt(0));
 		Position pos = new Position(row,col);
-				
+		
+		// --> checks format of moveString:
+		if(!moveStringFormatCheck(moveString)) {
+			return false;
+		}
+		
 		// --> checks whether redPlayer starts:
 		if(this.getHistory().isEmpty() && player != this.redPlayer) {
 			return false;
