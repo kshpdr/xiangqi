@@ -221,6 +221,9 @@ public class XiangqiGame extends Game implements Serializable{
 	public boolean moveStringFormatCheck(String moveString) {
 		
 		// checks format of moveString (eg. "c5-a5"):
+		if(moveString.length() != 5) {
+			return false;
+		}
 		if("abcdefghi".indexOf(moveString.charAt(0)) == -1 || "abcdefghi".indexOf(moveString.charAt(3)) == -1) {
 			return false;
 		}
