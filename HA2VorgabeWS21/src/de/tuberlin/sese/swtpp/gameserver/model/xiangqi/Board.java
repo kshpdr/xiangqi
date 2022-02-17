@@ -1,6 +1,8 @@
 package de.tuberlin.sese.swtpp.gameserver.model.xiangqi;
 
-import java.util.Arrays;
+import java.util.*;
+
+import de.tuberlin.sese.swtpp.gameserver.model.Player;
 
 public class Board {
 	private char[][] boardMatrix;
@@ -8,6 +10,11 @@ public class Board {
 	
 	private General blackGeneral;
 	private General redGeneral;
+	
+	ArrayList<Figur> figures = new ArrayList<>();
+	ArrayList<Figur> blackFigures = new ArrayList<>();
+	ArrayList<Figur> redFigures = new ArrayList<>();
+
 
 	
 	public Board(String state) {
@@ -73,6 +80,59 @@ public class Board {
 		else {
 			return redGeneral;
 		}
+	}
+	
+	public String boardMatrixToboardString() {
+		
+		String newString = "";
+		
+		// iterates over boardMatrix:
+		for(int i = 0; i < 10; i++) {
+			
+			int count = 0;
+			
+			for(int j = 0; j < 9; j++) {
+				
+				// counts empty positions:
+				if(this.boardMatrix[i][j] == '0') {
+					count++;
+				}
+				
+				// appends counted empty positions and playing-piece char:
+				else {
+					if(count != 0) {
+						newString = newString + (char) count + this.boardMatrix[i][j];
+						count = 0;
+					}
+					else {
+						newString = newString + this.boardMatrix[i][j];
+					}
+				}
+				
+				// end of row:
+				if(j == 8 && count != 0) {
+					// appends counted empty positions:
+					newString = newString + (char) count;
+				}
+				if(j == 8 && 0 < i && i < 9) {
+					// appends '/' between rows:
+					newString = newString + '/';		
+				}	
+			}
+		}
+		
+		return newString;
+	}
+	
+	public Figur getFigurFromBoard(Position position) {
+		return null;
+	}
+	
+	public General getBlackGeneral() {
+		return this.blackGeneral;
+	}
+	public General getRedGeneral() {
+		return this.redGeneral;
 	}
 
 }

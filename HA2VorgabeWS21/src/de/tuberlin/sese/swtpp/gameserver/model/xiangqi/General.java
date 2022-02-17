@@ -21,6 +21,10 @@ public class General implements Figur {
 	public Position getPosition() {
 		return position;
 	}
+	public boolean isChecked(Move move) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
 
 }

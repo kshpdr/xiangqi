@@ -14,6 +14,11 @@ public class Elephant implements Figur {
 	}
 
 	@Override
+	public Position getPosition() {
+		return this.position;
+	}
+	
+	@Override
 	public ArrayList<Move> getPossibleMoves(Position position, Board board, Player player) {
 
 		// current row/column:

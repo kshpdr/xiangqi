@@ -1,12 +1,12 @@
 package de.tuberlin.sese.swtpp.gameserver.model.xiangqi;
 
 import de.tuberlin.sese.swtpp.gameserver.model.*;
+import java.util.*;
 //TODO: more imports from JVM allowed here
-
-
 
 import java.io.Serializable;
 import java.util.ArrayList;
+
 
 public class XiangqiGame extends Game implements Serializable{
 
@@ -218,9 +218,9 @@ public class XiangqiGame extends Game implements Serializable{
 		return "rheagaehr/9/1c5c1/s1s1s1s1s/9/9/S1S1S1S1S/1C5C1/9/RHEAGAEHR";
 	}
 	
+	// checks format of moveString (eg. "c5-a5"):
 	public boolean moveStringFormatCheck(String moveString) {
 		
-		// checks format of moveString (eg. "c5-a5"):
 		if(moveString.length() != 5) {
 			return false;
 		}
@@ -236,6 +236,7 @@ public class XiangqiGame extends Game implements Serializable{
 		return true;
 	}
 	
+	// checks whether player is trying to cheat:
 	public boolean cheatCheck(String moveString, Player player) {
 		
 		// start Position of move:
@@ -247,9 +248,20 @@ public class XiangqiGame extends Game implements Serializable{
 		if(!moveStringFormatCheck(moveString)) {
 			return false;
 		}
-		
+		// checks whether user is player in current game:
+		if(!this.isPlayer(player.getUser())) {
+			return false;
+		}	
+		// --> checks whether it's player's turn:
+		if(!this.isPlayersTurn(player)) {
+			return false;
+		}
 		// --> checks whether redPlayer starts:
 		if(this.getHistory().isEmpty() && player != this.redPlayer) {
+			return false;
+		}
+		// --> checks whether game not finished yet:
+		if(this.finished) {
 			return false;
 		}
 		// --> checks whether player tries to move playing-piece of other player:
@@ -263,25 +275,118 @@ public class XiangqiGame extends Game implements Serializable{
 		if(this.board.getBoardMatrix()[row][col] == '0') {
 			return false;
 		}
-		// --> checks whether it's player's turn:
-		if((player == this.redPlayer && !isRedNext()) || (player != this.redPlayer && isRedNext())) {
-			return false;
-		}
 		
 		return true;
 	}
+	
+	// adds new move to history:
+	public void updateHistory(Move move) {
+
+		List<Move> updateHistory = this.getHistory();
+		updateHistory.add(move);
+		this.setHistory(updateHistory);
+		
+		// Frage: warum funktioniert das nicht:
+		// this.setHistory(this.getHistory().add(move));	
+	}
+	
+	// executes move, updates boardMatrix, boardStateString and history: 
+	public void doMove(Move move, Position position) {
+		
+		int row1 = "9876543210".indexOf(move.getMove().charAt(1));
+		int col1 = "abcdefghi".indexOf(move.getMove().charAt(0));
+		
+		int row2 = "9876543210".indexOf(move.getMove().charAt(4));
+		int col2 = "abcdefghi".indexOf(move.getMove().charAt(3));
+		
+		// moves playing-piece by updating boardMatrix:
+		this.board.getBoardMatrix()[row2][col2] = this.board.getBoardMatrix()[row1][col1];
+		this.board.getBoardMatrix()[row1][col1] = '0';
+		// updates boardStateString:
+		this.board.setBoardState(this.board.boardMatrixToboardString());
+		// updates history:
+		updateHistory(move);
+	}
+	
+	// --> returns figures of enemy:
+	ArrayList<Figur> enemyFigures(Board board, Player player) {
+		
+		if(player == this.redPlayer) {
+			return board.blackFigures;
+		}
+		return board.redFigures;
+	}
+	
+	// --> returns general of enemy:
+	public General getEnemyGenral(Player player) {
+		
+		if(player == this.redPlayer) {
+			return this.board.getBlackGeneral();	
+		} 
+		return this.board.getRedGeneral();	
+	}
+	
+	// --> returns true, if enemy can not make any moves:
+	public boolean isWonByPatt(Board board, Player player) {
+		
+		for(Figur figure : enemyFigures(board, player)) {
+			if(!figure.getPossibleMoves(figure.getPosition(), board, player).isEmpty()) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	// --> returns true, if enemy is in check-mate:
+	public boolean isWonByCheckMate(Board board, Player player) {
+		
+		General enemyGeneral = getEnemyGenral(player);
+		
+		for(Figur figure : enemyFigures(board, player)) {
+			ArrayList<Move> moves = figure.getPossibleMoves(figure.getPosition(), board, player);
+			for(Move move: moves) {
+				if(!enemyGeneral.isChecked(move)) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+	
+	public void nextTurn(Player player) {
+		
+		if(player == this.redPlayer) {
+			this.setNextPlayer(this.blackPlayer);
+		}
+		this.setNextPlayer(this.redPlayer);
+	}
+
 
 	@Override
 	public boolean tryMove(String moveString, Player player) {
 		
-		
 		if(cheatCheck(moveString, player)) {
-			/* 
-			 *  1.) prüfe welche Figur auf Position pos steht
-			 *  2.) rufe tryPossibleMoves für Figur auf
-			 *  3.) checke, ob moveString in Liste enthalten
-			 *  4.) wenn ja, gebe true zurück
-			 */	
+			
+			Move move = new Move(moveString, this.board.boardState, player);
+			
+			// calculates position:
+			Position position = new Position("9876543210".indexOf(moveString.charAt(1)),"abcdefghi".indexOf(moveString.charAt(0))); 
+			
+			// gets possible moves for playing-piece on position:
+			ArrayList<Move> possibleMoves = this.board.getFigurFromBoard(position).getPossibleMoves(position, board, player);
+			
+			// checks whether move is possible:
+			if(possibleMoves.contains(move)) {
+				// executes move, updates boardMatrix, boardString and history:
+				doMove(move, position);
+				// sets other player as nextPlayer:
+				nextTurn(player);	
+				// finishes if game is won:
+				if(isWonByCheckMate(board,player) || isWonByPatt(board,player)) {
+					finish();
+					return true;
+				}		
+			}	
 		}
 				
 		return false;

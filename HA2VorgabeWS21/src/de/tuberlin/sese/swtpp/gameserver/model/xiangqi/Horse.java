@@ -12,6 +12,11 @@ public class Horse implements Figur {
 	public Horse(Position position) {
 		this.position = position;
 	}
+	
+	@Override
+	public Position getPosition() {
+		return this.position;
+	}
 
 
 	@Override
@@ -66,5 +71,4 @@ public class Horse implements Figur {
 		
 		return possibleMoves;
 	}
-
 }

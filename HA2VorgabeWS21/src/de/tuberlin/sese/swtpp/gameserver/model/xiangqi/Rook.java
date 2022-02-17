@@ -12,6 +12,11 @@ public class Rook implements Figur {
 	public Rook(Position position) {
 		this.position = position;
 	}
+	
+	@Override
+	public Position getPosition() {
+		return this.position;
+	}
 
 	// right:
 	public ArrayList<Move> moveR(int row, int col, Board board, Player player, General myGeneral) {

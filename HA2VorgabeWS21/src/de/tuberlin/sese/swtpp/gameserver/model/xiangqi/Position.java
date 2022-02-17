@@ -66,7 +66,6 @@ public class Position {
 		return false;
 	}
 	
-
 	public String moveString(Position newPosition) {
 		
 		// returns oldColumn oldRow - newColumn newRow

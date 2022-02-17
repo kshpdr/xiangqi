@@ -9,5 +9,5 @@ public interface Figur {
 	
 	public ArrayList<Move> getPossibleMoves(Position position, Board board, Player player);
 	
-
+	public Position getPosition();
 }
