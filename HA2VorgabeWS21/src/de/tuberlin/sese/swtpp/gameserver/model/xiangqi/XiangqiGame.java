@@ -260,7 +260,6 @@ public class XiangqiGame extends Game implements Serializable{
 		if(!this.isPlayersTurn(player)) {
 			return false;
 		}
-		
 		// --> checks whether redPlayer starts:
 		if(this.getHistory().isEmpty() && player != this.redPlayer) {
 			return false;

@@ -79,9 +79,42 @@ public class TryMoveIntegrationTest {
 	}
 
 	@Test
-	public void rookTest1() {
+	// cheatCheck: --> checks whether startPosition and targetPosition of moveSting differ:
+	public void cheatCheckTest1() {
 	    startGame("rheagaehr/9/1c5c1/s1s1s1s1s/9/9/S1S1S1S1S/1C5C1/9/RHEAGAEHR",true);
-	    assertMove("e3-e4",true,true);
-	    assertGameState("rheagaehr/9/1c5c1/s1s1s1s1s/9/4S4/S1S3S1S/1C5C1/9/RHEAGAEHR",false,false,false);
+	    assertMove("e3-e3",true,true);
+	    assertGameState("rheagaehr/9/1c5c1/s1s1s1s1s/9/9/S1S1S1S1S/1C5C1/9/RHEAGAEHR",true,false,false);
+	}
+	@Test
+	// cheatCheck: --> checks whether player tries to move playing-piece of other player::
+	public void cheatCheckTest2() {
+    startGame("rheagaehr/9/1c5c1/s1s1s1s1s/9/9/S1S1S1S1S/1C5C1/9/RHEAGAEHR",true);
+    assertMove("a9-a8",true,true);
+    assertGameState("rheagaehr/9/1c5c1/s1s1s1s1s/9/9/S1S1S1S1S/1C5C1/9/RHEAGAEHR",true,false,false);
+	}
+	
+	
+	
+	
+	@Test
+	// moveStringFormatCheck: --> checks format of moveString:
+	public void formatCheckTest1() {
+	    startGame("rheagaehr/9/1c5c1/s1s1s1s1s/9/9/S1S1S1S1S/1C5C1/9/RHEAGAEHR",true);
+	    assertMove("ü3-e3",true,true);
+	    assertGameState("rheagaehr/9/1c5c1/s1s1s1s1s/9/9/S1S1S1S1S/1C5C1/9/RHEAGAEHR",true,false,false);
+	}
+	@Test
+	// moveStringFormatCheck: --> checks format of moveString:
+	public void formatCheckTest2() {
+    startGame("rheagaehr/9/1c5c1/s1s1s1s1s/9/9/S1S1S1S1S/1C5C1/9/RHEAGAEHR",true);
+    assertMove("a3-e",true,true);
+    assertGameState("rheagaehr/9/1c5c1/s1s1s1s1s/9/9/S1S1S1S1S/1C5C1/9/RHEAGAEHR",true,false,false);
+	}
+	@Test
+	// moveStringFormatCheck: --> checks format of moveString:
+	public void formatCheckTest3() {
+    startGame("rheagaehr/9/1c5c1/s1s1s1s1s/9/9/S1S1S1S1S/1C5C1/9/RHEAGAEHR",true);
+    assertMove("a3-e",true,true);
+    assertGameState("rheagaehr/9/1c5c1/s1s1s1s1s/9/9/S1S1S1S1S/1C5C1/9/RHEAGAEHR",true,false,false);
 	}
 }
