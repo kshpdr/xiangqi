@@ -232,9 +232,10 @@ public class XiangqiGame extends Game implements Serializable{
 		}	
 		return true;
 	}
+	
 	public boolean cheatCheck(String moveString, Player player) {
 		
-		// start Position of moveString:
+		// start Position of move:
 		int row = "9876543210".indexOf(moveString.charAt(1));
 		int col = "abcdefghi".indexOf(moveString.charAt(0));
 		Position pos = new Position(row,col);
@@ -264,7 +265,6 @@ public class XiangqiGame extends Game implements Serializable{
 			return false;
 		}
 		
-		
 		return true;
 	}
 
@@ -273,9 +273,7 @@ public class XiangqiGame extends Game implements Serializable{
 		
 		
 		if(cheatCheck(moveString, player)) {
-			/*
-			 * tryMove(String moveString, Player player):
-			 * 
+			/* 
 			 *  1.) prüfe welche Figur auf Position pos steht
 			 *  2.) rufe tryPossibleMoves für Figur auf
 			 *  3.) checke, ob moveString in Liste enthalten

@@ -60,5 +60,5 @@ public class Elephant implements Figur {
 		
 		return possibleMoves;
 	}
-
+	
 }
