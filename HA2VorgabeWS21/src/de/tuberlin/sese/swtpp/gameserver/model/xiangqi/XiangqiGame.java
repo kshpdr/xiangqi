@@ -279,7 +279,89 @@ public class XiangqiGame extends Game implements Serializable{
 		return true;
 	}
 	
+	// adds new move to history:
+	public void updateHistory(Move move) {
+
+		List<Move> updateHistory = this.getHistory();
+		updateHistory.add(move);
+		this.setHistory(updateHistory);
+		
+		// Frage: warum funktioniert das nicht:
+		// this.setHistory(this.getHistory().add(move));	
+	}
 	
+	// executes move, updates boardMatrix, boardStateString and history: 
+	public void doMove(Move move, Position position) {
+		
+		int row1 = "9876543210".indexOf(move.getMove().charAt(1));
+		int col1 = "abcdefghi".indexOf(move.getMove().charAt(0));
+		
+		int row2 = "9876543210".indexOf(move.getMove().charAt(4));
+		int col2 = "abcdefghi".indexOf(move.getMove().charAt(3));
+		
+		// moves playing-piece by updating boardMatrix:
+		this.board.getBoardMatrix()[row2][col2] = this.board.getBoardMatrix()[row1][col1];
+		this.board.getBoardMatrix()[row1][col1] = '0';
+		// updates boardStateString:
+		this.board.setBoardState(this.board.boardMatrixToboardString());
+		// updates history:
+		updateHistory(move);
+	}
+	
+	// --> returns figures of enemy:
+	ArrayList<Figur> enemyFigures(Board board, Player player) {
+		
+		if(player == this.redPlayer) {
+			return board.blackFigures;
+		}
+		return board.redFigures;
+	}
+	
+	// --> returns general of enemy:
+	public General getEnemyGenral(Player player) {
+		
+		if(player == this.redPlayer) {
+			return this.board.getBlackGeneral();	
+		} 
+		return this.board.getRedGeneral();	
+	}
+	
+	// --> returns true, if enemy can not make any moves:
+	public boolean isWonByPatt(Board board, Player player) {
+		
+		for(Figur figure : enemyFigures(board, player)) {
+			if(!figure.getPossibleMoves(figure.getPosition(), board, player).isEmpty()) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	// --> returns true, if enemy is in check-mate:
+	public boolean isWonByCheckMate(Board board, Player player) {
+		
+		General enemyGeneral = getEnemyGenral(player);
+		
+		for(Figur figure : enemyFigures(board, player)) {
+			ArrayList<Move> moves = figure.getPossibleMoves(figure.getPosition(), board, player);
+			for(Move move: moves) {
+				if(!enemyGeneral.isChecked(move)) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+	
+	public void nextTurn(Player player) {
+		
+		if(player == this.redPlayer) {
+			this.setNextPlayer(this.blackPlayer);
+		}
+		this.setNextPlayer(this.redPlayer);
+	}
+
+
 	@Override
 	public boolean tryMove(String moveString, Player player) {
 		
