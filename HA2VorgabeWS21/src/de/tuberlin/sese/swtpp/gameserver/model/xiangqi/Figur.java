@@ -7,5 +7,7 @@ import de.tuberlin.sese.swtpp.gameserver.model.Player;
 
 public interface Figur {
 	
-	public ArrayList<Move> getPossibleMoves(Position position, Board board, Player player);
+	public ArrayList<Move> getPossibleMoves(Board board, Player player);
+	
+	public Position getPosition();
 }

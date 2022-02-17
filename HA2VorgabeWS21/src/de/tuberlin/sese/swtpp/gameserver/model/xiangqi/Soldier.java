@@ -13,7 +13,7 @@ public class Soldier implements Figur {
 	}
 
 	@Override
-	public ArrayList<Move> getPossibleMoves(Position position, Board board, Player player) {
+	public ArrayList<Move> getPossibleMoves(Board board, Player player) {
 		ArrayList<Move> possibleMoves = new ArrayList<Move>();
 		
 		possibleMoves.addAll(moveLeft(position, board, player));
@@ -124,5 +124,9 @@ public class Soldier implements Figur {
 		move += '-';
 		move += Position.positionToString(targetPosition);
 		return move;
+	}
+	
+	public Position getPosition() {
+		return position;
 	}
 }

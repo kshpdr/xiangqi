@@ -14,7 +14,7 @@ public class General implements Figur {
 	}
 
 	@Override
-	public ArrayList<Move> getPossibleMoves(Position position, Board board, Player player) {
+	public ArrayList<Move> getPossibleMoves(Board board, Player player) {
 		// TODO Auto-generated method stub
 		return new ArrayList<Move>();
 	}

@@ -16,6 +16,17 @@ public class Rook implements Figur {
 	
 	//TODO: check if positions after figure possible
 	@Override
+	public ArrayList<Move> getPossibleMoves(Board board, Player player) {
+		ArrayList<Move> possibleMoves = new ArrayList<Move>();
+		
+		possibleMoves.addAll(rightMoves(position, board, player));
+		possibleMoves.addAll(leftMoves(position, board, player));
+		possibleMoves.addAll(forwardMoves(position, board, player));
+		possibleMoves.addAll(backwardMoves(position, board, player));
+		
+		return possibleMoves;
+	}
+	
 	public ArrayList<Move> getPossibleMoves(Position position, Board board, Player player) {
 		ArrayList<Move> possibleMoves = new ArrayList<Move>();
 		
@@ -117,5 +128,9 @@ public class Rook implements Figur {
 			}
 		}
 		return possibleMoves;
+	}
+
+	public Position getPosition() {
+		return position;
 	}
 }

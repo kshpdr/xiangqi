@@ -269,26 +269,35 @@ public class XiangqiGame extends Game implements Serializable{
 		Player redPlayer = new Player(new User("Denis", "5"), new XiangqiGame());
 		Player blackPlayer = new Player(new User("Daniil", "6"), new XiangqiGame());
 		
-		ArrayList<Move> rookMoves = rook.getPossibleMoves(new Position(0, 8), board, blackPlayer);
-		ArrayList<Move> cannonMoves = cannon.getPossibleMoves(new Position(0, 7), board, redPlayer);
-		ArrayList<Move> soldierMoves = soldier.getPossibleMoves(new Position(4, 2), board, redPlayer);
+		Board board1 = new Board("rheagaehr/9/1c5c1/s1s1s1s1s/9/9/S1S1S1S1S/1C5C1/9/RHEAGAEHR"); // start position
+		Rook rook1 = new Rook(new Position(0, 8));
+		if (board1.getFigures().contains(rook1)) {
+			boolean a = true;
+		}
+		else {
+			boolean a = false;
+		}
+		
+//		ArrayList<Move> rookMoves = rook.getPossibleMoves(new Position(0, 8), board, blackPlayer);
+//		ArrayList<Move> cannonMoves = cannon.getPossibleMoves(new Position(0, 7), board, redPlayer);
+//		ArrayList<Move> soldierMoves = soldier.getPossibleMoves(new Position(4, 2), board, redPlayer);
 
 		
-		System.out.println("Moves for Rook: ");
-		for (Move move : rookMoves) {
-			System.out.println(move.getMove());
-		}
-		
-		
-		System.out.println("Moves for Cannon: ");
-		for (Move move : cannonMoves) {
-			System.out.println(move.getMove());
-		}
-		
-		System.out.println("Moves for Soldier: ");
-		for (Move move : soldierMoves) {
-			System.out.println(move.getMove());
-		}
+//		System.out.println("Moves for Rook: ");
+//		for (Move move : rookMoves) {
+//			System.out.println(move.getMove());
+//		}
+//		
+//		
+//		System.out.println("Moves for Cannon: ");
+//		for (Move move : cannonMoves) {
+//			System.out.println(move.getMove());
+//		}
+//		
+//		System.out.println("Moves for Soldier: ");
+//		for (Move move : soldierMoves) {
+//			System.out.println(move.getMove());
+//		}
 	}
 
 }

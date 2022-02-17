@@ -19,6 +19,8 @@ public class Board {
 		this.boardMatrix = boardMatrix;
 		this.boardState = state;
 		this.figures = getFiguresFromBoard(boardMatrix);
+		this.blackGeneral = getBlackGeneral();
+		this.redGeneral = getRedGeneral();
 	}
 	
 	public static char[][] boardFromState(String state) {
@@ -61,11 +63,21 @@ public class Board {
 	}
 	
 	public General getRedGeneral() {
-		return redGeneral;
+		for (Figur figure : figures) {
+			if (boardMatrix[figure.getPosition().getRow()][figure.getPosition().getColumn()] == 'G') {
+				return (General) figure;
+			}
+		}
+		return null;
 	}
 	
 	public General getBlackGeneral() {
-		return blackGeneral;
+		for (Figur figure : figures) {
+			if (boardMatrix[figure.getPosition().getRow()][figure.getPosition().getColumn()] == 'g') {
+				return (General) figure;
+			}
+		}
+		return null;
 	}
 	
 	public General getFriendGeneral(Position position) {
@@ -86,25 +98,30 @@ public class Board {
 		}
 	};
 	
+	public ArrayList<Figur> getFigures(){
+		return figures;
+	}
+	
 	public ArrayList<Figur> getFiguresFromBoard(char[][] boardMatrix){
 		ArrayList<Figur> figures = new ArrayList<>();
 		// go through board and add corresponding figures
 		for (int i = 0; i < boardMatrix.length; i++) {
 			for (int j = 0; j < boardMatrix[0].length; j++) {
 				switch (boardMatrix[i][j]) {
-					case 'g': case 'G': figures.add(new General(new Position(i, j)));
+					case 'g': case 'G': figures.add(new General(new Position(i, j))); break;
 					//case 'a': case 'A': figures.add(new Advisor(new Position(i, j)));
 					//case 'e': case 'E': figures.add(new Elephant(new Position(i, j)));
 					//case 'h': case 'H': figures.add(new Horse(new Position(i, j)));
-					case 'r': case 'R': figures.add(new Rook(new Position(i, j)));
-					case 'c': case 'C': figures.add(new Cannon(new Position(i, j)));
-					case 's': case 'S': figures.add(new Soldier(new Position(i, j)));
+					case 'r': case 'R': figures.add(new Rook(new Position(i, j))); break;
+					case 'c': case 'C': figures.add(new Cannon(new Position(i, j))); break;
+					case 's': case 'S': figures.add(new Soldier(new Position(i, j))); break;
 				}
 			}
 		}
 		
 		return figures;
 	}
+
 	
 	public static void main(String[] args) {
 		System.out.print(Arrays.deepToString(boardFromState("rhea1a1h1/4g4/1c3r3/7cs/s1s1C4/9/S1S3SCS/R8/4A4/1HE1GAEHR")));

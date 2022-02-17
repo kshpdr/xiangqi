@@ -15,9 +15,8 @@ public class Cannon implements Figur {
 
 	
 	// TODO: add check on todesBlick after all checks of figures
-	// TODO: ob zwei oder mehr figuren dazwischen stehen dürfen
 	@Override
-	public ArrayList<Move> getPossibleMoves(Position position, Board board, Player player) {
+	public ArrayList<Move> getPossibleMoves(Board board, Player player) {
 		ArrayList<Move> possibleMoves = new ArrayList<Move>();
 		
 		possibleMoves.addAll(rightMoves(position, board, player));
@@ -170,5 +169,9 @@ public class Cannon implements Figur {
 			}
 		}
 		return possibleMoves;
+	}
+	
+	public Position getPosition() {
+		return position;
 	}
 }

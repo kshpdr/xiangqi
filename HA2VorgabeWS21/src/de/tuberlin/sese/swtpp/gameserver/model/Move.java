@@ -58,4 +58,21 @@ public class Move implements Serializable {
     public void setPlayer(Player player) {
         this.player = player;
     }
+    
+    @Override
+    public boolean equals(Object obj) {
+    	if (obj == null) {
+    		return false;
+    	}
+    	
+        if (obj.getClass() != this.getClass()) {
+            return false;
+        }
+        
+        final Move other = (Move) obj;
+        if (this.move != other.move || this.board != other.board || this.player.equals(other.player)) {
+        	return false;
+        }
+        return true;
+    }
 }
