@@ -29,7 +29,7 @@ public class Advisor implements Figur {
 				Position goal = new Position(row, col);
 				String moveString = Position.positionToString(position) + '-' + Position.positionToString(goal);
 				Move move = new Move(moveString, board.boardState, player);
-				if((Math.abs(position.getRow() - row) == 1) && (Math.abs(position.getColumn() - col) == 1) && !String.valueOf(board.boardMatrix[row][col]).matches(match) && !board.isTodesblick(move)) {
+				if((Math.abs(position.getRow() - row) == 1) && (Math.abs(position.getColumn() - col) == 1) && !String.valueOf(board.boardMatrix[row][col]).matches(match) && !board.isThreatened(move)) {
 					moves.add(move);
 				}
 			}

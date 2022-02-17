@@ -38,7 +38,7 @@ public class General implements Figur {
 				Position possibleGoal = new Position(row, col);
 				String moveString = Position.positionToString(position) + '-' + Position.positionToString(possibleGoal);
 				Move move = new Move(moveString, board.boardState, player);
-				if (!((Math.abs(position.getRow() - row) == 1) && (Math.abs(position.getColumn() - col) == 1)) && !board.isTodesblick(move) && ((Math.abs(position.getRow() - row)<2) && (Math.abs(position.getColumn() - col)< 2))) {
+				if (!((Math.abs(position.getRow() - row) == 1) && (Math.abs(position.getColumn() - col) == 1)) && !board.isThreatened(move) && ((Math.abs(position.getRow() - row)<2) && (Math.abs(position.getColumn() - col)< 2))) {
 					moves.add(move);
 				}
 			}

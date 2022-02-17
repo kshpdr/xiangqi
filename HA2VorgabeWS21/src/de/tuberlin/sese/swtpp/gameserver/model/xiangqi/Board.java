@@ -87,7 +87,7 @@ public class Board {
 			return redGeneral;
 		}
 	};
-	public boolean isTodesblick(Move move) {
+	public boolean isThreatened(Move move) {
 		char[][] boardBuf = boardMatrix.clone();			//copy of board
 		//get a numeric position of start and goal position
 		Position start = Position.stringToPosition(move.getMove().split("-")[0]);
