@@ -252,10 +252,15 @@ public class XiangqiGame extends Game implements Serializable{
 		if(!this.isPlayer(player.getUser())) {
 			return false;
 		}	
+		// --> checks whether startPosition and targetPosition of moveSting differ:
+		if(("9876543210".indexOf(moveString.charAt(4)) == row) && ("abcdefghi".indexOf(moveString.charAt(3)) == col)) {
+			return false;
+		}
 		// --> checks whether it's player's turn:
 		if(!this.isPlayersTurn(player)) {
 			return false;
 		}
+		
 		// --> checks whether redPlayer starts:
 		if(this.getHistory().isEmpty() && player != this.redPlayer) {
 			return false;

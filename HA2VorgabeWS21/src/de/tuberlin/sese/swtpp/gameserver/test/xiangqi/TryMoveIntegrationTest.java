@@ -69,6 +69,8 @@ public class TryMoveIntegrationTest {
 	 * !!!!!!!!! To be implemented !!!!!!!!!!!!
 	 *******************************************/
 	
+	// true == redPlayer
+	
 	@Test
 	public void exampleTest() {
 	    startGame("rheagaehr/9/1c5c1/s1s1s1s1s/9/9/S1S1S1S1S/1C5C1/9/RHEAGAEHR",true);
@@ -76,6 +78,10 @@ public class TryMoveIntegrationTest {
 	    assertGameState("rheagaehr/9/1c5c1/s1s1s1s1s/9/4S4/S1S3S1S/1C5C1/9/RHEAGAEHR",false,false,false);
 	}
 
-	//TODO: implement test cases of same kind as example here
-
+	@Test
+	public void rookTest1() {
+	    startGame("rheagaehr/9/1c5c1/s1s1s1s1s/9/9/S1S1S1S1S/1C5C1/9/RHEAGAEHR",true);
+	    assertMove("e3-e4",true,true);
+	    assertGameState("rheagaehr/9/1c5c1/s1s1s1s1s/9/4S4/S1S3S1S/1C5C1/9/RHEAGAEHR",false,false,false);
+	}
 }
