@@ -1,0 +1,26 @@
+package de.tuberlin.sese.swtpp.gameserver.model.xiangqi;
+
+public class Board {
+	char[][] currentBoard;
+	
+	public Board(String state) {
+		char[][] currentBoard = boardFromState(state);
+		this.currentBoard = currentBoard;
+	}
+	
+	public boardFromState(String state) {
+		for (int i = 0; i < state.length(); i++){
+		    char c = state.charAt(i);   
+		    if (c == '/') {
+		    	break;
+		    }
+		    else if (String.valueOf(c).matches("[0-9]")) {
+		    	break;
+		    }
+		    else if (String.valueOf(c).matches("[gaehrcsGAEHRCS]")) {
+		    	
+		    }
+		}	
+	}
+
+}

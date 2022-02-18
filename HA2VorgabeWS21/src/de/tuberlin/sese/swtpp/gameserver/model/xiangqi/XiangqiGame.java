@@ -326,16 +326,16 @@ public class XiangqiGame extends Game implements Serializable{
 	public General getEnemyGenral(Player player) {
 		
 		if(player == this.redPlayer) {
-			return this.board.getBlackGeneral();	
+			return this.board.getBlackGeneralFromBoard();	
 		} 
-		return this.board.getRedGeneral();	
+		return this.board.getRedGeneralFromBoard();	
 	}
 	
 	// --> returns true, if enemy can not make any more moves:
 	public boolean isWonByPatt(Board board, Player player) {
 		
 		for(Figur figure : enemyFigures(board, player)) {
-			if(!figure.getPossibleMoves(figure.getPosition(), board, player).isEmpty()) {
+			if(!figure.getPossibleMoves(board, player).isEmpty()) {
 				return false;
 			}
 		}
@@ -348,9 +348,9 @@ public class XiangqiGame extends Game implements Serializable{
 		General enemyGeneral = getEnemyGenral(player);
 		
 		for(Figur figure : enemyFigures(board, player)) {
-			ArrayList<Move> moves = figure.getPossibleMoves(figure.getPosition(), board, player);
+			ArrayList<Move> moves = figure.getPossibleMoves(board, player);
 			for(Move move: moves) {
-				if(!enemyGeneral.isChecked(move)) {
+				if(!enemyGeneral.isCheck(board, move, player)) {
 					return false;
 				}
 			}
@@ -384,13 +384,13 @@ public class XiangqiGame extends Game implements Serializable{
 		
 		if(cheatCheck(moveString, player)) {
 			
-			Move move = new Move(moveString, this.board.boardState, player);
+			Move move = new Move(moveString, this.board.getBoardState(), player);
 			
 			// calculates position:
 			Position position = new Position("9876543210".indexOf(moveString.charAt(1)),"abcdefghi".indexOf(moveString.charAt(0))); 
 			
 			// gets possible moves for playing-piece on position:
-			ArrayList<Move> possibleMoves = this.board.getFigurFromBoard(position).getPossibleMoves(position, board, player);
+			ArrayList<Move> possibleMoves = this.board.getFigurFromBoard(position).getPossibleMoves(board, player);
 			
 			// checks whether move is possible:
 			if(containsMove(possibleMoves, move)) {

@@ -20,7 +20,7 @@ public class Horse implements Figur {
 
 
 	@Override
-	public ArrayList<Move> getPossibleMoves(Position position, Board board, Player player) {
+	public ArrayList<Move> getPossibleMoves(Board board, Player player) {
 		
 		// current row/column:
 		int row = position.getRow();
@@ -57,11 +57,11 @@ public class Horse implements Figur {
 						if(newPos.onBoard()) {
 							
 							// checks whether field is free or occupied by other player:
-							if(board.getBoardMatrix()[movesArray[2*i+j][0]][movesArray[2*i+j][1]] == '0' && !myGeneral.isThreatened(position.moveString(newPos))) {
-								possibleMoves.add(new Move(position.moveString(newPos), board.boardState, player));
+							if(board.getBoardMatrix()[movesArray[2*i+j][0]][movesArray[2*i+j][1]] == '0' && !myGeneral.isThreatened(board, new Move(position.moveString(newPos), board.getBoardState(), player)) && !myGeneral.isCheck(board, new Move(position.moveString(newPos), board.getBoardState(), player), player)) {
+								possibleMoves.add(new Move(position.moveString(newPos), board.getBoardState(), player));
 							}
-							else if(position.otherPlayerOnTargetField(board, newPos) && !myGeneral.isThreatened(position.moveString(newPos))) {
-								possibleMoves.add(new Move(position.moveString(newPos), board.boardState, player));	
+							else if(position.otherPlayerOnTargetField(board, newPos) && !myGeneral.isThreatened(board, new Move(position.moveString(newPos), board.getBoardState(), player)) && !myGeneral.isCheck(board, new Move(position.moveString(newPos), board.getBoardState(), player), player)) {
+								possibleMoves.add(new Move(position.moveString(newPos), board.getBoardState(), player));	
 							}	
 						}
 					}	

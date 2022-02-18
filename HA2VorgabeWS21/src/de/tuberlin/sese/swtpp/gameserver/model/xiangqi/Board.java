@@ -171,6 +171,43 @@ public class Board {
 		}
 		return null;
 	}
+	
+public String boardMatrixToBoardString() {
+		String newString = "";
+		// iterates over boardMatrix:
+		for(int i = 0; i < 10; i++) {
+			int count = 0;
+			for(int j = 0; j < 9; j++) {
+				// counts empty positions:
+				if(this.boardMatrix[i][j] == '0') {
+					count++;
+				}
+				
+				// appends counted empty positions and playing-piece char:
+				else {
+					if(count != 0) {
+						newString = newString + (char) count + this.boardMatrix[i][j];
+						count = 0;
+					}
+					else {
+						newString = newString + this.boardMatrix[i][j];
+					}
+				}
+				
+				// end of row:
+				if(j == 8 && count != 0) {
+					// appends counted empty positions:
+					newString = newString + (char) count;
+				}
+				if(j == 8 && 0 < i && i < 9) {
+					// appends '/' between rows:
+					newString = newString + '/';		
+				}	
+			}
+		}
+		return newString;
+	}
+
 
 	
 	public static void main(String[] args) {

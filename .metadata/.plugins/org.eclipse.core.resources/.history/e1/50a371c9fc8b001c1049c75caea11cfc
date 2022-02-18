@@ -1,0 +1,11 @@
+package de.tuberlin.sese.swtpp.gameserver.model.xiangqi;
+
+import java.util.ArrayList;
+
+import de.tuberlin.sese.swtpp.gameserver.model.Move;
+
+public interface Figur {
+	
+	public ArrayList<Move> getPossibleMoves(Position position, char[][] boardMatrix);
+
+}
