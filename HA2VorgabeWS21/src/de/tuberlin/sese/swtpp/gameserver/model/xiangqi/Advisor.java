@@ -13,7 +13,7 @@ public class Advisor implements Figur {
 		this.position = pos;
 	}
 	
-	public ArrayList<Move> getPossibleMoves(Position position, Board board, Player player){
+	public ArrayList<Move> getPossibleMoves(Board board, Player player){
 		ArrayList<Move> moves = new ArrayList<>();
 		int reihe = 0;
 		int spalte = 3;
@@ -28,8 +28,8 @@ public class Advisor implements Figur {
 				}
 				Position goal = new Position(row, col);
 				String moveString = Position.positionToString(position) + '-' + Position.positionToString(goal);	//make new possible move and check if this is diagonal move and will not threaten General
-				Move move = new Move(moveString, board.boardState, player);
-				if((Math.abs(position.getRow() - row) == 1) && (Math.abs(position.getColumn() - col) == 1) && !String.valueOf(board.boardMatrix[row][col]).matches(match) && !board.getFriendGeneral(position).isThreatened(board,move)) {
+				Move move = new Move(moveString, board.getBoardState(), player);
+				if((Math.abs(position.getRow() - row) == 1) && (Math.abs(position.getColumn() - col) == 1) && !String.valueOf(board.getBoardMatrix()[row][col]).matches(match) && !board.getFriendGeneral(position).isThreatened(board,move)) {
 					moves.add(move);
 				}
 			}

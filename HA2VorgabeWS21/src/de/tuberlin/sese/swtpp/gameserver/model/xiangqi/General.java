@@ -20,7 +20,7 @@ public class General implements Figur {
 	public Position getPosition() {
 		return position;
 	}
-	public ArrayList<Move> getPossibleMoves(Position position,  Board board, Player player){
+	public ArrayList<Move> getPossibleMoves( Board board, Player player){
 		ArrayList<Move> moves = new ArrayList<>();
 		int reihe = 0;
 		int column = 3;
@@ -37,7 +37,7 @@ public class General implements Figur {
 				
 				Position possibleGoal = new Position(row, col);
 				String moveString = Position.positionToString(position) + '-' + Position.positionToString(possibleGoal);
-				Move move = new Move(moveString, board.boardState, player);
+				Move move = new Move(moveString, board.getBoardState(), player);
 				if (!((Math.abs(position.getRow() - row) == 1) && (Math.abs(position.getColumn() - col) == 1)) && !isThreatened(board, move) && ((Math.abs(position.getRow() - row)<2) && (Math.abs(position.getColumn() - col)< 2))) {
 					moves.add(move);
 				}
@@ -47,20 +47,20 @@ public class General implements Figur {
 	}
 	public General checkColour(Board board, General general) {
 		General that;
-		if(board.getBlackGeneral() == general) {
-			that = board.getRedGeneral();	
+		if(board.getBlackGeneralFromBoard() == general) {
+			that = board.getRedGeneralFromBoard();	
 		}
 		else {
-			that = board.getBlackGeneral();
+			that = board.getBlackGeneralFromBoard();
 		}
 		return that;
 	}
 	
 	public boolean isThreatened(Board board, Move move) {
-		char[][] boardBuf = board.boardMatrix.clone();			//copy of board
+		char[][] boardBuf = board.getBoardMatrix().clone();			//copy of board
 		General that = checkColour(board, this);
 		char match;
-		if(board.getBlackGeneral() == this) {	
+		if(board.getBlackGeneralFromBoard() == this) {	
 			match = 'G';
 		}
 		else {
@@ -91,7 +91,7 @@ public class General implements Figur {
 			figsToCheck = board.blackFigures;
 		}
 		for(Figur afigure : figsToCheck) {
-			ArrayList<Move> possibleMoves = afigure.getPossibleMoves(afigure.getPosition(), board, player);
+			ArrayList<Move> possibleMoves = afigure.getPossibleMoves( board, player);
 			
 			for(Move amove : possibleMoves) {													//iterate through all possible moves of figure and 
 				if(amove.getMove().split("-")[1] == Position.positionToString(afigure.getPosition())) {		//check if the goal position equals position of general, return true if so
