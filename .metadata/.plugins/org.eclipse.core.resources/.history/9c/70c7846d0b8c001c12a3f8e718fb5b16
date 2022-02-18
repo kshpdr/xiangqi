@@ -1,0 +1,41 @@
+package de.tuberlin.sese.swtpp.gameserver.model.xiangqi;
+
+import java.util.ArrayList;
+
+import de.tuberlin.sese.swtpp.gameserver.model.Move;
+import de.tuberlin.sese.swtpp.gameserver.model.Player;
+
+public class Rook implements Figur {
+
+	@Override
+	public ArrayList<Move> getPossibleMoves(Position position, Board board, Player player) {
+		// TODO get moves: check 4 dimensions
+		ArrayList<Move> possibleMoves = new ArrayList<Move>();
+		char[][] boardMatrix = board.getCurrentBoard();
+		General friendGeneral = ;
+		General enemyGeneral;
+		
+		if (Character.isLowerCase(boardMatrix[position.getRow()][position.getColumn()])) {
+			friendGeneral = board.getBlackGeneral();
+			enemyGeneral = board.getRedGeneral();
+		}
+		else {
+			enemyGeneral = board.getBlackGeneral();
+			friendGeneral = board.getRedGeneral();	
+		}
+		
+		// right horizontal
+		for (int i = position.getColumn(); i < boardMatrix.length; i++) {
+			String move = Position.positionToString(position);
+			move += '-';
+			if (boardMatrix[position.getRow()][i] == 0) {
+				Position target = new Position(position.getRow(), i);
+				move += Position.positionToString(target);
+				possibleMoves.add(new Move(move, board.getBoardState(), player));
+			}
+			else if (Character.toString(boardMatrix[position.getRow()][i]).matches("gaehrcsGAEHRCS")){
+				
+			}
+		}
+	}
+}

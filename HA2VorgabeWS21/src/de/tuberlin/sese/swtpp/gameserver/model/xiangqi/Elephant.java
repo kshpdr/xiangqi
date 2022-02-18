@@ -19,7 +19,7 @@ public class Elephant implements Figur {
 	}
 	
 	@Override
-	public ArrayList<Move> getPossibleMoves(Position position, Board board, Player player) {
+	public ArrayList<Move> getPossibleMoves(Board board, Player player) {
 
 		// current row/column:
 		int row = position.getRow();
@@ -53,14 +53,14 @@ public class Elephant implements Figur {
 					if(board.getBoardMatrix()[checkArray[i][0]][checkArray[i][1]] == '0') {
 				
 						// checks whether myGeneral is not threatened:
-						if(!myGeneral.isThreatened(position.moveString(newPos))) {
+						if(!myGeneral.isThreatened(board, new Move(position.moveString(newPos), board.getBoardState(), player)) && !myGeneral.isCheck(board, new Move(position.moveString(newPos), board.getBoardState(), player), player)) {
 							
 							// checks whether position is free or occupied by other player:
 							if(board.getBoardMatrix()[movesArray[i][0]][movesArray[i][1]] == '0') {
-								possibleMoves.add(new Move(position.moveString(newPos), board.boardState, player));
+								possibleMoves.add(new Move(position.moveString(newPos), board.getBoardState(), player));
 							}
 							else if(position.otherPlayerOnTargetField(board, newPos)) {
-								possibleMoves.add(new Move(position.moveString(newPos), board.boardState, player));	
+								possibleMoves.add(new Move(position.moveString(newPos), board.getBoardState(), player));	
 							}
 						}
 					}

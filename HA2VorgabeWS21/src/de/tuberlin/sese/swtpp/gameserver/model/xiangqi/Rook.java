@@ -59,8 +59,8 @@ public class Rook implements Figur {
 			}		
 			
 			// check whether general is threatened
-			//if (!friendGeneral.isThreatened(move)) {
-			if (true) {
+			if (!friendGeneral.isThreatened(board, new Move(move, board.getBoardState(), player)) && !friendGeneral.isCheck(board, new Move(move, board.getBoardState(), player), player)) {
+			//if (true) {
 				possibleMoves.add(new Move(move, board.getBoardState(), player));
 			}
 		}
@@ -80,8 +80,8 @@ public class Rook implements Figur {
 			}			
 			
 			// check whether general is threatened
-			//if (!friendGeneral.isThreatened(move)) {
-			if (true) {
+			if (!friendGeneral.isThreatened(board, new Move(move, board.getBoardState(), player)) && !friendGeneral.isCheck(board, new Move(move, board.getBoardState(), player), player)) {
+			//if (true) {
 				possibleMoves.add(new Move(move, board.getBoardState(), player));
 			}
 		}
@@ -101,8 +101,8 @@ public class Rook implements Figur {
 			}			
 			
 			// check whether general is threatened
-			//if (!friendGeneral.isThreatened(move)) {
-			if (true) {
+			if (!friendGeneral.isThreatened(board, new Move(move, board.getBoardState(), player)) && !friendGeneral.isCheck(board, new Move(move, board.getBoardState(), player), player)) {
+			//if (true) {
 				possibleMoves.add(new Move(move, board.getBoardState(), player));
 			}
 		}
@@ -122,8 +122,8 @@ public class Rook implements Figur {
 			}			
 			
 			// check whether general is threatened
-			//if (!friendGeneral.isThreatened(move)) {
-			if (true) {
+			if (!friendGeneral.isThreatened(board, new Move(move, board.getBoardState(), player)) && !friendGeneral.isCheck(board, new Move(move, board.getBoardState(), player), player)) {
+			//if (true) {
 				possibleMoves.add(new Move(move, board.getBoardState(), player));
 			}
 		}

@@ -46,8 +46,10 @@ public class Cannon implements Figur {
 			if (figureBefore) {
 				// if so, then check, whether an enemy figure appear afterwards
 				if ((position.isRed(board) && Character.toString(board.getBoardMatrix()[position.getRow()][i]).matches("[gaehrcs]")) || (!position.isRed(board) && Character.toString(board.getBoardMatrix()[position.getRow()][i]).matches("[GAEHRCS]"))){
-					possibleMoves.add(new Move(move, board.getBoardState(), player));
-					break;
+					if (!friendGeneral.isThreatened(board, new Move(move, board.getBoardState(), player)) && !board.getFriendGeneral(position).isCheck(board, new Move(move, board.getBoardState(), player), player)) {
+						possibleMoves.add(new Move(move, board.getBoardState(), player));
+						break;	
+					}
 				}
 				else {
 					continue;
@@ -59,8 +61,8 @@ public class Cannon implements Figur {
 				continue;
 			}
 			// check whether general is threatened
-			//if (!friendGeneral.isThreatened(move)) {
-			if (true) {
+			if (!friendGeneral.isThreatened(board, new Move(move, board.getBoardState(), player)) && !board.getFriendGeneral(position).isCheck(board, new Move(move, board.getBoardState(), player), player)) {
+			//if (true) {
 				possibleMoves.add(new Move(move, board.getBoardState(), player));
 			}
 		}
@@ -80,8 +82,10 @@ public class Cannon implements Figur {
 			if (figureBefore) {
 				// if so, then check, whether an enemy figure appear afterwards
 				if ((position.isRed(board) && Character.toString(board.getBoardMatrix()[position.getRow()][i]).matches("[gaehrcs]")) || (!position.isRed(board) && Character.toString(board.getBoardMatrix()[position.getRow()][i]).matches("[GAEHRCS]"))){
-					possibleMoves.add(new Move(move, board.getBoardState(), player));
-					break;
+					if (!friendGeneral.isThreatened(board, new Move(move, board.getBoardState(), player)) && !board.getFriendGeneral(position).isCheck(board, new Move(move, board.getBoardState(), player), player)) {
+						possibleMoves.add(new Move(move, board.getBoardState(), player));
+						break;
+					}
 				}
 				else {
 					continue;
@@ -94,8 +98,8 @@ public class Cannon implements Figur {
 			}	
 			
 			// check whether general is threatened
-			//if (!friendGeneral.isThreatened(move)) {
-			if (true) {
+			if (!friendGeneral.isThreatened(board, new Move(move, board.getBoardState(), player)) && !board.getFriendGeneral(position).isCheck(board, new Move(move, board.getBoardState(), player), player)) {
+			//if (true) {
 				possibleMoves.add(new Move(move, board.getBoardState(), player));
 			}
 		}
@@ -115,8 +119,10 @@ public class Cannon implements Figur {
 			if (figureBefore) {
 				// if so, then check, whether an enemy figure appear afterwards
 				if ((position.isRed(board) && Character.toString(board.getBoardMatrix()[i][position.getColumn()]).matches("[gaehrcs]")) || (!position.isRed(board) && Character.toString(board.getBoardMatrix()[i][position.getColumn()]).matches("[GAEHRCS]"))){
-					possibleMoves.add(new Move(move, board.getBoardState(), player));
-					break;
+					if (!friendGeneral.isThreatened(board, new Move(move, board.getBoardState(), player)) && !friendGeneral.isCheck(board, new Move(move, board.getBoardState(), player), player)) {
+						possibleMoves.add(new Move(move, board.getBoardState(), player));
+						break;
+					}
 				}
 				else {
 					continue;
@@ -129,8 +135,8 @@ public class Cannon implements Figur {
 			}		
 			
 			// check whether general is threatened
-			//if (!friendGeneral.isThreatened(move)) {
-			if (true) {
+			if (!friendGeneral.isThreatened(board, new Move(move, board.getBoardState(), player)) && !friendGeneral.isCheck(board, new Move(move, board.getBoardState(), player), player)) {
+			//if (true) {
 				possibleMoves.add(new Move(move, board.getBoardState(), player));
 			}
 		}
@@ -149,8 +155,10 @@ public class Cannon implements Figur {
 			if (figureBefore) {
 				// if so, then check, whether an enemy figure appear afterwards
 				if ((position.isRed(board) && Character.toString(board.getBoardMatrix()[i][position.getColumn()]).matches("[gaehrcs]")) || (!position.isRed(board) && Character.toString(board.getBoardMatrix()[i][position.getColumn()]).matches("[GAEHRCS]"))){
-					possibleMoves.add(new Move(move, board.getBoardState(), player));
-					break;
+					if (!friendGeneral.isThreatened(board, new Move(move, board.getBoardState(), player)) && !friendGeneral.isCheck(board, new Move(move, board.getBoardState(), player), player)) {
+						possibleMoves.add(new Move(move, board.getBoardState(), player));
+						break;	
+					}
 				}
 				else {
 					continue;
@@ -163,8 +171,8 @@ public class Cannon implements Figur {
 			}				
 			
 			// check whether general is threatened
-			//if (!friendGeneral.isThreatened(move)) {
-			if (true) {
+			if (!friendGeneral.isThreatened(board, new Move(move, board.getBoardState(), player)) && !friendGeneral.isCheck(board, new Move(move, board.getBoardState(), player), player)) {
+			//if (true) {
 				possibleMoves.add(new Move(move, board.getBoardState(), player));
 			}
 		}

@@ -38,7 +38,7 @@ public class General implements Figur {
 				Position possibleGoal = new Position(row, col);
 				String moveString = Position.positionToString(position) + '-' + Position.positionToString(possibleGoal);
 				Move move = new Move(moveString, board.getBoardState(), player);
-				if (!((Math.abs(position.getRow() - row) == 1) && (Math.abs(position.getColumn() - col) == 1)) && !isThreatened(board, move) && ((Math.abs(position.getRow() - row)<2) && (Math.abs(position.getColumn() - col)< 2))) {
+				if (!((Math.abs(position.getRow() - row) == 1) && (Math.abs(position.getColumn() - col) == 1)) && !isThreatened(board, move) && !isCheck(board, move, player) && ((Math.abs(position.getRow() - row)<2) && (Math.abs(position.getColumn() - col)< 2))) {
 					moves.add(move);
 				}
 			}
@@ -82,16 +82,23 @@ public class General implements Figur {
 		}
 		return false;
 	}
-	public boolean isCheck(Player player, Board board) {
+	public boolean isCheck(Board board, Move move, Player player) {
 		ArrayList<Figur> figsToCheck;
+		
+		Board boardBuf = new Board(board.getBoardState());
+		Position start = Position.stringToPosition(move.getMove().split("-")[0]);	//get a numeric position of start and goal position
+		Position goal = Position.stringToPosition(move.getMove().split("-")[1]);
+		boardBuf.getBoardMatrix()[goal.getRow()][goal.getColumn()] = boardBuf.getBoardMatrix()[start.getRow()][start.getColumn()]; //make move
+		boardBuf.getBoardMatrix()[start.getRow()][start.getColumn()] = '0';
+		
 		if(this.getPosition().getRow() < 3) {				//means we have black general
-			figsToCheck = board.redFigures;
+			figsToCheck = board.getRedFigures();
 		}
 		else {												//we have red general, so check black figures if they may be dangerous
-			figsToCheck = board.blackFigures;
+			figsToCheck = board.getBlackFigures();
 		}
 		for(Figur afigure : figsToCheck) {
-			ArrayList<Move> possibleMoves = afigure.getPossibleMoves( board, player);
+			ArrayList<Move> possibleMoves = afigure.getPossibleMoves(board, player);
 			
 			for(Move amove : possibleMoves) {													//iterate through all possible moves of figure and 
 				if(amove.getMove().split("-")[1] == Position.positionToString(afigure.getPosition())) {		//check if the goal position equals position of general, return true if so
@@ -99,7 +106,6 @@ public class General implements Figur {
 				}
 			}
 		}
-		
 		
 		return false;
 	}

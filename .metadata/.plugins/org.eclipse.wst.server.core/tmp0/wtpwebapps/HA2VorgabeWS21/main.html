@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>SWTPP Game Server: Main Page</title>
+
+<script src="js/json3.min.js"></script>
+<script src="js/jquery-1.10.1.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+<style>
+body {
+  padding-top: 80px;
+  padding-bottom: 40px;
+}
+
+.new-game-panel {
+	width: 13em;
+}
+</style>
+<script>
+
+const GAME_URL = {
+	'crazyhouse': 'Crazyhouse.html',
+	'ploy': 'Ploy.html',
+	'cannon': 'Cannon.html',
+	'lasca': 'Lasca.html',
+	'deathstacks': 'DeathStacks.html',
+	'chess': 'Chess.html',
+	'xiangqi': 'Xiangqi.html',
+}
+
+/*
+ * Load data of current user: names and current unfinished games.
+ */
+function updateUser() {
+	const params = "usecase=getuserdata";
+	$.ajax('/GameServer/GameServerServlet?' + params, {
+		async: false,
+		data: params,
+		dataType: 'json',	      
+		error: err => {
+			window.location.href = "/GameServer/index.html"; 
+		},
+		success: userData => {
+			$('#username').html(userData.userFirstName);
+		  
+			const list = $("#games-list"); 
+			const itemTemplate = $("#template-games-list-item")[0].content;
+			  
+			for (const game of userData.games) {		
+				const item = itemTemplate.cloneNode(true);
+				item.querySelector(".game-id").textContent = game.id;
+				item.querySelector(".game-type").textContent = game.type;
+				item.querySelector(".game-players").textContent = game.players;
+				item.querySelector(".game-link").href = `${GAME_URL[game.type]}?gameID=${game.id}`;
+				list.append(item);
+	 		}
+		},
+	});
+}
+
+function updateStatistics() {
+	const params = 'usecase=getstatistics';
+	
+	$.get('/GameServer/GameServerServlet?' + params, params, stats => {
+		for (const item in stats) {
+			const val = stats[item] ;
+			if (typeof val === 'number') {
+				$(`#${item}`).text(stats[item].toFixed());
+			}
+		}
+	}, 'json');
+}
+
+/*
+ * On document start: load data of current user: names and current unfinished games.
+ */
+$(document).ready(() => {
+	updateStatistics();
+	updateUser();
+});
+
+</script>
+</head>
+<body>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+	<div class="container">
+		<div class="navbar-header">
+			<a class="navbar-brand" href="#">SWTPP Game Server</a>
+		</div>
+		<div class="navbar-collapse collapse">
+			<ul class="nav navbar-nav navbar-right">
+				<li><p class="navbar-text">Current User: <span id="username"></span></p></li>
+				<li><a href="logout.html">Log off</a>
+			</ul>
+		</div>
+	</div>
+	
+</nav>
+
+<div class="container main-content" role="main">
+	<div class="col-md-6">
+		<div class="container-fluid">
+			<div class="page-header">
+				<h2>Your Games</h2>
+			</div>
+			<div id="games-list" class="list-group">
+			</div>
+			<template id="template-games-list-item">
+				<div class="list-group-item">
+					<a class="game-link btn btn-default pull-right" role="button" href="#" target="_blank">Continue</a>
+					<h4 class="list-group-item-heading">
+					Game <span class="game-id">N</span>: <span class="game-type">TYPE</span>
+					</h4>
+					<p class="game-players list-group-item-text">PLAYERS</p>
+				</div>
+			</template>			
+		</div>
+		
+		<div class="container-fluid">
+			<h2>Statistics</h2>
+			
+			<table class="table table-hover">
+				<tr>
+					<th>Games won</th>
+					<td id="nbWon">N/A</td>
+				</tr>
+				<tr>
+					<th>Games lost</th>
+					<td id="nbLost">N/A</td>
+				</tr>
+				<tr>
+					<th>Games tied</th>
+					<td id="nbDraw">N/A</td>
+				</tr>
+				<tr>
+					<th>Average number of moves</th>
+					<td id="avgMoves">N/A</td>
+				</tr>
+				<tr>
+					<th>Win Ratio</th>
+					<td><span id="fracWon">N/A</span> %</td>
+				</tr>
+				<tr>
+					<th>Lose Ratio</th>
+					<td><span id="fracLost">N/A</span> %</td>
+				</tr>
+				<tr>
+					<th>Draw Ratio</th>
+					<td><span id="fracDraw">N/A</span> %</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	
+	<div class="col-md-6 fluid-container">
+		<div class="col-xs-12" style="margin-top: 2em"></div>		
+		
+		<div class="col-xs-6 new-game-panel">
+		<div class="panel panel-default">
+			<div class="panel-heading">Xiangqi</div>
+			
+			<div class="list-group">
+				<a class="list-group-item" href="Xiangqi.html?start" target="_blank" 
+					title="Create a new game and wait for a player to join.">
+					Create new Game</a>
+				<a class="list-group-item" href="Xiangqi.html?join" target="_blank" 
+					title="Join another player on a game they created.">
+					Join existing Game</a>
+				<a class="list-group-item" href="Xiangqi.html?haskell" target="_blank" 
+					title="Create a new game against a Haskell-Bot instead of a human player.">
+					Play against Bot</a>
+			</div>		
+		</div>
+		</div>
+	</div>
+</div>
+</body>
+</html>
