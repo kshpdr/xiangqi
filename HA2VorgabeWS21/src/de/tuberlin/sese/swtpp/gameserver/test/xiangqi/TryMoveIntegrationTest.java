@@ -78,6 +78,9 @@ public class TryMoveIntegrationTest {
 
 	//TODO: implement test cases of same kind as example here
 	
+	
+	
+	
 	@Test
 	// cheatCheck: --> checks whether startPosition and targetPosition of moveSting differ:
 	public void cheatCheckTest1() {
@@ -113,6 +116,7 @@ public class TryMoveIntegrationTest {
 	    assertMove("a1-c1",true,false);
 	    assertGameState("rheagaehr/9/1c5c1/s1s1s1s1s/9/9/S1S1S1S1S/1C5C1/9/RHEAGAEHR",true,false,false);
 	}
+	
 	
 	
 	
@@ -162,6 +166,8 @@ public class TryMoveIntegrationTest {
 	
 	
 	
+	
+	
 	@Test
 	// Horse: --> checks valid move to a free position:
 	public void HorseTest1() {
@@ -196,6 +202,20 @@ public class TryMoveIntegrationTest {
 	    startGame("rheagaehr/9/1c5c1/s1s1s1s1s/9/9/S1S1S1S1S/1C5C1/9/RHEAGAEHR",true);
 	    assertMove("b0-d1",true,false);
 	    assertGameState("rheagaehr/9/1c5c1/s1s1s1s1s/9/9/S1S1S1S1S/1C5C1/9/RHEAGAEHR",true,false,false);
+	}
+	@Test
+	// Horse: --> checks invalid move, isThreatened:
+	public void HorseTest6() {
+	    startGame("rheagaehr/9/9/9/9/9/9/9/4H4/R1EAGAEHR",true);
+	    assertMove("e1-c2",true,false);
+	    assertGameState("rheagaehr/9/9/9/9/9/9/9/4H4/R1EAGAEHR",true,false,false);
+	}
+	@Test
+	// Horse: --> checks invalid move, isCheck:
+	public void HorseTest7() {
+	    startGame("1heagaehr/9/9/9/9/9/9/4r4/4H4/R1EAGAEHR",true);
+	    assertMove("e1-c2",true,false);
+	    assertGameState("1heagaehr/9/9/9/9/9/9/4r4/4H4/R1EAGAEHR",true,false,false);
 	}
 	
 	
@@ -249,6 +269,20 @@ public class TryMoveIntegrationTest {
 	    startGame("rheaga1hr/9/1c5c1/s1s1s1s1s/2e6/9/S1S3S1S/1C5C1/9/RHEAGAEHR",false);
 	    assertMove("c5-e3",false,false);
 	    assertGameState("rheaga1hr/9/1c5c1/s1s1s1s1s/2e6/9/S1S3S1S/1C5C1/9/RHEAGAEHR",false,false,false);
+	}
+	@Test
+	// Elephant: --> checks invalid move, isThreatened:
+	public void ElephantTest8() {
+	    startGame("rheagaehr/9/9/9/9/9/9/4E4/9/RH1AGAEHR",true);
+	    assertMove("e2-c0",true,false);
+	    assertGameState("rheagaehr/9/9/9/9/9/9/4E4/9/RH1AGAEHR",true,false,false);
+	}
+	@Test
+	// Elephant: --> checks invalid move, isCheck:
+	public void ElephantTest9() {
+	    startGame("1heagaehr/9/9/9/9/9/4r4/4E4/9/RHEAGAEHR",true);
+	    assertMove("e2-c0",true,false);
+	    assertGameState("1heagaehr/9/9/9/9/9/4r4/4E4/9/RHEAGAEHR",true,false,false);
 	}
 
 
