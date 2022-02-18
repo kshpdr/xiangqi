@@ -1,0 +1,67 @@
+<!DOCTYPE html> 
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>SWTPP Game Server: Xiangqi Tournament </title>
+  <meta name="viewport" content="width=980px, initial-scale=1">
+  <link rel="stylesheet" href="css/normalize-2.1.2.min.css" />
+  <link rel="stylesheet" href="css/site2.css" />
+  <link rel="stylesheet" href="css/chessboard.css" />
+  <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+  <script src="js/json3.min.js"></script>
+  <script src="js/jquery-1.10.1.min.js"></script>
+  <script src="js/prettify.js"></script>
+  <script src="js/xiangqiboard.js"></script>
+</head>
+<body>
+
+<table>
+<tr><td style="width:50%">
+<h1>SWTPP Xiangqi Tournament</h1>
+</td>
+</tr><tr>
+<td>
+<h2>current game</h2>
+</td>
+</tr>
+<tr>
+<td style="width:50%">
+<div>Game ID: __GAME_ID__</div><br>
+<div>White Player: __WHITE_PLAYER__</div><br>
+<div>Black Player: __BLACK_PLAYER__</div><br>
+<div>Status: __STATUS__ </div><br>
+<div>__INFO__</div><br>
+</td>
+<td><div id="board" style="width: 450px;"> </div></td>
+</tr>
+</table>
+
+<script>
+
+var board2;
+
+function update() {
+	window.location.href = "curGame.html"
+}
+
+$(document).ready(function() {
+	board2 = new Board('board', {
+	    draggable: true,
+	    dropOffBoard: 'snapback',
+	    sparePieces: true,
+	    showErrors: 'alert',
+	    position: __BOARD__
+	});
+    prettyPrint();
+	
+	setTimeout(update, 5000);
+});
+
+
+</script>
+</body>
+
+</html>
+
+
