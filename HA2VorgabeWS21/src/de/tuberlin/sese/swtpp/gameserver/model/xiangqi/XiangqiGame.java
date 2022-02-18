@@ -1,10 +1,12 @@
 package de.tuberlin.sese.swtpp.gameserver.model.xiangqi;
 
 import de.tuberlin.sese.swtpp.gameserver.model.*;
+import java.util.*;
 //TODO: more imports from JVM allowed here
 
-
 import java.io.Serializable;
+import java.util.ArrayList;
+
 
 public class XiangqiGame extends Game implements Serializable{
 
@@ -20,6 +22,7 @@ public class XiangqiGame extends Game implements Serializable{
 	// just for better comprehensibility of the code: assign red and black player
 	private Player blackPlayer;
 	private Player redPlayer;
+	private Board board;
 
 	// internal representation of the game state
 	// TODO: insert additional game data here
@@ -28,8 +31,9 @@ public class XiangqiGame extends Game implements Serializable{
 	 * constructors
 	 ***********************/
 
-	public XiangqiGame() {
+	public XiangqiGame(Board board) {
 		super();
+		this.board = board;
 
 		// TODO: initialization of game state can go here
 	}
@@ -213,12 +217,212 @@ public class XiangqiGame extends Game implements Serializable{
 		// TODO: implement
 		return "rheagaehr/9/1c5c1/s1s1s1s1s/9/9/S1S1S1S1S/1C5C1/9/RHEAGAEHR";
 	}
+	
+	// checks format of moveString (eg. "c5-a5"):
+	public boolean moveStringFormatCheck(String moveString) {
+		
+		if(moveString.length() != 5) {
+			return false;
+		}
+		if("abcdefghi".indexOf(moveString.charAt(0)) == -1 || "abcdefghi".indexOf(moveString.charAt(3)) == -1) {
+			return false;
+		}
+		if("9876543210".indexOf(moveString.charAt(1)) == -1 || "9876543210".indexOf(moveString.charAt(4)) == -1) {
+			return false;
+		}
+		if(moveString.charAt(2) != '-') {
+			return false;
+		}	
+		return true;
+	}
+	
+	// checks whether player is trying to cheat:
+	public boolean cheatCheck(String moveString, Player player) {
+		
+		// start Position of move:
+		int row = "9876543210".indexOf(moveString.charAt(1));
+		int col = "abcdefghi".indexOf(moveString.charAt(0));
+		Position pos = new Position(row,col);
+		
+		// --> checks format of moveString:
+		if(!moveStringFormatCheck(moveString)) {
+			return false;
+		}
+		// checks whether user is player in current game:
+		if(!this.isPlayer(player.getUser())) {
+			return false;
+		}	
+		// --> checks whether startPosition and targetPosition of moveSting differ:
+		if(("9876543210".indexOf(moveString.charAt(4)) == row) && ("abcdefghi".indexOf(moveString.charAt(3)) == col)) {
+			return false;
+		}
+		// --> checks whether it's player's turn:
+		if(!this.isPlayersTurn(player)) {
+			return false;
+		}
+		// --> checks whether redPlayer starts:
+		if(this.getHistory().isEmpty() && player != this.redPlayer) {
+			return false;
+		}
+		// --> checks whether game not finished yet:
+		if(this.finished) {
+			return false;
+		}
+		// --> checks whether player tries to move playing-piece of other player:
+		if(player == this.redPlayer && !pos.isRed(board)) {
+			return false;
+		}
+		if(player != this.redPlayer && pos.isRed(board)) {
+			return false;
+		}	
+		// --> checks whether start Position of moveString is empty:
+		if(this.board.getBoardMatrix()[row][col] == '0') {
+			return false;
+		}
+		
+		return true;
+	}
+	
+	// adds new move to history:
+	public void updateHistory(Move move) {
 
-	@Override
-	public boolean tryMove(String moveString, Player player) {
-		// TODO: implement
+		List<Move> updateHistory = this.getHistory();
+		updateHistory.add(move);
+		this.setHistory(updateHistory);
+		
+		// Frage: warum funktioniert das nicht:
+		// this.setHistory(this.getHistory().add(move));	
+	}
+	
+	// executes move, updates boardMatrix, boardStateString and history: 
+	public void doMove(Move move, Position position) {
+		
+		// start:
+		int row1 = "9876543210".indexOf(move.getMove().charAt(1));
+		int col1 = "abcdefghi".indexOf(move.getMove().charAt(0));
+		// target:
+		int row2 = "9876543210".indexOf(move.getMove().charAt(4));
+		int col2 = "abcdefghi".indexOf(move.getMove().charAt(3));
+		
+		// moves playing-piece by updating boardMatrix:
+		this.board.getBoardMatrix()[row2][col2] = this.board.getBoardMatrix()[row1][col1];
+		this.board.getBoardMatrix()[row1][col1] = '0';
+		// updates boardStateString:
+		this.board.setBoardState(this.board.boardMatrixToBoardString());
+		// updates history:
+		updateHistory(move);
+	}
+	
+	// --> returns figures of enemy:
+	ArrayList<Figur> enemyFigures(Board board, Player player) {
+		
+		if(player == this.redPlayer) {
+			return board.blackFigures;
+		}
+		return board.redFigures;
+	}
+	
+	// --> returns general of enemy:
+	public General getEnemyGenral(Player player) {
+		
+		if(player == this.redPlayer) {
+			return this.board.getBlackGeneral();	
+		} 
+		return this.board.getRedGeneral();	
+	}
+	
+	// --> returns true, if enemy can not make any more moves:
+	public boolean isWonByPatt(Board board, Player player) {
+		
+		for(Figur figure : enemyFigures(board, player)) {
+			if(!figure.getPossibleMoves(figure.getPosition(), board, player).isEmpty()) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	// --> returns true, if enemy is in check-mate:
+	public boolean isWonByCheckMate(Board board, Player player) {
+		
+		General enemyGeneral = getEnemyGenral(player);
+		
+		for(Figur figure : enemyFigures(board, player)) {
+			ArrayList<Move> moves = figure.getPossibleMoves(figure.getPosition(), board, player);
+			for(Move move: moves) {
+				if(!enemyGeneral.isChecked(move)) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+	
+	// --> sets other player as nextPlayer:
+	public void nextTurn(Player player) {
+		
+		if(player == this.redPlayer) {
+			this.setNextPlayer(this.blackPlayer);
+		}
+		this.setNextPlayer(this.redPlayer);
+	}
 
+	// --> checks, if possibleMoves contains move:
+	public boolean containsMove(ArrayList<Move> possibleMoves, Move move) {
+		
+		for(Move m : possibleMoves) {
+			
+			if(m.getMove().equals(move.getMove())) {
+				return true;
+			}
+		}	
 		return false;
 	}
 
+	@Override
+	public boolean tryMove(String moveString, Player player) {
+		
+		if(cheatCheck(moveString, player)) {
+			
+			Move move = new Move(moveString, this.board.boardState, player);
+			
+			// calculates position:
+			Position position = new Position("9876543210".indexOf(moveString.charAt(1)),"abcdefghi".indexOf(moveString.charAt(0))); 
+			
+			// gets possible moves for playing-piece on position:
+			ArrayList<Move> possibleMoves = this.board.getFigurFromBoard(position).getPossibleMoves(position, board, player);
+			
+			// checks whether move is possible:
+			if(containsMove(possibleMoves, move)) {
+				// executes move, updates boardMatrix, boardString and history:
+				doMove(move, position);
+				// sets other player as nextPlayer:
+				nextTurn(player);	
+				// finishes if game is won:
+				if(isWonByCheckMate(board,player) || isWonByPatt(board,player)) {
+					finish();
+				}
+				return true;
+			}	
+		}			
+		return false;
+	}
+	
+	public static void main(String[] args) {
+	
+		/*
+		 * 
+		Rook rook = new Rook(new Position(7, 0));
+		Board board = new Board("rhea1a1h1/4g4/1c3r3/7cs/s1s1C4/9/S1S3SCS/R8/4A4/1HE1GAEHR");
+		Player redPlay = new Player(new User("Pau", "5"), new XiangqiGame(board));
+		
+		ArrayList<Move> rookMoves = rook.getPossibleMoves(new Position(7, 0), board, redPlay);
+	
+		System.out.println("Rook-moves: ");
+		for (Move i : rookMoves) {
+			System.out.println(i.getMove());
+		}
+		*
+		*/
+	}
 }
