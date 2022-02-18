@@ -33,7 +33,8 @@ public class Elephant implements Figur {
 		
 		/*
 		 * Elephant can move two steps diagonal
-		 * (can not cross river between row 4 and 5 and can not jump):
+		 * (can not cross river between row 4 and 5)
+		 * (can not jump):
 		 */
 		
 		int[][] checkArray = {{row+1,col+1},{row-1,col-1},{row+1,col-1},{row-1,col+1}};
@@ -54,7 +55,7 @@ public class Elephant implements Figur {
 					// Elephant can't jump:
 					if(board.getBoardMatrix()[checkArray[i][0]][checkArray[i][1]] == '0') {
 				
-						// checks whether myGeneral is not threatened:
+						// checks whether myGeneral is not threatened or in-check:
 						if(!myGeneral.isThreatened(board, new Move(position.moveString(newPos), board.getBoardState(), player)) && !myGeneral.isCheck(board, new Move(position.moveString(newPos), board.getBoardState(), player), player)) {
 							
 							// checks whether position is free or occupied by other player:
