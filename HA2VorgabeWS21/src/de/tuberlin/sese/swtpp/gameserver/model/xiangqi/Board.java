@@ -82,7 +82,7 @@ public class Board {
 		}
 	}
 	
-	public String boardMatrixToboardString() {
+	public String boardMatrixToBoardString() {
 		
 		String newString = "";
 		
