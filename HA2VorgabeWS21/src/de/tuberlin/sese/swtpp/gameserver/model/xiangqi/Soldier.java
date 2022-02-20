@@ -11,6 +11,15 @@ public class Soldier implements Figur {
 	public Soldier(Position position) {
 		this.position = position;
 	}
+	
+	public Position getPosition() {
+		return position;
+	}
+	
+	@Override
+	public void setPosition(Position position) {
+		this.position = position;
+	}
 
 	@Override
 	public ArrayList<Move> getPossibleMoves(Board board, Player player) {
@@ -128,7 +137,4 @@ public class Soldier implements Figur {
 		return move;
 	}
 	
-	public Position getPosition() {
-		return position;
-	}
 }

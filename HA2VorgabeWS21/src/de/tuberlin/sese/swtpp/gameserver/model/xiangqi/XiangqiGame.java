@@ -22,11 +22,18 @@ public class XiangqiGame extends Game implements Serializable{
 	 * constructors
 	 ***********************/
 
-	public XiangqiGame(Board board) {
+	public XiangqiGame() {
+		
+		// initialization of game:
 		super();
-		this.board = board;
-
-		// TODO: initialization of game state can go here
+		
+		// initialization of board:
+		this.board = new Board("rheagaehr/9/1c5c1/s1s1s1s1s/9/S8/2S1S1S1S/1C5C1/9/RHEAGAEHR");	
+		
+		// assigns red and black player:
+		List<Player> allPlayers = this.getPlayers();
+		this.redPlayer = allPlayers.get(0);
+		this.blackPlayer = allPlayers.get(1);
 	}
 
 	public String getType() {
@@ -210,6 +217,8 @@ public class XiangqiGame extends Game implements Serializable{
 		return this.board.getBoardState();
 	}
 	
+	
+	
 	// checks format of moveString (eg. "c5-a5"):
 	public boolean moveStringFormatCheck(String moveString) {
 		
@@ -227,6 +236,8 @@ public class XiangqiGame extends Game implements Serializable{
 		}	
 		return true;
 	}
+	
+	
 	
 	// checks whether player is trying to cheat:
 	public boolean cheatCheck(String moveString, Player player) {
@@ -275,19 +286,20 @@ public class XiangqiGame extends Game implements Serializable{
 		return true;
 	}
 	
+	
+	
 	// adds new move to history:
 	public void updateHistory(Move move) {
 
 		List<Move> updateHistory = this.getHistory();
 		updateHistory.add(move);
 		this.setHistory(updateHistory);
-		
-		// Frage: warum funktioniert das nicht:
-		// this.setHistory(this.getHistory().add(move));	
 	}
 	
+	
+	
 	// executes move, updates boardMatrix, boardStateString and history: 
-	public void doMove(Move move, Position position) {
+	public void doMove(Move move, Figur figur) {
 		
 		// start:
 		int row1 = "9876543210".indexOf(move.getMove().charAt(1));
@@ -296,14 +308,26 @@ public class XiangqiGame extends Game implements Serializable{
 		int row2 = "9876543210".indexOf(move.getMove().charAt(4));
 		int col2 = "abcdefghi".indexOf(move.getMove().charAt(3));
 		
+		// deletes playing-piece on target-position if necessary:
+		if(this.board.getBoardMatrix()[row2][col2] != '0') {
+			this.board.deleteFigure(new Position(row2,col2));
+		}
+		
 		// moves playing-piece by updating boardMatrix:
 		this.board.getBoardMatrix()[row2][col2] = this.board.getBoardMatrix()[row1][col1];
 		this.board.getBoardMatrix()[row1][col1] = '0';
+		
 		// updates boardStateString:
 		this.board.setBoardState(this.board.boardMatrixToBoardString());
+		
+		// updates position of playing-piece:
+		figur.setPosition(new Position(row2,col2));
+		
 		// updates history:
 		updateHistory(move);
 	}
+	
+	
 	
 	// --> returns figures of enemy:
 	ArrayList<Figur> enemyFigures(Board board, Player player) {
@@ -314,6 +338,8 @@ public class XiangqiGame extends Game implements Serializable{
 		return board.redFigures;
 	}
 	
+	
+	
 	// --> returns general of enemy:
 	public General getEnemyGenral(Player player) {
 		
@@ -322,6 +348,8 @@ public class XiangqiGame extends Game implements Serializable{
 		} 
 		return this.board.getRedGeneralFromBoard();	
 	}
+	
+	
 	
 	// --> returns true, if enemy can not make any more moves:
 	public boolean isWonByPatt(Board board, Player player) {
@@ -334,13 +362,17 @@ public class XiangqiGame extends Game implements Serializable{
 		return true;
 	}
 	
+	
+	
 	// --> returns true, if enemy is in check-mate:
 	public boolean isWonByCheckMate(Board board, Player player) {
 		
 		General enemyGeneral = getEnemyGenral(player);
 		
 		for(Figur figure : enemyFigures(board, player)) {
+			
 			ArrayList<Move> moves = figure.getPossibleMoves(board, player);
+			
 			for(Move move: moves) {
 				if(!enemyGeneral.isCheck(board, move, player)) {
 					return false;
@@ -349,6 +381,8 @@ public class XiangqiGame extends Game implements Serializable{
 		}
 		return true;
 	}
+	
+	
 	
 	// --> sets other player as nextPlayer:
 	public void nextTurn(Player player) {
@@ -359,6 +393,8 @@ public class XiangqiGame extends Game implements Serializable{
 		this.setNextPlayer(this.redPlayer);
 	}
 
+	
+	
 	// --> checks, if possibleMoves contains move:
 	public boolean containsMove(ArrayList<Move> possibleMoves, Move move) {
 		
@@ -371,6 +407,8 @@ public class XiangqiGame extends Game implements Serializable{
 		return false;
 	}
 
+	
+	
 	@Override
 	public boolean tryMove(String moveString, Player player) {
 		
@@ -381,13 +419,16 @@ public class XiangqiGame extends Game implements Serializable{
 			// calculates position:
 			Position position = new Position("9876543210".indexOf(moveString.charAt(1)),"abcdefghi".indexOf(moveString.charAt(0))); 
 			
-			// gets possible moves for playing-piece on position:
-			ArrayList<Move> possibleMoves = this.board.getFigurFromBoard(position).getPossibleMoves(board, player);
+			// gets playing-piece on position:
+			Figur figur = this.board.getFigurFromBoard(position);
+			
+			// gets possible moves for playing-piece:
+			ArrayList<Move> possibleMoves = figur.getPossibleMoves(board, player);
 			
 			// checks whether move is possible:
 			if(containsMove(possibleMoves, move)) {
 				// executes move, updates boardMatrix, boardString and history:
-				doMove(move, position);
+				doMove(move, figur);
 				// sets other player as nextPlayer:
 				nextTurn(player);	
 				// finishes if game is won:

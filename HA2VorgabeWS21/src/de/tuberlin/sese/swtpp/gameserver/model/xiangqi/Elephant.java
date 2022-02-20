@@ -21,6 +21,11 @@ public class Elephant implements Figur {
 	}
 	
 	@Override
+	public void setPosition(Position position) {
+		this.position = position;
+	}
+	
+	@Override
 	public ArrayList<Move> getPossibleMoves(Board board, Player player) {
 
 		// current row/column:
@@ -73,5 +78,5 @@ public class Elephant implements Figur {
 		
 		return possibleMoves;
 	}
-	
+
 }

@@ -17,6 +17,11 @@ public class Horse implements Figur {
 	public Position getPosition() {
 		return this.position;
 	}
+	
+	@Override
+	public void setPosition(Position position) {
+		this.position = position;
+	}
 
 
 	@Override

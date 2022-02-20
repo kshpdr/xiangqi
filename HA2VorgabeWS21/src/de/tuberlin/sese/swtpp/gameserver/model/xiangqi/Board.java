@@ -90,15 +90,19 @@ public class Board {
 	}
 	
 	public ArrayList<Figur> getRedFiguresFromBoard(char[][] boardMatrix){
+		
 		ArrayList<Figur> redFigures = new ArrayList<>();
-		// go through board and add corresponding figures
+		
+		// iterates over board:
 		for (int i = 0; i < boardMatrix.length; i++) {
 			for (int j = 0; j < boardMatrix[0].length; j++) {
+				
+				// adds red figures:
 				switch (boardMatrix[i][j]) {
 					case 'G': redFigures.add(new General(new Position(i, j))); break;
-					//case 'A': redFigures.add(new Advisor(new Position(i, j)));
-					//case 'E': redFigures.add(new Elephant(new Position(i, j)));
-					//case 'H': redFigures.add(new Horse(new Position(i, j)));
+					case 'A': redFigures.add(new Advisor(new Position(i, j)));
+					case 'E': redFigures.add(new Elephant(new Position(i, j)));
+					case 'H': redFigures.add(new Horse(new Position(i, j)));
 					case 'R': redFigures.add(new Rook(new Position(i, j))); break;
 					case 'C': redFigures.add(new Cannon(new Position(i, j))); break;
 					case 'S': redFigures.add(new Soldier(new Position(i, j))); break;
@@ -109,18 +113,22 @@ public class Board {
 	}
 	
 	public ArrayList<Figur> getBlackFiguresFromBoard(char[][] boardMatrix){
+		
 		ArrayList<Figur> blackFigures = new ArrayList<>();
-		// go through board and add corresponding figures
+		
+		// iterates over board:
 		for (int i = 0; i < boardMatrix.length; i++) {
 			for (int j = 0; j < boardMatrix[0].length; j++) {
+				
+				// adds black figures:
 				switch (boardMatrix[i][j]) {
-					case 'G': blackFigures.add(new General(new Position(i, j))); break;
-					//case 'A': blackFigures.add(new Advisor(new Position(i, j)));
-					//case 'E': blackFigures.add(new Elephant(new Position(i, j)));
-					//case 'H': blackFigures.add(new Horse(new Position(i, j)));
-					case 'R': blackFigures.add(new Rook(new Position(i, j))); break;
-					case 'C': blackFigures.add(new Cannon(new Position(i, j))); break;
-					case 'S': blackFigures.add(new Soldier(new Position(i, j))); break;
+					case 'g': blackFigures.add(new General(new Position(i, j))); break;
+					case 'a': blackFigures.add(new Advisor(new Position(i, j)));
+					case 'e': blackFigures.add(new Elephant(new Position(i, j)));
+					case 'h': blackFigures.add(new Horse(new Position(i, j)));
+					case 'r': blackFigures.add(new Rook(new Position(i, j))); break;
+					case 'c': blackFigures.add(new Cannon(new Position(i, j))); break;
+					case 's': blackFigures.add(new Soldier(new Position(i, j))); break;
 				}
 			}
 		}
@@ -212,5 +220,28 @@ public String boardMatrixToBoardString() {
 	
 	public static void main(String[] args) {
 		System.out.print(Arrays.deepToString(boardFromState("rhea1a1h1/4g4/1c3r3/7cs/s1s1C4/9/S1S3SCS/R8/4A4/1HE1GAEHR")));
+	}
+
+	
+	
+	public void deleteFigure(Position position) {
+		
+		// iterates over all figures:
+		for(Figur f : this.figures) {
+			
+			if(f.getPosition().getRow() == position.getRow() && f.getPosition().getColumn() == position.getColumn()) {
+				
+				// deletes figure in list of all figures:
+				this.figures.remove(f);
+				
+				// deletes figure in redFigures or blackFigures:
+				if(position.isRed(this)) {
+					this.redFigures.remove(f);
+				}
+				else {
+					this.blackFigures.remove(f);
+				}
+			}
+		}	
 	}
 }

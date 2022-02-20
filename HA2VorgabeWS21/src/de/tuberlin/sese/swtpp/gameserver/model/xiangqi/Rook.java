@@ -14,6 +14,11 @@ public class Rook implements Figur {
 		this.position = position;
 	}
 	
+	@Override
+	public void setPosition(Position position) {
+		this.position = position;
+	}
+	
 	//TODO: check if positions after figure possible
 	@Override
 	public ArrayList<Move> getPossibleMoves(Board board, Player player) {

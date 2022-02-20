@@ -12,6 +12,15 @@ public class Cannon implements Figur {
 	public Cannon (Position position) {
 		this.position = position;
 	}
+	
+	public Position getPosition() {
+		return position;
+	}
+	
+	@Override
+	public void setPosition(Position position) {
+		this.position = position;
+	}
 
 	
 	// TODO: add check on todesBlick after all checks of figures
@@ -178,8 +187,5 @@ public class Cannon implements Figur {
 		}
 		return possibleMoves;
 	}
-	
-	public Position getPosition() {
-		return position;
-	}
+		
 }
