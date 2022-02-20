@@ -1,12 +1,13 @@
 package de.tuberlin.sese.swtpp.gameserver.model.xiangqi;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 
 import de.tuberlin.sese.swtpp.gameserver.model.Move;
 import de.tuberlin.sese.swtpp.gameserver.model.Player;
 
-public class Advisor implements Figur {
+public class Advisor implements Figur,Serializable {
 	private Position position;
 	
 	public Advisor(Position pos) {

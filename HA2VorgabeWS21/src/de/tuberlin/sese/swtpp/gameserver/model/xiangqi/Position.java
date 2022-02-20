@@ -1,8 +1,10 @@
 package de.tuberlin.sese.swtpp.gameserver.model.xiangqi;
 
+import java.io.Serializable;
+
 import de.tuberlin.sese.swtpp.gameserver.model.Move;
 
-public class Position {
+public class Position implements Serializable{
 	private int row;
 	private int column;
 	
@@ -45,8 +47,8 @@ public class Position {
 	}
 	
 	public boolean isRed(Board board) {
-		char Fig = board.getBoardMatrix()[this.row ][this.column];	
-		if ("GAEHRCS".indexOf(Fig) != -1) return true;
+		char CharOfFigur = board.getBoardMatrix()[this.row ][this.column];	
+		if ("GAEHRCS".indexOf(CharOfFigur) != -1) return true;
 		return false;
 	}
 	

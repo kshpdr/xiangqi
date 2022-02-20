@@ -10,4 +10,6 @@ public interface Figur {
 	public ArrayList<Move> getPossibleMoves(Board board, Player player);
 	
 	public Position getPosition();
+	
+	public void setPosition(Position position);
 }
