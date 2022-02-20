@@ -7,8 +7,6 @@ import de.tuberlin.sese.swtpp.gameserver.model.Player;
 
 public class Elephant implements Figur {
 	
-	// test test test
-	
 	Position position;
 
 	public Elephant(Position position) {

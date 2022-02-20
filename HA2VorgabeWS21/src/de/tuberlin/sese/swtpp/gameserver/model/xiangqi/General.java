@@ -83,25 +83,36 @@ public class General implements Figur {
 		return false;
 	}
 	public boolean isCheck(Board board, Move move, Player player) {
+		
+		// copies board:
+		Board boardBuf = new Board(board.getBoardState());
+		
 		ArrayList<Figur> figsToCheck;
 		
-		Board boardBuf = new Board(board.getBoardState());
-		Position start = Position.stringToPosition(move.getMove().split("-")[0]);	//get a numeric position of start and goal position
+		Position start = Position.stringToPosition(move.getMove().split("-")[0]);	
 		Position goal = Position.stringToPosition(move.getMove().split("-")[1]);
-		boardBuf.getBoardMatrix()[goal.getRow()][goal.getColumn()] = boardBuf.getBoardMatrix()[start.getRow()][start.getColumn()]; //make move
-		boardBuf.getBoardMatrix()[start.getRow()][start.getColumn()] = '0';
 		
-		if(this.getPosition().getRow() < 3) {				//means we have black general
+		// checks whether targetPosition is occupied:
+		if(boardBuf.getBoardMatrix()[goal.getRow()][goal.getColumn()] != '0') {
+			// deletes playing-piece on targetPosition from list of figures:
+			boardBuf.deleteFigure(new Position(goal.getRow(), goal.getColumn()));	
+		}
+		
+		if(this.getPosition().getRow() < 3) {				
 			figsToCheck = board.getRedFigures();
 		}
-		else {												//we have red general, so check black figures if they may be dangerous
+		else {												
 			figsToCheck = board.getBlackFigures();
 		}
+		
+		boardBuf.getBoardMatrix()[goal.getRow()][goal.getColumn()] = boardBuf.getBoardMatrix()[start.getRow()][start.getColumn()]; 
+		boardBuf.getBoardMatrix()[start.getRow()][start.getColumn()] = '0';
+		
 		for(Figur afigure : figsToCheck) {
 			ArrayList<Move> possibleMoves = afigure.getPossibleMoves(board, player);
 			
-			for(Move amove : possibleMoves) {													//iterate through all possible moves of figure and 
-				if(amove.getMove().split("-")[1] == Position.positionToString(afigure.getPosition())) {		//check if the goal position equals position of general, return true if so
+			for(Move amove : possibleMoves) {													
+				if(amove.getMove().split("-")[1] == Position.positionToString(afigure.getPosition())) {	
 					return true;
 				}
 			}

@@ -31,9 +31,9 @@ public class XiangqiGame extends Game implements Serializable{
 		this.board = new Board("rheagaehr/9/1c5c1/s1s1s1s1s/9/S8/2S1S1S1S/1C5C1/9/RHEAGAEHR");	
 		
 		// assigns red and black player:
-		List<Player> allPlayers = this.getPlayers();
-		this.redPlayer = allPlayers.get(0);
-		this.blackPlayer = allPlayers.get(1);
+		// List<Player> allPlayers = this.getPlayers();
+		// this.redPlayer = allPlayers.get(0);
+		// this.blackPlayer = allPlayers.get(1);
 	}
 
 	public String getType() {
@@ -443,19 +443,19 @@ public class XiangqiGame extends Game implements Serializable{
 	
 	public static void main(String[] args) {
 	
-		/*
-		 * 
+		
 		Rook rook = new Rook(new Position(7, 0));
 		Board board = new Board("rhea1a1h1/4g4/1c3r3/7cs/s1s1C4/9/S1S3SCS/R8/4A4/1HE1GAEHR");
-		Player redPlay = new Player(new User("Pau", "5"), new XiangqiGame(board));
+		XiangqiGame newGame = new XiangqiGame();
 		
-		ArrayList<Move> rookMoves = rook.getPossibleMoves(new Position(7, 0), board, redPlay);
+		Player myPlayer = newGame.getNextPlayer();
+		
+		ArrayList<Move> rookMoves = rook.getPossibleMoves(board, myPlayer);
 	
 		System.out.println("Rook-moves: ");
 		for (Move i : rookMoves) {
 			System.out.println(i.getMove());
 		}
-		*
-		*/
+		
 	}
 }
