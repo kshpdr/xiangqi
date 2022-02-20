@@ -1,11 +1,14 @@
 package de.tuberlin.sese.swtpp.gameserver.model.xiangqi;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+
+
 import java.util.Arrays;
 
 import de.tuberlin.sese.swtpp.gameserver.model.Player;
 
-public class Board {
+public class Board implements Serializable {
 	private char[][] boardMatrix;
 	private String boardState;
 	

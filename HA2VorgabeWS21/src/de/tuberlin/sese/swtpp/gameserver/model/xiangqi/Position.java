@@ -1,8 +1,10 @@
 package de.tuberlin.sese.swtpp.gameserver.model.xiangqi;
 
+import java.io.Serializable;
+
 import de.tuberlin.sese.swtpp.gameserver.model.Move;
 
-public class Position {
+public class Position implements Serializable{
 	private int row;
 	private int column;
 	

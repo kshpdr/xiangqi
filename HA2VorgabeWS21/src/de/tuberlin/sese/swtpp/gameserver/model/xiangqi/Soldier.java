@@ -1,11 +1,12 @@
 package de.tuberlin.sese.swtpp.gameserver.model.xiangqi;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import de.tuberlin.sese.swtpp.gameserver.model.Move;
 import de.tuberlin.sese.swtpp.gameserver.model.Player;
 
-public class Soldier implements Figur {
+public class Soldier implements Figur,Serializable {
 	Position position;
 	
 	public Soldier(Position position) {

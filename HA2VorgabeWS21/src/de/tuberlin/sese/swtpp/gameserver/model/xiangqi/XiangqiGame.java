@@ -208,7 +208,7 @@ public class XiangqiGame extends Game implements Serializable{
 		// Note: This method is for automatic testing. A regular game would not start at some artificial state.
 		//       It can be assumed that the state supplied is a regular board that can be reached during a game.
 		// TODO: implement
-		this.board.setBoardState(state);
+		this.board = new Board(state);
 	}
 
 	@Override
