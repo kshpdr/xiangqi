@@ -1,11 +1,12 @@
 package de.tuberlin.sese.swtpp.gameserver.model.xiangqi;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import de.tuberlin.sese.swtpp.gameserver.model.Move;
 import de.tuberlin.sese.swtpp.gameserver.model.Player;
 
-public class Elephant implements Figur {
+public class Elephant implements Figur,Serializable {
 	
 	Position position;
 
@@ -16,6 +17,11 @@ public class Elephant implements Figur {
 	@Override
 	public Position getPosition() {
 		return this.position;
+	}
+	
+	@Override
+	public void setPosition(Position position) {
+		this.position = position;
 	}
 	
 	@Override
@@ -31,7 +37,8 @@ public class Elephant implements Figur {
 		
 		/*
 		 * Elephant can move two steps diagonal
-		 * (can not cross river between row 4 and 5 and can not jump):
+		 * (can not cross river between row 4 and 5)
+		 * (can not jump):
 		 */
 		
 		int[][] checkArray = {{row+1,col+1},{row-1,col-1},{row+1,col-1},{row-1,col+1}};
@@ -52,7 +59,7 @@ public class Elephant implements Figur {
 					// Elephant can't jump:
 					if(board.getBoardMatrix()[checkArray[i][0]][checkArray[i][1]] == '0') {
 				
-						// checks whether myGeneral is not threatened:
+						// checks whether myGeneral is not threatened or in-check:
 						if(!myGeneral.isThreatened(board, new Move(position.moveString(newPos), board.getBoardState(), player)) && !myGeneral.isCheck(board, new Move(position.moveString(newPos), board.getBoardState(), player), player)) {
 							
 							// checks whether position is free or occupied by other player:
@@ -70,5 +77,5 @@ public class Elephant implements Figur {
 		
 		return possibleMoves;
 	}
-	
+
 }

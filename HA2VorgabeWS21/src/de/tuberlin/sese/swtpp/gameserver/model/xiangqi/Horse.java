@@ -1,11 +1,12 @@
 package de.tuberlin.sese.swtpp.gameserver.model.xiangqi;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import de.tuberlin.sese.swtpp.gameserver.model.Move;
 import de.tuberlin.sese.swtpp.gameserver.model.Player;
 
-public class Horse implements Figur {
+public class Horse implements Figur,Serializable {
 	
 	Position position;
 
@@ -16,6 +17,11 @@ public class Horse implements Figur {
 	@Override
 	public Position getPosition() {
 		return this.position;
+	}
+	
+	@Override
+	public void setPosition(Position position) {
+		this.position = position;
 	}
 
 
@@ -56,7 +62,7 @@ public class Horse implements Figur {
 						// checks whether position is on board:
 						if(newPos.onBoard()) {
 							
-							// checks whether field is free or occupied by other player:
+							// checks whether field is free or occupied by other player (and !isThreatende and !isCheck):
 							if(board.getBoardMatrix()[movesArray[2*i+j][0]][movesArray[2*i+j][1]] == '0' && !myGeneral.isThreatened(board, new Move(position.moveString(newPos), board.getBoardState(), player)) && !myGeneral.isCheck(board, new Move(position.moveString(newPos), board.getBoardState(), player), player)) {
 								possibleMoves.add(new Move(position.moveString(newPos), board.getBoardState(), player));
 							}

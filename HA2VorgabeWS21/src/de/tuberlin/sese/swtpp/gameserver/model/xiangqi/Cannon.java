@@ -1,15 +1,25 @@
 package de.tuberlin.sese.swtpp.gameserver.model.xiangqi;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import de.tuberlin.sese.swtpp.gameserver.model.Move;
 import de.tuberlin.sese.swtpp.gameserver.model.Player;
 
-public class Cannon implements Figur {
+public class Cannon implements Figur,Serializable {
 	
 	Position position;
 	
 	public Cannon (Position position) {
+		this.position = position;
+	}
+	
+	public Position getPosition() {
+		return position;
+	}
+	
+	@Override
+	public void setPosition(Position position) {
 		this.position = position;
 	}
 
@@ -178,8 +188,5 @@ public class Cannon implements Figur {
 		}
 		return possibleMoves;
 	}
-	
-	public Position getPosition() {
-		return position;
-	}
+		
 }
