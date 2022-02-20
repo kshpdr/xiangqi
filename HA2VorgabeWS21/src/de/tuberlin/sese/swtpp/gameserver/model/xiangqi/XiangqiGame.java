@@ -422,6 +422,7 @@ public class XiangqiGame extends Game implements Serializable{
 			// gets playing-piece on position:
 			Figur figur = this.board.getFigurFromBoard(position);
 			
+			if(!isCheck(board, new Move(moveString, this.)))
 			// gets possible moves for playing-piece:
 			ArrayList<Move> possibleMoves = figur.getPossibleMoves(board, player);
 			
