@@ -223,16 +223,7 @@ public class General implements Figur,Serializable {
 		return false;
 	}
 	
-	public boolean isCheckCannon(char[][] boardMatrix, boolean isRed) {
-		char enemyCannon;
-		if (isRed) {
-			enemyCannon = 'c';
-		}
-		else {
-			enemyCannon = 'C';
-		}
-		
-		// right horizontally
+	public boolean cannonRight(char[][] boardMatrix, boolean isRed, char enemyCannon) {
 		boolean figurBefore = false;
 		for (int i = position.getRow() + 1; i < boardMatrix.length; i++) {
 			if (boardMatrix[i][position.getColumn()] == '0') {
@@ -255,9 +246,10 @@ public class General implements Figur,Serializable {
 				}
 			}
 		}
-		
-		// left horizontally
-		figurBefore = false;
+		return false;
+	}
+	public boolean cannonLeft(char[][] boardMatrix, boolean isRed, char enemyCannon) {
+		boolean figurBefore = false;
 		for (int i = position.getRow() - 1; i >= 0; i--) {
 			if (boardMatrix[i][position.getColumn()] == '0') {
 				continue;
@@ -279,9 +271,10 @@ public class General implements Figur,Serializable {
 				}
 			}
 		}
-		
-		// vertically backward
-		figurBefore = false;
+		return false;
+	}
+	public boolean cannonBack(char[][] boardMatrix, boolean isRed, char enemyCannon) {
+		boolean figurBefore = false;
 		for (int i = position.getColumn() + 1; i < boardMatrix[0].length; i++) {
 			if (boardMatrix[position.getRow()][i] == '0') {
 				continue;
@@ -303,8 +296,119 @@ public class General implements Figur,Serializable {
 				}
 			}
 		}
+		return false;
+	}
+	public boolean cannonForward(char[][] boardMatrix, boolean isRed, char enemyCannon) {
+		boolean figurBefore = false;
+		for (int i = position.getColumn() - 1; i >= 0; i--) {
+			if (boardMatrix[position.getRow()][i] == '0') {
+				continue;
+			}
+			else if (boardMatrix[position.getRow()][i] != '0') {
+				// if first figure on the way found go further
+				if (!figurBefore) {
+					figurBefore = true;
+					continue;
+				}
+				else {
+					// if next figure after that cannon, then check
+					if (boardMatrix[position.getRow()][i] == enemyCannon) {
+						return true;
+					}
+					else {
+						break;
+					}
+				}
+			}
+		}
+		return false;
+	}
+	
+	public boolean isCheckCannon(char[][] boardMatrix, boolean isRed) {
+		char enemyCannon;
+		if (isRed) {
+			enemyCannon = 'c';
+		}
+		else {
+			enemyCannon = 'C';
+		}
 		
-		figurBefore = false;
+		// right horizontally
+		/*boolean figurBefore = false;
+		for (int i = position.getRow() + 1; i < boardMatrix.length; i++) {
+			if (boardMatrix[i][position.getColumn()] == '0') {
+				continue;
+			}
+			else if (boardMatrix[i][position.getColumn()] != '0') {
+				// if first figure on the way found go further
+				if (!figurBefore) {
+					figurBefore = true;
+					continue;
+				}
+				else {
+					// if next figure after that cannon, then check
+					if (boardMatrix[i][position.getColumn()] == enemyCannon) {
+						return true;
+					}
+					else {
+						break;
+					}
+				}
+			}
+		}*/
+		boolean right = cannonRight(boardMatrix, isRed, enemyCannon);
+		
+		// left horizontally
+		/*figurBefore = false;
+		for (int i = position.getRow() - 1; i >= 0; i--) {
+			if (boardMatrix[i][position.getColumn()] == '0') {
+				continue;
+			}
+			else if (boardMatrix[i][position.getColumn()] != '0') {
+				// if first figure on the way found go further
+				if (!figurBefore) {
+					figurBefore = true;
+					continue;
+				}
+				else {
+					// if next figure after that cannon, then check
+					if (boardMatrix[i][position.getColumn()] == enemyCannon) {
+						return true;
+					}
+					else {
+						break;
+					}
+				}
+			}
+		}*/
+		boolean left = cannonLeft(boardMatrix, isRed, enemyCannon);
+		
+		// vertically backward
+		/*figurBefore = false;
+		for (int i = position.getColumn() + 1; i < boardMatrix[0].length; i++) {
+			if (boardMatrix[position.getRow()][i] == '0') {
+				continue;
+			}
+			else if (boardMatrix[position.getRow()][i] != '0') {
+				// if first figure on the way found go further
+				if (!figurBefore) {
+					figurBefore = true;
+					continue;
+				}
+				else {
+					// if next figure after that cannon, then check
+					if (boardMatrix[position.getRow()][i] == enemyCannon) {
+						return true;
+					}
+					else {
+						break;
+					}
+				}
+			}
+		}*/
+		boolean back = cannonBack(boardMatrix, isRed, enemyCannon);
+		
+		/*figurBefore = false;
 		// vertically forward
 		for (int i = position.getColumn() - 1; i >= 0; i--) {
 			if (boardMatrix[position.getRow()][i] == '0') {
@@ -326,6 +430,10 @@ public class General implements Figur,Serializable {
 					}
 				}
 			}
+		}*/
+		boolean forward = cannonForward(boardMatrix, isRed, enemyCannon);
+		if( right || left || back || forward ) {
+			return true;
 		}
 		
 		return false;
