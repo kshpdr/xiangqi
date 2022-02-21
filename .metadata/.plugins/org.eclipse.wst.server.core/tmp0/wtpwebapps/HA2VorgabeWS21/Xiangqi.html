@@ -1,0 +1,269 @@
+<!DOCTYPE html> 
+<html>
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+<title>SWTPP Game Server: Xiangqi</title>
+
+<meta name="viewport" content="width=980px, initial-scale=1">
+
+<link rel="stylesheet" href="css/normalize-2.1.2.min.css" />
+<link rel="stylesheet" href="css/site2.css" />
+<link rel="stylesheet" href="css/chessboard.css" />
+<link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+
+<script src="js/json3.min.js"></script>
+<script src="js/jquery-1.10.1.min.js"></script>
+<script src="js/prettify.js"></script>
+<script src="js/xiangqiboard.js"></script>
+
+<script src="js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<link rel="stylesheet" href="css/game.css">
+ 
+</head>
+
+<body>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+	<div class="container">
+		<div class="navbar-header">
+			<a class="navbar-brand" href="main.html">SWTPP Game Server</a>
+		</div>
+		<div class="navbar-collapse collapse">
+			<ul class="nav navbar-nav navbar-right">
+				<li><p class="navbar-text">Current User: <span id="username"></span></p></li>
+				<li><a href="logout.html">Log off</a>
+			</ul>
+		</div>
+	</div>
+</nav>
+
+<div class="container">
+	<div id="mainpanel" class="panel panel-default">
+		<div class="panel-heading">
+			<h1>Xiangqi &ndash; Game <span id="gameID">N</span></h1>
+		</div>
+		<div class="panel-body">
+			<div class="col-sm-4">
+				<h3>Status:</h3>
+				<p id="status">N/A</p>
+				<p id="info"></p>
+				<p>
+					<span class="player-label">Black Player:</span>
+					<span id="black">N/A</span>
+				</p>
+				<p>
+					<span class="player-label">Red Player:</span>
+					<span id="red">N/A</span>
+				</p>
+				<div class="btn-group">
+					<div class="btn btn-danger" id="giveUpBtn">Give Up</div> 
+					<div class="btn btn-warning" id="drawBtn">Call Draw</div>
+				</div>
+			</div>
+			
+			<div class="col-sm-6" style="min-width: 500px;">
+				<div id="board" style="width: 450px; margin: 0 auto;">
+				</div>
+			</div>
+		</div>
+	</div>
+</div> 
+
+<script>
+
+var board;
+var gameID;
+
+function isTouchDevice() {
+  return ('ontouchstart' in document.documentElement);
+}
+
+
+/*
+ * sends any message with given params to servlet and returns response
+ */
+function sendGETMessage(params, callback) {
+	var request = new XMLHttpRequest();
+
+	request.open('GET', '/GameServer/GameServerServlet?' + params, true);  // `false` makes the request synchronous
+	request.onload = callback
+	
+	request.send(params);
+	
+	return request.response
+}
+
+// reload display to show new data
+function update() {
+	window.location.href = "/GameServer/Xiangqi.html?gameID=" + gameID;
+}
+
+function giveUp() {
+	sendGETMessage('usecase=giveUp&gameID=' + gameID, update);
+}
+
+function callDraw() {
+	sendGETMessage('usecase=callDraw&gameID=' + gameID, update);
+}
+
+function moveRequest(source, target) {
+	sendGETMessage('usecase=trymove&gameID=' + gameID + '&move=' + source + '-' + target, update)
+}
+
+
+$(document).ready(() => {
+	// parse request parameters for game ID or command
+	const parameters = new URLSearchParams(window.location.search);
+	var params, updateUrl = true;
+	
+	if (parameters.has('haskell')) {
+		// start new game against haskell bot
+		params = 'usecase=startgame&type=xiangqi&bots=haskell';
+	} else if (parameters.has('start')) {
+		// start new game without bots
+		params = 'usecase=startgame&type=xiangqi&bots=';
+	} else if (parameters.has('join')) {
+		// join any existing game
+		params = 'usecase=joingame&type=xiangqi';
+	} else {
+		// display data of game with id gameID
+		gameID = parameters.get('gameID');
+		params = 'usecase=getgamedata&gameID=' + gameID;
+		updateUrl = false;
+	}
+	
+	$.get('/GameServer/GameServerServlet?' + params, params, responseText => {
+		if (responseText == 'nogame') {
+			// no waiting games- back to main
+			alert("No games waiting");
+			window.location.href = "/GameServer/main.html";
+			
+		} else if (responseText == '') {
+			// something went wrong - back to index
+			window.location.href = "/GameServer/index.html";
+			return;
+		}
+		
+		// display data of joined game
+		var gameDataJSON = jQuery.parseJSON(responseText);
+		
+		// Change the URL so refreshing won't create a new game
+		const title = `Xiangqi - Game ${gameDataJSON.gameID}`;
+		const url = `/GameServer/Xiangqi.html?gameID=${gameDataJSON.gameID}`;
+		window.history.replaceState({}, title, url);
+		
+		$('#username').html(gameDataJSON.requestedby);
+		displayBoard(gameDataJSON);
+	  
+		if (!gameDataJSON.yourturn && !(gameDataJSON.status =='Finished')) {
+			// update display after 5s
+			setTimeout(updateGame, 5000, gameDataJSON.gameID);
+		}
+	}, 'text')
+	.fail(() => window.location.href = "/GameServer/index.html");
+});
+
+
+function updateGame(gameId) {
+	const params = 'usecase=getgamedata&gameID=' + gameId;
+	$.get('/GameServer/GameServerServlet?' + params, game => {
+		$("#username").text(game.requestedby);
+		displayBoard(game);
+
+		if (!game.yourturn && game.status !== 'Finished') {
+			// update display after 5s
+			setTimeout(updateGame, 1000, gameId)
+		}
+	}, 'json');
+}
+
+
+/*
+ * updates html display with all data delivered in json gameData
+ */
+function displayBoard(gameData) {
+	gameID = gameData.gameID;
+	
+	// display data and register callbacks
+	$('#gameID').html(gameID);
+	$('#red').html(gameData.players[0]);
+	$('#giveUpBtn').on('click', giveUp);
+	$('#drawBtn').on('click', callDraw);
+	
+	var myturn = false;
+	// update status fields
+	if (gameData.status == 'Wait') {
+		$('#status').html('Waiting for second player to enter game.');
+	} else {
+		$('#black').html(gameData.players[1]);
+		$('#info').html(gameData.info);
+		if (gameData.status == 'Finished') {
+			$('#status').html('Game over.'); 
+		} else if (gameData.status == 'Surrendered') {
+			$('#status').html('Game over'); 
+			// something else?	
+		} else if (gameData.status == 'Draw') {
+			$('#status').html('Game over'); 
+			// something else?
+		} else {
+			if (gameData.yourturn) {
+				$('#status').html('Your turn.'); 
+				myturn = true
+			} else {
+				$('#status').html('Other player\'s turn.');
+			}
+		}
+	}
+	
+	if (myturn) {
+		// if it's my turn- enable drag and drop of figures 
+		var onDrop = function(source, target, piece, newPos, oldPos, orientation) {
+				if(source === 'spare') {
+					moveRequest(piece, target);
+				} else {
+					moveRequest(source, target);
+				}
+			  };
+		
+		// create active board
+		board = new Board('board', {
+		    draggable: true,
+		    dropOffBoard: 'snapback',
+		    sparePieces: false, 
+		    onDrop: onDrop,
+		    showErrors: 'alert',
+		    position: gameData.board
+		  });
+		
+	} else {
+		// not my turn: create passive board
+		board = new Board('board', {
+		    draggable: false,
+		    dropOffBoard: 'snapback',
+		    sparePieces: false,
+		    showErrors: 'alert',
+		    position: gameData.board
+		});
+	}
+	
+  prettyPrint();
+
+  // prevent "browser drag" of the black king
+  //$('#hero img').on('mousedown', function(e) { e.preventDefault(); });
+  $('#hero img').on('mousedown', function(e) { e.preventDefault(); });
+
+  // prevent hover problems on touch devices
+  if (isTouchDevice() === true) {
+    $('#start').removeClass('hover-effect');
+  }
+}
+
+</script>
+</body>
+
+</html>
+
+

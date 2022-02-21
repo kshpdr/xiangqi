@@ -1,6 +1,10 @@
 package de.tuberlin.sese.swtpp.gameserver.model.xiangqi;
 
-public class Position {
+import java.io.Serializable;
+
+import de.tuberlin.sese.swtpp.gameserver.model.Move;
+
+public class Position implements Serializable{
 	private int row;
 	private int column;
 	
@@ -41,11 +45,43 @@ public class Position {
 	public static void main(String[] args) {
 		System.out.print(positionToString(new Position(9, 0)));
 	}
+	
 	public boolean isRed(Board board) {
-		char Fig = board.getBoardMatrix()[this.row ][this.column];	
-		if ("GAEHRCS".indexOf(Fig) != -1) return true;
+		char CharOfFigur = board.getBoardMatrix()[this.row ][this.column];	
+		if ("GAEHRCS".indexOf(CharOfFigur) != -1) return true;
 		return false;
 	}
-
+	
+	public boolean onBoard() {
+		
+		if(this.row >= 0 && this.row < 10 && this.column >= 0 && this.column < 9) {
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean otherPlayerOnTargetField(Board board, Position newPosition) {
+		
+		if((this.isRed(board) && !newPosition.isRed(board)) || (!this.isRed(board) && newPosition.isRed(board))) {
+			return true;
+		}
+		return false;
+	}
+	
+	public String moveString(Position newPosition) {
+		
+		// returns oldColumn oldRow - newColumn newRow
+		String stringRow = "9876543210";
+		String stringCol = "abcdefghi";
+		
+		int x1 = this.row;
+		int y1 = this.column;
+		
+		int x2 = newPosition.getRow();
+		int y2 = newPosition.getColumn();
+		
+		return stringCol.charAt(y1) + stringRow.charAt(x1) + "-" + stringCol.charAt(y2) + stringRow.charAt(x2);
+	}
+	
 
 }

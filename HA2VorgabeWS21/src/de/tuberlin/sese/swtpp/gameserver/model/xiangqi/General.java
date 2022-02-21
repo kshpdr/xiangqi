@@ -1,11 +1,14 @@
 package de.tuberlin.sese.swtpp.gameserver.model.xiangqi;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import de.tuberlin.sese.swtpp.gameserver.model.Move;
 import de.tuberlin.sese.swtpp.gameserver.model.Player;
 
-public class General implements Figur {
+public class General implements Figur,Serializable {
+	private static final long serialVersionUID = 5424778147226994452L;
+	
 	//attributes
 	private Position position;
 	
@@ -20,7 +23,7 @@ public class General implements Figur {
 	public Position getPosition() {
 		return position;
 	}
-	public ArrayList<Move> getPossibleMoves(Position position,  Board board, Player player){
+	public ArrayList<Move> getPossibleMoves( Board board, Player player){
 		ArrayList<Move> moves = new ArrayList<>();
 		int reihe = 0;
 		int column = 3;
@@ -37,8 +40,8 @@ public class General implements Figur {
 				
 				Position possibleGoal = new Position(row, col);
 				String moveString = Position.positionToString(position) + '-' + Position.positionToString(possibleGoal);
-				Move move = new Move(moveString, board.boardState, player);
-				if (!((Math.abs(position.getRow() - row) == 1) && (Math.abs(position.getColumn() - col) == 1)) && !isThreatened(board, move) && ((Math.abs(position.getRow() - row)<2) && (Math.abs(position.getColumn() - col)< 2))) {
+				Move move = new Move(moveString, board.getBoardState(), player);
+				if (!((Math.abs(position.getRow() - row) == 1) && (Math.abs(position.getColumn() - col) == 1)) && !isThreatened(board, move) && !isCheck(board, move, player) && ((Math.abs(position.getRow() - row)<2) && (Math.abs(position.getColumn() - col)< 2))) {
 					moves.add(move);
 				}
 			}
@@ -47,60 +50,360 @@ public class General implements Figur {
 	}
 	public General checkColour(Board board, General general) {
 		General that;
-		if(board.getBlackGeneral() == general) {
-			that = board.getRedGeneral();	
+		if(board.getBlackGeneralFromBoard() == general) {
+			that = board.getRedGeneralFromBoard();	
 		}
 		else {
-			that = board.getBlackGeneral();
+			that = board.getBlackGeneralFromBoard();
 		}
 		return that;
 	}
 	
 	public boolean isThreatened(Board board, Move move) {
-		char[][] boardBuf = board.boardMatrix.clone();			//copy of board
+		
+		// copies board:
+		Board boardBuf = new Board(board.getBoardState());
+		
 		General that = checkColour(board, this);
+		
 		char match;
-		if(board.getBlackGeneral() == this) {	
+		if(board.getBlackGeneralFromBoard() == this) {	
 			match = 'G';
 		}
 		else {
 			match = 'g';
 		}
-		Position start = Position.stringToPosition(move.getMove().split("-")[0]);	//get a numeric position of start and goal position
+		
+		Position start = Position.stringToPosition(move.getMove().split("-")[0]);	
 		Position goal = Position.stringToPosition(move.getMove().split("-")[1]);
-		boardBuf[goal.getRow()][goal.getColumn()] = boardBuf[start.getRow()][start.getColumn()]; //make move
-		boardBuf[start.getRow()][start.getColumn()] = '0';
-		if(this.getPosition().getColumn() == that.getPosition().getColumn()) { 	// if generals are on the same column, start check for threatening
-			for( int i = this.getPosition().getRow(); i < 10; i++) {					//go through each row on column of blackGeneral and check for other figures
-				if(!String.valueOf(boardBuf[i][this.getPosition().getColumn()]).matches("[" + match+ "0]")) {	//if we find some other figure on the way, return false
+		
+		boardBuf.getBoardMatrix()[goal.getRow()][goal.getColumn()] = boardBuf.getBoardMatrix()[start.getRow()][start.getColumn()]; 
+		boardBuf.getBoardMatrix()[start.getRow()][start.getColumn()] = '0';
+		
+		// checks whether generals in same column:
+		if(this.getPosition().getColumn() == that.getPosition().getColumn()) {
+			
+			for( int i = this.getPosition().getRow(); i < 10; i++) {					
+				if(!String.valueOf(boardBuf.getBoardMatrix()[i][this.getPosition().getColumn()]).matches("[" + match+ "0]")) {	
 					return false;
 				}
-				if(boardBuf[i][this.getPosition().getColumn()] == match) {
+				if(boardBuf.getBoardMatrix()[i][this.getPosition().getColumn()] == match) {
 					return true;
 				}																			// we find enemy general
 			}
 		}
 		return false;
 	}
-	public boolean isCheck(Player player, Board board) {
-		ArrayList<Figur> figsToCheck;
-		if(this.getPosition().getRow() < 3) {				//means we have black general
-			figsToCheck = board.redFigures;
+	
+	
+//	public boolean isCheck(Board board, Move move, Player player) {
+//		
+//		// copies board:
+//		Board boardBuf = new Board(board.getBoardState());
+//		
+//		ArrayList<Figur> figsToCheck;
+//		
+//		Position start = Position.stringToPosition(move.getMove().split("-")[0]);	
+//		Position goal = Position.stringToPosition(move.getMove().split("-")[1]);
+//		
+//		// checks whether targetPosition is occupied:
+//		if(boardBuf.getBoardMatrix()[goal.getRow()][goal.getColumn()] != '0') {
+//			// deletes playing-piece on targetPosition from list of figures:
+//			boardBuf.deleteFigure(new Position(goal.getRow(), goal.getColumn()));	
+//		}
+//		
+//		if(this.getPosition().getRow() < 3) {				
+//			figsToCheck = board.getRedFigures();
+//		}
+//		else {												
+//			figsToCheck = board.getBlackFigures();
+//		}
+//		
+//		boardBuf.getBoardMatrix()[goal.getRow()][goal.getColumn()] = boardBuf.getBoardMatrix()[start.getRow()][start.getColumn()]; 
+//		boardBuf.getBoardMatrix()[start.getRow()][start.getColumn()] = '0';
+//		
+//		// iterates over enemyFigures:
+//		for(Figur afigure : figsToCheck) {
+//			ArrayList<Move> possibleMoves = afigure.getPossibleMoves(board, player);
+//			
+//			// iterates over possible Moves:
+//			for(Move amove : possibleMoves) {	
+//				
+//				// checks whether general on targetPosition:
+//				if((amove.getMove().split("-")[1]).equals(Position.positionToString(afigure.getPosition()))) {	
+//					return true;
+//				}
+//			}
+//		}
+//		
+//		return false;
+//	}
+	
+	public boolean isCheck(Board board, Move move, Player player) {
+		// copies board:
+		Board boardBuf = new Board(board.getBoardState());
+		boolean isRed = position.isRed(board);
+		
+		Position start = Position.stringToPosition(move.getMove().split("-")[0]);	
+		Position goal = Position.stringToPosition(move.getMove().split("-")[1]);
+		
+		boardBuf.getBoardMatrix()[goal.getRow()][goal.getColumn()] = boardBuf.getBoardMatrix()[start.getRow()][start.getColumn()]; 
+		boardBuf.getBoardMatrix()[start.getRow()][start.getColumn()] = '0';
+
+		// ROOK & CANNON
+		if (isCheckRook(boardBuf.getBoardMatrix(), isRed) || isCheckCannon(boardBuf.getBoardMatrix(), isRed) || isCheckHorse(boardBuf.getBoardMatrix(), isRed) || isCheckSoldier(boardBuf.getBoardMatrix(), isRed)) {
+			return true;
 		}
-		else {												//we have red general, so check black figures if they may be dangerous
-			figsToCheck = board.blackFigures;
+		
+		return false;
+	}
+	
+	public boolean isCheckRook(char[][] boardMatrix, boolean isRed) {
+		char enemyRook;
+		if (isRed) {
+			enemyRook = 'r';
 		}
-		for(Figur afigure : figsToCheck) {
-			ArrayList<Move> possibleMoves = afigure.getPossibleMoves(afigure.getPosition(), board, player);
-			
-			for(Move amove : possibleMoves) {													//iterate through all possible moves of figure and 
-				if(amove.getMove().split("-")[1] == Position.positionToString(afigure.getPosition())) {		//check if the goal position equals position of general, return true if so
-					return true;
+		else {
+			enemyRook = 'R';
+		}
+		
+		// ROOK
+		// right horizontally
+		for (int i = position.getColumn() + 1; i < boardMatrix.length; i++) {
+			if (boardMatrix[position.getRow()][i] == '0') {
+				continue;
+			}
+			else if (boardMatrix[position.getRow()][i] != enemyRook) {
+				break;
+			}
+			else if (boardMatrix[position.getRow()][i] == enemyRook) {
+				return true;
+			}
+		}
+		
+		// left horizontally
+		for (int i = position.getColumn() - 1; i >= 0; i--) {
+			if (boardMatrix[position.getRow()][i] == '0') {
+				continue;
+			}
+			else if (boardMatrix[position.getRow()][i] != enemyRook) {
+				break;
+			}
+			else if (boardMatrix[position.getRow()][i] == enemyRook) {
+				return true;
+			}
+		}
+		
+		// vertically backward
+		for (int i = position.getRow() + 1; i < boardMatrix[0].length; i++) {
+			if (boardMatrix[i][position.getColumn()] == '0') {
+				continue;
+			}
+			else if (boardMatrix[i][position.getColumn()] != enemyRook) {
+				break;
+			}
+			else if (boardMatrix[i][position.getColumn()] == enemyRook) {
+				return true;
+			}
+		}
+		
+		// vertically forward
+		for (int i = position.getRow() - 1; i >= 0; i--) {
+			if (boardMatrix[i][position.getColumn()] == '0') {
+				continue;
+			}
+			else if (boardMatrix[i][position.getColumn()] != enemyRook) {
+				break;
+			}
+			else if (boardMatrix[i][position.getColumn()] == enemyRook) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	public boolean isCheckCannon(char[][] boardMatrix, boolean isRed) {
+		char enemyCannon;
+		if (isRed) {
+			enemyCannon = 'c';
+		}
+		else {
+			enemyCannon = 'C';
+		}
+		
+		// right horizontally
+		boolean figurBefore = false;
+		for (int i = position.getRow() + 1; i < boardMatrix.length; i++) {
+			if (boardMatrix[i][position.getColumn()] == '0') {
+				continue;
+			}
+			else if (boardMatrix[i][position.getColumn()] != '0') {
+				// if first figure on the way found go further
+				if (!figurBefore) {
+					figurBefore = true;
+					continue;
+				}
+				else {
+					// if next figure after that cannon, then check
+					if (boardMatrix[i][position.getColumn()] == enemyCannon) {
+						return true;
+					}
+					else {
+						break;
+					}
 				}
 			}
 		}
 		
+		// left horizontally
+		figurBefore = false;
+		for (int i = position.getRow() - 1; i >= 0; i--) {
+			if (boardMatrix[i][position.getColumn()] == '0') {
+				continue;
+			}
+			else if (boardMatrix[i][position.getColumn()] != '0') {
+				// if first figure on the way found go further
+				if (!figurBefore) {
+					figurBefore = true;
+					continue;
+				}
+				else {
+					// if next figure after that cannon, then check
+					if (boardMatrix[i][position.getColumn()] == enemyCannon) {
+						return true;
+					}
+					else {
+						break;
+					}
+				}
+			}
+		}
 		
+		// vertically backward
+		figurBefore = false;
+		for (int i = position.getColumn() + 1; i < boardMatrix[0].length; i++) {
+			if (boardMatrix[position.getRow()][i] == '0') {
+				continue;
+			}
+			else if (boardMatrix[position.getRow()][i] != '0') {
+				// if first figure on the way found go further
+				if (!figurBefore) {
+					figurBefore = true;
+					continue;
+				}
+				else {
+					// if next figure after that cannon, then check
+					if (boardMatrix[position.getRow()][i] == enemyCannon) {
+						return true;
+					}
+					else {
+						break;
+					}
+				}
+			}
+		}
+		
+		figurBefore = false;
+		// vertically forward
+		for (int i = position.getColumn() - 1; i >= 0; i--) {
+			if (boardMatrix[position.getRow()][i] == '0') {
+				continue;
+			}
+			else if (boardMatrix[position.getRow()][i] != '0') {
+				// if first figure on the way found go further
+				if (!figurBefore) {
+					figurBefore = true;
+					continue;
+				}
+				else {
+					// if next figure after that cannon, then check
+					if (boardMatrix[position.getRow()][i] == enemyCannon) {
+						return true;
+					}
+					else {
+						break;
+					}
+				}
+			}
+		}
+		
+		return false;
+	}
+	
+	public boolean isCheckHorse(char[][] boardMatrix, boolean isRed) {
+		
+		char enemyHorse;
+		
+		if(isRed) {
+			enemyHorse = 'h';
+		}
+		else {
+			enemyHorse = 'H';
+		}
+		
+		// current row/column of general:
+		int row = position.getRow();
+		int col = position.getColumn();
+		
+		
+		/*
+		 * inverted HorseMove: first one step diagonal, then one step up/down/left/right
+		 * (Horse can't jump)
+		 */
+		
+		
+		int[][] diagoArray = {{row+1,col+1},{row-1,col-1},{row+1,col-1},{row-1,col+1}};
+		int[][] movesArray = {{row+2,col+1},{row+1,col+2},{row-2,col-1},{row-1,col-2},{row+1,col-2},{row+2,col-1},{row-1,col+2},{row-2,col+1}};
+
+		// iterates over diagoArray:
+		for(int i = 0; i < 4; i++) {
+			
+			// checks whether "diagonal" position is on board:
+			if(new Position(diagoArray[i][0], diagoArray[i][1]).onBoard()) {
+				
+				// horse can't jump:
+				if(boardMatrix[diagoArray[i][0]][diagoArray[i][1]] == '0') {
+					
+					// iterates over possible moves for each direction:		
+					for(int j = 0; j < 2; j++) {
+						
+						// new position:
+						Position newPos = new Position(movesArray[2*i+j][0],movesArray[2*i+j][1]);
+						
+						// checks whether position is on board:
+						if(newPos.onBoard()) {
+							
+							// checks whether field is occupied by enemyHorse:
+							if(boardMatrix[movesArray[2*i+j][0]][movesArray[2*i+j][1]] == enemyHorse) {
+								return true;
+							}	
+						}
+					}	
+				}
+			}
+		}	
+		return false;	
+	}
+	
+	public boolean isCheckSoldier(char[][] boardMatrix, boolean isRed) {
+		char enemySoldier;
+		int stepRow;
+		if(isRed) {
+			enemySoldier = 's';
+			stepRow = -1;
+		}
+		else {
+			enemySoldier = 'S';
+			stepRow = 1;
+		}
+		
+		char left = boardMatrix[position.getRow()][position.getColumn() - 1];
+		char right = boardMatrix[position.getRow()][position.getColumn() + 1];
+		char step = boardMatrix[position.getRow() + stepRow][position.getColumn()];
+		if(left == enemySoldier || right == enemySoldier || step == enemySoldier) {
+			return true;
+		}
 		return false;
 	}
 }

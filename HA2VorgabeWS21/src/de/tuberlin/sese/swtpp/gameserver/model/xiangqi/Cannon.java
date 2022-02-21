@@ -1,23 +1,32 @@
 package de.tuberlin.sese.swtpp.gameserver.model.xiangqi;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import de.tuberlin.sese.swtpp.gameserver.model.Move;
 import de.tuberlin.sese.swtpp.gameserver.model.Player;
 
-public class Cannon implements Figur {
+public class Cannon implements Figur,Serializable {
 	
 	Position position;
 	
 	public Cannon (Position position) {
 		this.position = position;
 	}
+	
+	public Position getPosition() {
+		return position;
+	}
+	
+	@Override
+	public void setPosition(Position position) {
+		this.position = position;
+	}
 
 	
 	// TODO: add check on todesBlick after all checks of figures
-	// TODO: ob zwei oder mehr figuren dazwischen stehen dürfen
 	@Override
-	public ArrayList<Move> getPossibleMoves(Position position, Board board, Player player) {
+	public ArrayList<Move> getPossibleMoves(Board board, Player player) {
 		ArrayList<Move> possibleMoves = new ArrayList<Move>();
 		
 		possibleMoves.addAll(rightMoves(position, board, player));
@@ -39,29 +48,31 @@ public class Cannon implements Figur {
 		ArrayList<Move> possibleMoves = new ArrayList<Move>();
 		General friendGeneral = board.getFriendGeneral(position);
 		boolean figureBefore = false;
-		for (int i = position.getColumn() + 1; i < board.getCurrentBoard()[0].length; i++) {
+		for (int i = position.getColumn() + 1; i < board.getBoardMatrix()[0].length; i++) {
 			Position target = new Position(position.getRow(), i);
 			String move = createMoveFromPositions(position, target);
 			
 			// check whether first figure on the way was found
 			if (figureBefore) {
 				// if so, then check, whether an enemy figure appear afterwards
-				if ((position.isRed(board) && Character.toString(board.getCurrentBoard()[position.getRow()][i]).matches("[gaehrcs]")) || (!position.isRed(board) && Character.toString(board.getCurrentBoard()[position.getRow()][i]).matches("[GAEHRCS]"))){
-					possibleMoves.add(new Move(move, board.getBoardState(), player));
-					break;
+				if ((position.isRed(board) && Character.toString(board.getBoardMatrix()[position.getRow()][i]).matches("[gaehrcs]")) || (!position.isRed(board) && Character.toString(board.getBoardMatrix()[position.getRow()][i]).matches("[GAEHRCS]"))){
+					if (!friendGeneral.isThreatened(board, new Move(move, board.getBoardState(), player)) && !board.getFriendGeneral(position).isCheck(board, new Move(move, board.getBoardState(), player), player)) {
+						possibleMoves.add(new Move(move, board.getBoardState(), player));
+						break;	
+					}
 				}
 				else {
 					continue;
 				}
 			}
 			// when first figure on the way found
-			else if (board.getCurrentBoard()[position.getRow()][i] != '0') {
+			else if (board.getBoardMatrix()[position.getRow()][i] != '0') {
 				figureBefore = true;
 				continue;
 			}
 			// check whether general is threatened
-			//if (!friendGeneral.isThreatened(move)) {
-			if (true) {
+			if (!friendGeneral.isThreatened(board, new Move(move, board.getBoardState(), player)) && !board.getFriendGeneral(position).isCheck(board, new Move(move, board.getBoardState(), player), player)) {
+			//if (true) {
 				possibleMoves.add(new Move(move, board.getBoardState(), player));
 			}
 		}
@@ -80,23 +91,25 @@ public class Cannon implements Figur {
 			// check whether first figure on the way was found
 			if (figureBefore) {
 				// if so, then check, whether an enemy figure appear afterwards
-				if ((position.isRed(board) && Character.toString(board.getCurrentBoard()[position.getRow()][i]).matches("[gaehrcs]")) || (!position.isRed(board) && Character.toString(board.getCurrentBoard()[position.getRow()][i]).matches("[GAEHRCS]"))){
-					possibleMoves.add(new Move(move, board.getBoardState(), player));
-					break;
+				if ((position.isRed(board) && Character.toString(board.getBoardMatrix()[position.getRow()][i]).matches("[gaehrcs]")) || (!position.isRed(board) && Character.toString(board.getBoardMatrix()[position.getRow()][i]).matches("[GAEHRCS]"))){
+					if (!friendGeneral.isThreatened(board, new Move(move, board.getBoardState(), player)) && !board.getFriendGeneral(position).isCheck(board, new Move(move, board.getBoardState(), player), player)) {
+						possibleMoves.add(new Move(move, board.getBoardState(), player));
+						break;
+					}
 				}
 				else {
 					continue;
 				}
 			}
 			// when first figure on the way found
-			else if (board.getCurrentBoard()[position.getRow()][i] != '0') {
+			else if (board.getBoardMatrix()[position.getRow()][i] != '0') {
 				figureBefore = true;
 				continue;
 			}	
 			
 			// check whether general is threatened
-			//if (!friendGeneral.isThreatened(move)) {
-			if (true) {
+			if (!friendGeneral.isThreatened(board, new Move(move, board.getBoardState(), player)) && !board.getFriendGeneral(position).isCheck(board, new Move(move, board.getBoardState(), player), player)) {
+			//if (true) {
 				possibleMoves.add(new Move(move, board.getBoardState(), player));
 			}
 		}
@@ -115,23 +128,25 @@ public class Cannon implements Figur {
 			// check whether first figure on the way was found
 			if (figureBefore) {
 				// if so, then check, whether an enemy figure appear afterwards
-				if ((position.isRed(board) && Character.toString(board.getCurrentBoard()[i][position.getColumn()]).matches("[gaehrcs]")) || (!position.isRed(board) && Character.toString(board.getCurrentBoard()[i][position.getColumn()]).matches("[GAEHRCS]"))){
-					possibleMoves.add(new Move(move, board.getBoardState(), player));
-					break;
+				if ((position.isRed(board) && Character.toString(board.getBoardMatrix()[i][position.getColumn()]).matches("[gaehrcs]")) || (!position.isRed(board) && Character.toString(board.getBoardMatrix()[i][position.getColumn()]).matches("[GAEHRCS]"))){
+					if (!friendGeneral.isThreatened(board, new Move(move, board.getBoardState(), player)) && !friendGeneral.isCheck(board, new Move(move, board.getBoardState(), player), player)) {
+						possibleMoves.add(new Move(move, board.getBoardState(), player));
+						break;
+					}
 				}
 				else {
 					continue;
 				}
 			}
 			// when first figure on the way found
-			else if (board.getCurrentBoard()[i][position.getColumn()] != '0') {
+			else if (board.getBoardMatrix()[i][position.getColumn()] != '0') {
 				figureBefore = true;
 				continue;
 			}		
 			
 			// check whether general is threatened
-			//if (!friendGeneral.isThreatened(move)) {
-			if (true) {
+			if (!friendGeneral.isThreatened(board, new Move(move, board.getBoardState(), player)) && !friendGeneral.isCheck(board, new Move(move, board.getBoardState(), player), player)) {
+			//if (true) {
 				possibleMoves.add(new Move(move, board.getBoardState(), player));
 			}
 		}
@@ -142,37 +157,36 @@ public class Cannon implements Figur {
 		ArrayList<Move> possibleMoves = new ArrayList<Move>();
 		General friendGeneral = board.getFriendGeneral(position);
 		boolean figureBefore = false;
-		for (int i = position.getRow() + 1; i < board.getCurrentBoard().length; i++) {
+		for (int i = position.getRow() + 1; i < board.getBoardMatrix().length; i++) {
 			Position target = new Position(i, position.getColumn());
 			String move = createMoveFromPositions(position, target);
 			
 			// check whether first figure on the way was found
 			if (figureBefore) {
 				// if so, then check, whether an enemy figure appear afterwards
-				if ((position.isRed(board) && Character.toString(board.getCurrentBoard()[i][position.getColumn()]).matches("[gaehrcs]")) || (!position.isRed(board) && Character.toString(board.getCurrentBoard()[i][position.getColumn()]).matches("[GAEHRCS]"))){
-					possibleMoves.add(new Move(move, board.getBoardState(), player));
-					break;
+				if ((position.isRed(board) && Character.toString(board.getBoardMatrix()[i][position.getColumn()]).matches("[gaehrcs]")) || (!position.isRed(board) && Character.toString(board.getBoardMatrix()[i][position.getColumn()]).matches("[GAEHRCS]"))){
+					if (!friendGeneral.isThreatened(board, new Move(move, board.getBoardState(), player)) && !friendGeneral.isCheck(board, new Move(move, board.getBoardState(), player), player)) {
+						possibleMoves.add(new Move(move, board.getBoardState(), player));
+						break;	
+					}
 				}
 				else {
 					continue;
 				}
 			}
 			// when first figure on the way found
-			else if (board.getCurrentBoard()[i][position.getColumn()] != '0') {
+			else if (board.getBoardMatrix()[i][position.getColumn()] != '0') {
 				figureBefore = true;
 				continue;
 			}				
 			
 			// check whether general is threatened
-			//if (!friendGeneral.isThreatened(move)) {
-			if (true) {
+			if (!friendGeneral.isThreatened(board, new Move(move, board.getBoardState(), player)) && !friendGeneral.isCheck(board, new Move(move, board.getBoardState(), player), player)) {
+			//if (true) {
 				possibleMoves.add(new Move(move, board.getBoardState(), player));
 			}
 		}
 		return possibleMoves;
 	}
-	public Position getPosition() {
-		return position;
-	}
+		
 }
-
