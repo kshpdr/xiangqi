@@ -1,14 +1,24 @@
 package de.tuberlin.sese.swtpp.gameserver.model.xiangqi;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import de.tuberlin.sese.swtpp.gameserver.model.Move;
 import de.tuberlin.sese.swtpp.gameserver.model.Player;
 
-public class Soldier implements Figur {
+public class Soldier implements Figur,Serializable {
 	Position position;
 	
 	public Soldier(Position position) {
+		this.position = position;
+	}
+	
+	public Position getPosition() {
+		return position;
+	}
+	
+	@Override
+	public void setPosition(Position position) {
 		this.position = position;
 	}
 
@@ -64,8 +74,8 @@ public class Soldier implements Figur {
 			
 			// check if friendly figure stays on the forward target position
 			if (!Character.toString(board.getBoardMatrix()[targetForward.getRow()][targetForward.getColumn()]).matches(figurePattern)) {
-				//if (!friendGeneral.isThreatened(move)) {
-				if (true) {
+				if (!friendGeneral.isThreatened(board, new Move(moveForward, board.getBoardState(), player)) && !friendGeneral.isCheck(board, new Move(moveForward, board.getBoardState(), player), player)) {
+				//if (true) {
 					possibleMoves.add(new Move(moveForward, board.getBoardState(), player));
 				}
 			}
@@ -76,6 +86,7 @@ public class Soldier implements Figur {
 	public ArrayList<Move> moveLeft(Position position, Board board, Player player){
 		String figurePattern = "[GAEHRCS]";
 		ArrayList<Move> possibleMoves = new ArrayList<Move>();
+		General friendGeneral = board.getFriendGeneral(position);
 		// if black plays, then change the variable
 		if (!position.isRed(board)) {
 			figurePattern = "[gaehrcs]";
@@ -87,8 +98,8 @@ public class Soldier implements Figur {
 			
 			// check if friendly figure stays on the left target position
 			if (!Character.toString(board.getBoardMatrix()[targetLeft.getRow()][targetLeft.getColumn()]).matches(figurePattern)) {
-				//if (!friendGeneral.isThreatened(move)) {
-				if (true) {
+				if (!friendGeneral.isThreatened(board, new Move(moveLeft, board.getBoardState(), player)) && !friendGeneral.isCheck(board, new Move(moveLeft, board.getBoardState(), player), player)) {
+				//if (true) {
 					possibleMoves.add(new Move(moveLeft, board.getBoardState(), player));
 				}
 			}
@@ -99,6 +110,7 @@ public class Soldier implements Figur {
 	public ArrayList<Move> moveRight(Position position, Board board, Player player){
 		String figurePattern = "[GAEHRCS]";
 		ArrayList<Move> possibleMoves = new ArrayList<Move>();
+		General friendGeneral = board.getFriendGeneral(position);
 		// if black plays, then change the variable
 		if (!position.isRed(board)) {
 			figurePattern = "[gaehrcs]";
@@ -110,8 +122,8 @@ public class Soldier implements Figur {
 			
 			// check if friendly figure stays on the left target position
 			if (!Character.toString(board.getBoardMatrix()[targetRight.getRow()][targetRight.getColumn()]).matches(figurePattern)) {
-				//if (!friendGeneral.isThreatened(move)) {
-				if (true) {
+				if (!friendGeneral.isThreatened(board, new Move(moveRight, board.getBoardState(), player)) && !friendGeneral.isCheck(board, new Move(moveRight, board.getBoardState(), player), player)) {
+				//if (true) {
 					possibleMoves.add(new Move(moveRight, board.getBoardState(), player));
 				}
 			}
@@ -126,7 +138,4 @@ public class Soldier implements Figur {
 		return move;
 	}
 	
-	public Position getPosition() {
-		return position;
-	}
 }
