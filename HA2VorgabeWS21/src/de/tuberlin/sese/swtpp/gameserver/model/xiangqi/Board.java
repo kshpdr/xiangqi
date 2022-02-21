@@ -91,8 +91,15 @@ public class Board implements Serializable {
 		return blackFigures;
 	} 
 	
-	// ** USEFUL STUFF **
+	public General getRedGeneral() {
+		return this.redGeneral;
+	}
 	
+	public General getBlackGeneral() {
+		return this.blackGeneral;
+	}
+	
+	// ** USEFUL STUFF **
 	public ArrayList<Figur> getFiguresFromBoard(char[][] boardMatrix){
 		
 		ArrayList<Figur> figures = new ArrayList<>();
@@ -213,7 +220,7 @@ public String boardMatrixToBoardString() {
 				// appends counted empty positions and playing-piece char:
 				else {
 					if(count != 0) {
-						newString = newString + (char) count + this.boardMatrix[i][j];
+						newString = newString + (char)(count+'0') + this.boardMatrix[i][j];
 						count = 0;
 					}
 					else {
@@ -224,9 +231,9 @@ public String boardMatrixToBoardString() {
 				// end of row:
 				if(j == 8 && count != 0) {
 					// appends counted empty positions:
-					newString = newString + (char) count;
+					newString = newString + (char)(count+'0');
 				}
-				if(j == 8 && 0 < i && i < 9) {
+				if(j == 8 && i < 9) {
 					// appends '/' between rows:
 					newString = newString + '/';		
 				}	

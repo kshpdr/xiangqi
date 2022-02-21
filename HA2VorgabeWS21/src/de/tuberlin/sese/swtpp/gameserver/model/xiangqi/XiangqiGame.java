@@ -28,7 +28,7 @@ public class XiangqiGame extends Game implements Serializable{
 		super();
 		
 		// initialization of board:
-		this.board = new Board("rheagaehr/9/1c5c1/s1s1s1s1s/9/S8/2S1S1S1S/1C5C1/9/RHEAGAEHR");	
+		this.board = new Board("rheagaehr/9/1c5c1/s1s1s1s1s/9/9/S1S1S1S1S/1C5C1/9/RHEAGAEHR");	
 		
 		// assigns red and black player:
 		// List<Player> allPlayers = this.getPlayers();
@@ -318,7 +318,8 @@ public class XiangqiGame extends Game implements Serializable{
 		this.board.getBoardMatrix()[row1][col1] = '0';
 		
 		// updates boardStateString:
-		this.board.setBoardState(this.board.boardMatrixToBoardString());
+		String stringCheck = this.board.boardMatrixToBoardString();
+		this.setBoard(this.board.boardMatrixToBoardString());
 		
 		// updates position of playing-piece:
 		figur.setPosition(new Position(row2,col2));
@@ -341,12 +342,12 @@ public class XiangqiGame extends Game implements Serializable{
 	
 	
 	// --> returns general of enemy:
-	public General getEnemyGenral(Player player) {
+	public General getEnemyGeneral(Player player) {
 		
 		if(player == this.redPlayer) {
-			return this.board.getBlackGeneralFromBoard();	
+			return this.board.getBlackGeneral();	
 		} 
-		return this.board.getRedGeneralFromBoard();	
+		return this.board.getRedGeneral();	
 	}
 	
 	
@@ -367,14 +368,19 @@ public class XiangqiGame extends Game implements Serializable{
 	// --> returns true, if enemy is in check-mate:
 	public boolean isWonByCheckMate(Board board, Player player) {
 		
-		General enemyGeneral = getEnemyGenral(player);
+		General enemyGeneral = getEnemyGeneral(player);
+		Player enemyPlayer = redPlayer;
+		
+		if (isRedNext()) {
+			enemyPlayer = blackPlayer;
+		}
 		
 		for(Figur figure : enemyFigures(board, player)) {
 			
-			ArrayList<Move> moves = figure.getPossibleMoves(board, player);
+			ArrayList<Move> moves = figure.getPossibleMoves(board, enemyPlayer);
 			
 			for(Move move: moves) {
-				if(!enemyGeneral.isCheck(board, move, player)) {
+				if(!enemyGeneral.isCheck(board, move, enemyPlayer)) {
 					return false;
 				}
 			}
@@ -386,11 +392,13 @@ public class XiangqiGame extends Game implements Serializable{
 	
 	// --> sets other player as nextPlayer:
 	public void nextTurn(Player player) {
-		
-		if(player == this.redPlayer) {
+				
+		if(player.getUser().getId().equals(this.redPlayer.getUser().getId())) {
 			this.setNextPlayer(this.blackPlayer);
 		}
-		this.setNextPlayer(this.redPlayer);
+		else{
+			this.setNextPlayer(this.redPlayer);
+		}
 	}
 
 	
@@ -424,38 +432,53 @@ public class XiangqiGame extends Game implements Serializable{
 			
 			// gets possible moves for playing-piece:
 			ArrayList<Move> possibleMoves = figur.getPossibleMoves(board, player);
+			General general = board.getFriendGeneral(position);
 			
 			// checks whether move is possible:
 			if(containsMove(possibleMoves, move)) {
-				// executes move, updates boardMatrix, boardString and history:
-				doMove(move, figur);
-				// sets other player as nextPlayer:
-				nextTurn(player);	
-				// finishes if game is won:
-				if(isWonByCheckMate(board,player) || isWonByPatt(board,player)) {
-					finish();
+				// checks whether general is in-check:
+				if(!general.isCheck(board, move, player) && !general.isThreatened(board, move)) {
+					
+					// executes move, updates boardMatrix, boardString and history:
+					doMove(move, figur);	
+					// finishes if game is won:
+					if(isWonByCheckMate(board,player) || isWonByPatt(board,player)) {
+						finish();
+					}
+					// sets other player as nextPlayer:
+					nextTurn(player);
+					
+					return true;		
 				}
-				return true;
-			}		
+			}
+			
 		}			
 		return false;
 	}
 	
 	public static void main(String[] args) {
-	
+//	
+//		
+//		Rook rook = new Rook(new Position(7, 0));
+//		Board board = new Board("rhea1a1h1/4g4/1c3r3/7cs/s1s1C4/9/S1S3SCS/R8/4A4/1HE1GAEHR");
+//		XiangqiGame newGame = new XiangqiGame();
+//		
+//		Player myPlayer = newGame.getNextPlayer();
+//		
+//		ArrayList<Move> rookMoves = rook.getPossibleMoves(board, myPlayer);
+//	
+//		System.out.println("Rook-moves: ");
+//		for (Move i : rookMoves) {
+//			System.out.println(i.getMove());
+//		}
 		
-		Rook rook = new Rook(new Position(7, 0));
-		Board board = new Board("rhea1a1h1/4g4/1c3r3/7cs/s1s1C4/9/S1S3SCS/R8/4A4/1HE1GAEHR");
-		XiangqiGame newGame = new XiangqiGame();
+		XiangqiGame game = new XiangqiGame();
+		Player player1 = new Player(new User("Denis", "1"), game);
+		Player player2 = new Player(new User("Daniil", "2"), game);
+		game.addPlayer(player1);
+		game.addPlayer(player2);
 		
-		Player myPlayer = newGame.getNextPlayer();
-		
-		ArrayList<Move> rookMoves = rook.getPossibleMoves(board, myPlayer);
-	
-		System.out.println("Rook-moves: ");
-		for (Move i : rookMoves) {
-			System.out.println(i.getMove());
-		}
-		
+		game.tryMove("g3-g4", player1);
+		game.tryMove("g6-g5", player2);
 	}
 }
