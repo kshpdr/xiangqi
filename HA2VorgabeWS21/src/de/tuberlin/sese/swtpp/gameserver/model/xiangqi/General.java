@@ -151,7 +151,7 @@ public class General implements Figur,Serializable {
 		boardBuf.getBoardMatrix()[start.getRow()][start.getColumn()] = '0';
 
 		// ROOK & CANNON
-		if (isCheckRook(boardBuf.getBoardMatrix(), isRed) || isCheckCannon(boardBuf.getBoardMatrix(), isRed) || isCheckHorse(boardBuf.getBoardMatrix(), isRed)) {
+		if (isCheckRook(boardBuf.getBoardMatrix(), isRed) || isCheckCannon(boardBuf.getBoardMatrix(), isRed) || isCheckHorse(boardBuf.getBoardMatrix(), isRed) || isCheckSoldier(boardBuf.getBoardMatrix(), isRed)) {
 			return true;
 		}
 		
@@ -283,7 +283,7 @@ public class General implements Figur,Serializable {
 		// vertically backward
 		figurBefore = false;
 		for (int i = position.getColumn() + 1; i < boardMatrix[0].length; i++) {
-			if (boardMatrix[i][position.getRow()] == '0') {
+			if (boardMatrix[position.getRow()][i] == '0') {
 				continue;
 			}
 			else if (boardMatrix[position.getRow()][i] != '0') {
@@ -386,4 +386,24 @@ public class General implements Figur,Serializable {
 		return false;	
 	}
 	
+	public boolean isCheckSoldier(char[][] boardMatrix, boolean isRed) {
+		char enemySoldier;
+		int stepRow;
+		if(isRed) {
+			enemySoldier = 's';
+			stepRow = -1;
+		}
+		else {
+			enemySoldier = 'S';
+			stepRow = 1;
+		}
+		
+		char left = boardMatrix[position.getRow()][position.getColumn() - 1];
+		char right = boardMatrix[position.getRow()][position.getColumn() + 1];
+		char step = boardMatrix[position.getRow() + stepRow][position.getColumn()];
+		if(left == enemySoldier || right == enemySoldier || step == enemySoldier) {
+			return true;
+		}
+		return false;
+	}
 }
