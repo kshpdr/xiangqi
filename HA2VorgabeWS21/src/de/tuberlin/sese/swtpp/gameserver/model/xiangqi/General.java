@@ -136,4 +136,64 @@ public class General implements Figur,Serializable {
 		
 		return false;
 	}
+	
+	
+	
+	
+	public boolean isCheckHorse(char[][] boardMatrix, boolean isRed) {
+		
+		char enemyHorse;
+		
+		if(isRed) {
+			enemyHorse = 'h';
+		}
+		else {
+			enemyHorse = 'H';
+		}
+		
+		// current row/column of general:
+		int row = position.getRow();
+		int col = position.getColumn();
+		
+		
+		/*
+		 * inverted HorseMove: first one step diagonal, then one step up/down/left/right
+		 * (Horse can't jump)
+		 */
+		
+		
+		int[][] diagoArray = {{row+1,col+1},{row-1,col-1},{row+1,col-1},{row-1,col+1}};
+		int[][] movesArray = {{row+2,col+1},{row+1,col+2},{row-2,col-1},{row-1,col-2},{row+1,col-2},{row+2,col-1},{row-1,col+2},{row-2,col+1}};
+
+		// iterates over diagoArray:
+		for(int i = 0; i < 4; i++) {
+			
+			// checks whether "diagonal" position is on board:
+			if(new Position(diagoArray[i][0], diagoArray[i][1]).onBoard()) {
+				
+				// horse can't jump:
+				if(boardMatrix[diagoArray[i][0]][diagoArray[i][1]] == '0') {
+					
+					// iterates over possible moves for each direction:		
+					for(int j = 0; j < 2; j++) {
+						
+						// new position:
+						Position newPos = new Position(movesArray[2*i+j][0],movesArray[2*i+j][1]);
+						
+						// checks whether position is on board:
+						if(newPos.onBoard()) {
+							
+							// checks whether field is occupied by enemyHorse:
+							if(boardMatrix[movesArray[2*i+j][0]][movesArray[2*i+j][1]] == enemyHorse) {
+								return true;
+							}	
+						}
+					}	
+				}
+			}
+		}	
+		return false;	
+	}
+		
+	
 }
