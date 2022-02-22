@@ -308,11 +308,6 @@ public class XiangqiGame extends Game implements Serializable{
 		int row2 = "9876543210".indexOf(move.getMove().charAt(4));
 		int col2 = "abcdefghi".indexOf(move.getMove().charAt(3));
 		
-		// deletes playing-piece on target-position if necessary:
-		if(this.board.getBoardMatrix()[row2][col2] != '0') {
-			this.board.deleteFigure(new Position(row2,col2));
-		}
-		
 		// moves playing-piece by updating boardMatrix:
 		this.board.getBoardMatrix()[row2][col2] = this.board.getBoardMatrix()[row1][col1];
 		this.board.getBoardMatrix()[row1][col1] = '0';
@@ -357,9 +352,11 @@ public class XiangqiGame extends Game implements Serializable{
 		
 		for(Figur figure : enemyFigures(board, player)) {
 			if(!figure.getPossibleMoves(board, player).isEmpty()) {
+				System.out.print("patt false");
 				return false;
 			}
 		}
+		System.out.print("patt true");
 		return true;
 	}
 	
@@ -381,10 +378,12 @@ public class XiangqiGame extends Game implements Serializable{
 			
 			for(Move move: moves) {
 				if(!enemyGeneral.isCheck(board, move, enemyPlayer)) {
+					System.out.print("check false");
 					return false;
 				}
 			}
 		}
+		System.out.print("check true");
 		return true;
 	}
 	
@@ -473,12 +472,15 @@ public class XiangqiGame extends Game implements Serializable{
 //		}
 		
 		XiangqiGame game = new XiangqiGame();
+		
+		game.setBoard("1heagRehr/1r7/1c5c1/s1s1s1s1s/9/9/S1S1S1S1S/1C5C1/9/RHEAGAEH1");
 		Player player1 = new Player(new User("Denis", "1"), game);
 		Player player2 = new Player(new User("Daniil", "2"), game);
 		game.addPlayer(player1);
 		game.addPlayer(player2);
 		
-		game.tryMove("g3-g4", player1);
+		game.tryMove("c3-c4", player1);
+		game.tryMove("e9-e8", player2);
 		game.tryMove("g6-g5", player2);
 	}
 }

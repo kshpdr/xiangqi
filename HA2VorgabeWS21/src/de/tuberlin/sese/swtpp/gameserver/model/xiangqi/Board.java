@@ -250,28 +250,5 @@ public String boardMatrixToBoardString() {
 
 	
 	
-	public void deleteFigure(Position position) {
-		
-		boolean isRed = position.isRed(this);
-		
-		// iterates over all figures:
-		for(Figur f : this.figures) {
-			
-			if(f.getPosition().getRow() == position.getRow() && f.getPosition().getColumn() == position.getColumn()) {
-				
-				// deletes figure in list of all figures:
-				this.figures.remove(f);
-				// deletes figure in boardMatrix:
-				this.boardMatrix[position.getRow()][position.getColumn()] = '0';
-				
-				// deletes figure in redFigures or blackFigures:
-				if(isRed) {
-					this.redFigures.remove(f);
-				}
-				else {
-					this.blackFigures.remove(f);
-				}
-			}
-		}	
-	}
+
 }

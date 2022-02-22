@@ -191,7 +191,7 @@ public class General implements Figur,Serializable {
 	
 	public boolean checkRookRight(char[][] boardMatrix, boolean isRed, char enemyRook) {
 		// right horizontally
-		for (int i = position.getColumn() + 1; i < boardMatrix.length; i++) {
+		for (int i = position.getColumn() + 1; i < boardMatrix[0].length; i++) {
 			if (boardMatrix[position.getRow()][i] == '0') {
 				continue;
 			}
@@ -221,7 +221,7 @@ public class General implements Figur,Serializable {
 	}
 	public boolean checkRookBack(char[][] boardMatrix, boolean isRed, char enemyRook) {
 		
-		for (int i = position.getRow() + 1; i < boardMatrix[0].length; i++) {
+		for (int i = position.getRow() + 1; i < boardMatrix.length; i++) {
 			if (boardMatrix[i][position.getColumn()] == '0') {
 				continue;
 			}
@@ -324,7 +324,7 @@ public class General implements Figur,Serializable {
 		return false;
 	}
 	
-	public boolean cannonRight(char[][] boardMatrix, boolean isRed, char enemyCannon) {
+	public boolean cannonForward(char[][] boardMatrix, boolean isRed, char enemyCannon) {
 		boolean figurBefore = false;
 		for (int i = position.getRow() + 1; i < boardMatrix.length; i++) {
 			if (boardMatrix[i][position.getColumn()] == '0') {
@@ -349,7 +349,7 @@ public class General implements Figur,Serializable {
 		}
 		return false;
 	}
-	public boolean cannonLeft(char[][] boardMatrix, boolean isRed, char enemyCannon) {
+	public boolean cannonBack(char[][] boardMatrix, boolean isRed, char enemyCannon) {
 		boolean figurBefore = false;
 		for (int i = position.getRow() - 1; i >= 0; i--) {
 			if (boardMatrix[i][position.getColumn()] == '0') {
@@ -374,7 +374,7 @@ public class General implements Figur,Serializable {
 		}
 		return false;
 	}
-	public boolean cannonBack(char[][] boardMatrix, boolean isRed, char enemyCannon) {
+	public boolean cannonRight(char[][] boardMatrix, boolean isRed, char enemyCannon) {
 		boolean figurBefore = false;
 		for (int i = position.getColumn() + 1; i < boardMatrix[0].length; i++) {
 			if (boardMatrix[position.getRow()][i] == '0') {
@@ -399,7 +399,7 @@ public class General implements Figur,Serializable {
 		}
 		return false;
 	}
-	public boolean cannonForward(char[][] boardMatrix, boolean isRed, char enemyCannon) {
+	public boolean cannonLeft(char[][] boardMatrix, boolean isRed, char enemyCannon) {
 		boolean figurBefore = false;
 		for (int i = position.getColumn() - 1; i >= 0; i--) {
 			if (boardMatrix[position.getRow()][i] == '0') {
