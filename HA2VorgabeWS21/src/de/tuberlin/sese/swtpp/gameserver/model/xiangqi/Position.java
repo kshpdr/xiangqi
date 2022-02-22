@@ -30,7 +30,7 @@ public class Position implements Serializable{
 	}
 	
 	public static Position stringToPosition(String positionString) {
-		int row = positionString.charAt(1) - '0';
+		int row = 9 - (positionString.charAt(1) - '0');
 		int column = positionString.charAt(0) - 97;
 		return new Position(row, column);
 	}
@@ -40,10 +40,6 @@ public class Position implements Serializable{
 		positionString += (char)(position.getColumn() + 97);
 		positionString += 9 - position.getRow();
 		return positionString;
-	}
-	
-	public static void main(String[] args) {
-		System.out.print(positionToString(new Position(9, 0)));
 	}
 	
 	public boolean isRed(Board board) {
@@ -73,5 +69,9 @@ public class Position implements Serializable{
 		return positionToString(this) + "-" + positionToString(newPosition); 
 	}
 	
+	public static void main(String[] args) {
+		System.out.print(stringToPosition("e0").getRow());
+		//System.out.print(stringToPosition("e9").getColumn());
+	}
 
 }
