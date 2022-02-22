@@ -237,7 +237,33 @@ public class XiangqiGame extends Game implements Serializable{
 		return true;
 	}
 	
-	
+	// extends cheatCheck:
+	public boolean cheatCheckExtended(String moveString, Player player) {
+		int row = "9876543210".indexOf(moveString.charAt(1));
+		int col = "abcdefghi".indexOf(moveString.charAt(0));
+		Position pos = new Position(row,col);
+		
+		// --> checks whether redPlayer starts:
+		if(this.getHistory().isEmpty() && player != this.redPlayer) {
+			return false;
+		}
+		// --> checks whether game not finished yet:
+		if(this.finished) {
+			return false;
+		}
+		// --> checks whether player tries to move playing-piece of other player:
+		if(player == this.redPlayer && !pos.isRed(board)) {
+			return false;
+		}
+		if(player != this.redPlayer && pos.isRed(board)) {
+			return false;
+		}	
+		// --> checks whether start Position of moveString is empty:
+		if(this.board.getBoardMatrix()[row][col] == '0') {
+			return false;
+		}
+		return true;
+	}
 	
 	// checks whether player is trying to cheat:
 	public boolean cheatCheck(String moveString, Player player) {
@@ -263,29 +289,12 @@ public class XiangqiGame extends Game implements Serializable{
 		if(!this.isPlayersTurn(player)) {
 			return false;
 		}
-		// --> checks whether redPlayer starts:
-		if(this.getHistory().isEmpty() && player != this.redPlayer) {
-			return false;
-		}
-		// --> checks whether game not finished yet:
-		if(this.finished) {
-			return false;
-		}
-		// --> checks whether player tries to move playing-piece of other player:
-		if(player == this.redPlayer && !pos.isRed(board)) {
-			return false;
-		}
-		if(player != this.redPlayer && pos.isRed(board)) {
-			return false;
-		}	
-		// --> checks whether start Position of moveString is empty:
-		if(this.board.getBoardMatrix()[row][col] == '0') {
+		if(!cheatCheckExtended(moveString, player)) {
 			return false;
 		}
 		
 		return true;
 	}
-	
 	
 	
 	// adds new move to history:
@@ -456,21 +465,7 @@ public class XiangqiGame extends Game implements Serializable{
 	}
 	
 	public static void main(String[] args) {
-//	
-//		
-//		Rook rook = new Rook(new Position(7, 0));
-//		Board board = new Board("rhea1a1h1/4g4/1c3r3/7cs/s1s1C4/9/S1S3SCS/R8/4A4/1HE1GAEHR");
-//		XiangqiGame newGame = new XiangqiGame();
-//		
-//		Player myPlayer = newGame.getNextPlayer();
-//		
-//		ArrayList<Move> rookMoves = rook.getPossibleMoves(board, myPlayer);
-//	
-//		System.out.println("Rook-moves: ");
-//		for (Move i : rookMoves) {
-//			System.out.println(i.getMove());
-//		}
-		
+
 		XiangqiGame game = new XiangqiGame();
 		
 		game.setBoard("1heagRehr/1r7/1c5c1/s1s1s1s1s/9/9/S1S1S1S1S/1C5C1/9/RHEAGAEH1");

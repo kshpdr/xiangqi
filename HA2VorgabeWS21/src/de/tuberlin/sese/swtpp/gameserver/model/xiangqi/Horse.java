@@ -52,8 +52,7 @@ public class Horse implements Figur,Serializable {
 				// checks whether position is free (horse can't jump):
 				if(board.getBoardMatrix()[checkArray[i][0]][checkArray[i][1]] == '0') {
 					
-					// checks possible moves for each direction:
-							
+					// checks possible moves for each direction:		
 					for(int j = 0; j < 2; j++) {
 						
 						// new position:
