@@ -70,17 +70,7 @@ public class Position implements Serializable{
 	
 	public String moveString(Position newPosition) {
 		
-		// returns oldColumn oldRow - newColumn newRow
-		String stringRow = "9876543210";
-		String stringCol = "abcdefghi";
-		
-		int x1 = this.row;
-		int y1 = this.column;
-		
-		int x2 = newPosition.getRow();
-		int y2 = newPosition.getColumn();
-		
-		return stringCol.charAt(y1) + stringRow.charAt(x1) + "-" + stringCol.charAt(y2) + stringRow.charAt(x2);
+		return positionToString(this) + "-" + positionToString(newPosition); 
 	}
 	
 
