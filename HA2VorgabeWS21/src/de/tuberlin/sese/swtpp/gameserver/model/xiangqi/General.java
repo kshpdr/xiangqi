@@ -12,8 +12,7 @@ public class General implements Figur,Serializable {
 	//attributes
 	private Position position;
 	
-	public General(Position pos) {			//braucht man ueberhaupt?
-		//super();
+	public General(Position pos) {			
 		this.position = pos;
 	}
 	
@@ -23,6 +22,7 @@ public class General implements Figur,Serializable {
 	public Position getPosition() {
 		return position;
 	}
+	
 	public boolean checkDiagonal(Position position, int row, int col) { //to check if its diagonal move
 		if(((Math.abs(position.getRow() - row) == 1) && (Math.abs(position.getColumn() - col) == 1))) {
 			return true;
@@ -41,18 +41,13 @@ public class General implements Figur,Serializable {
 		}
 		return false;
 	}
-	public boolean isCheckAndThreatened(Board board, Move move, Player player) {
-		if(isCheck(board, move, player) || isThreatened(board, move)) {
-			return true;
-		}
-		return false;
-	}
 	public boolean samePosition(int row, int col) {
 		if(row == position.getRow() && col == position.getColumn()) {
 			return true;
 		}
 		return false;
 	}
+	
 	public ArrayList<Move> getPossibleMoves( Board board, Player player){
 		ArrayList<Move> moves = new ArrayList<>();
 		int reihe = 0;
@@ -70,7 +65,7 @@ public class General implements Figur,Serializable {
 				
 				String moveString = Position.positionToString(position) + '-' + Position.positionToString(new Position(row, col));
 				Move move = new Move(moveString, board.getBoardState(), player);
-				if (checkOneStepAndDiagonal(position, row, col) || isCheckAndThreatened(board, move, player)) {
+				if (checkOneStepAndDiagonal(position, row, col)) {
 					continue;
 				}
 				moves.add(move);			
@@ -98,25 +93,34 @@ public class General implements Figur,Serializable {
 		boardBuf.getBoardMatrix()[start.getRow()][start.getColumn()] = '0';
 		
 		// checks whether generals in same column:
-		if(redGeneral.getPosition().getColumn() == blackGeneral.getPosition().getColumn()) {
-			
+		if(redGeneral.getPosition().getColumn() != blackGeneral.getPosition().getColumn()) {
+			return false;	
+		}
+		
+		// generals in same column:
+		else {
+			// iterates over positions between generals (from blackGeneral down to redGeneral):
 			for(int i = blackGeneral.getPosition().getRow() + 1; i < redGeneral.getPosition().getRow(); i++) {					
 				
+				// continues to iterate if position is empty:
 				if(boardBuf.getBoardMatrix()[i][blackGeneral.getPosition().getColumn()] == '0') {	
 					continue;
 				}
+				
+				// returns false, if other playing-piece on a position between blackGeneral and redGenerl:
 				else if((boardBuf.getBoardMatrix()[i][this.getPosition().getColumn()] != '0') && (boardBuf.getBoardMatrix()[i][this.getPosition().getColumn()] != 'G')) {
 					return false;
-				}																			// we find enemy general
-			}
-			
+				}																			
+			}	
 		}
+		
+		// returns true, if for-loop iterates over all positions between blackGeneral and redGenerl without finding other playing-piece:
 		return true;
 	}
 	
 
 	
-	public boolean isCheck(Board board, Move move, Player player) {
+	public boolean isCheck(Board board, Move move) {
 		// copies board:
 		Board boardBuf = new Board(board.getBoardState());
 		boolean isRed = position.isRed(board);
@@ -135,8 +139,9 @@ public class General implements Figur,Serializable {
 		return false;
 	}
 	
+	// extends isCheckRook:
 	public boolean checkRookRight(char[][] boardMatrix, boolean isRed, char enemyRook) {
-		// right horizontally
+
 		for (int i = position.getColumn() + 1; i < boardMatrix[0].length; i++) {
 			if (boardMatrix[position.getRow()][i] == '0') {
 				continue;
@@ -150,6 +155,8 @@ public class General implements Figur,Serializable {
 		}
 		return false;
 	}
+	
+	// extends isCheckRook:
 	public boolean checkRookLeft(char[][] boardMatrix, boolean isRed, char enemyRook) {
 		
 		for (int i = position.getColumn() - 1; i >= 0; i--) {
@@ -165,6 +172,8 @@ public class General implements Figur,Serializable {
 		}
 		return false;
 	}
+	
+	// extends isCheckRook:
 	public boolean checkRookBack(char[][] boardMatrix, boolean isRed, char enemyRook) {
 		
 		for (int i = position.getRow() + 1; i < boardMatrix.length; i++) {
@@ -181,6 +190,7 @@ public class General implements Figur,Serializable {
 		return false;
 	}
 	
+	// extends isCheckRook:
 	public boolean checkRookForward(char[][] boardMatrix, boolean isRed, char enemyRook) {
 		
 		for (int i = position.getRow() - 1; i >= 0; i--) {
@@ -218,6 +228,7 @@ public class General implements Figur,Serializable {
 		return false;
 	}
 	
+	// extends isCheckCannon:
 	public boolean cannonForward(char[][] boardMatrix, boolean isRed, char enemyCannon) {
 		boolean figurBefore = false;
 		for (int i = position.getRow() + 1; i < boardMatrix.length; i++) {
@@ -243,6 +254,8 @@ public class General implements Figur,Serializable {
 		}
 		return false;
 	}
+	
+	// extends isCheckCannon:
 	public boolean cannonBack(char[][] boardMatrix, boolean isRed, char enemyCannon) {
 		boolean figurBefore = false;
 		for (int i = position.getRow() - 1; i >= 0; i--) {
@@ -268,6 +281,8 @@ public class General implements Figur,Serializable {
 		}
 		return false;
 	}
+	
+	// extends isCheckCannon:
 	public boolean cannonRight(char[][] boardMatrix, boolean isRed, char enemyCannon) {
 		boolean figurBefore = false;
 		for (int i = position.getColumn() + 1; i < boardMatrix[0].length; i++) {
@@ -293,6 +308,8 @@ public class General implements Figur,Serializable {
 		}
 		return false;
 	}
+	
+	// extends isCheckCannon:
 	public boolean cannonLeft(char[][] boardMatrix, boolean isRed, char enemyCannon) {
 		boolean figurBefore = false;
 		for (int i = position.getColumn() - 1; i >= 0; i--) {
@@ -347,6 +364,7 @@ public class General implements Figur,Serializable {
 	}
 	
 	
+	// extends isCheckHorse:
 	public boolean checkDiagonalAndJump(int [][] diagoArray, int[][] movesArray, char[][] boardMatrix, int i) {
 		
 		// checks whether "diagonal" position is on board:
