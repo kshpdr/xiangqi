@@ -540,6 +540,20 @@ public class General implements Figur,Serializable {
 		return false;
 	}
 	
+	public boolean checkDiagonalAndJump(int [][] diagoArray, int[][] movesArray, char[][] boardMatrix, int i) {
+		// checks whether "diagonal" position is on board:
+		if(new Position(diagoArray[i][0], diagoArray[i][1]).onBoard()) {
+				
+			// horse can't jump:
+			if(boardMatrix[diagoArray[i][0]][diagoArray[i][1]] == '0') {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	
+	
 	public boolean isCheckHorse(char[][] boardMatrix, boolean isRed) {
 		
 		char enemyHorse;
@@ -568,27 +582,22 @@ public class General implements Figur,Serializable {
 		// iterates over diagoArray:
 		for(int i = 0; i < 4; i++) {
 			
-			// checks whether "diagonal" position is on board:
-			if(new Position(diagoArray[i][0], diagoArray[i][1]).onBoard()) {
-				
-				// horse can't jump:
-				if(boardMatrix[diagoArray[i][0]][diagoArray[i][1]] == '0') {
+			// checks whether "diagonal" position is on board and horse can't jump:
+			if(checkDiagonalAndJump(diagoArray, movesArray,  boardMatrix, i)) {
 					
 					// iterates over possible moves for each direction:		
-					for(int j = 0; j < 2; j++) {
-						
-						// new position:
-						Position newPos = new Position(movesArray[2*i+j][0],movesArray[2*i+j][1]);
-						
-						// checks whether position is on board:
-						if(newPos.onBoard()) {
+				for(int j = 0; j < 2; j++) {
+					
+					// new position:
+					Position newPos = new Position(movesArray[2*i+j][0],movesArray[2*i+j][1]);
+					
+					// checks whether position is on board:
+					if(newPos.onBoard() && boardMatrix[movesArray[2*i+j][0]][movesArray[2*i+j][1]] == enemyHorse) {
+
+						// checks whether field is occupied by enemyHorse:
+						return true;
 							
-							// checks whether field is occupied by enemyHorse:
-							if(boardMatrix[movesArray[2*i+j][0]][movesArray[2*i+j][1]] == enemyHorse) {
-								return true;
-							}	
-						}
-					}	
+					}
 				}
 			}
 		}	

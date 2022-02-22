@@ -28,7 +28,7 @@ public class XiangqiGame extends Game implements Serializable{
 		super();
 		
 		// initialization of board:
-		this.board = new Board("rheagaehr/9/1c5c1/s1s1s1s1s/9/9/S1S1S1S1S/1C5C1/9/RHEAGAEHR");	
+		this.board = new Board("1heag1ehr/1r7/1c5c1/s1s1s1s1s/9/9/S1S1S1S1S/1C5C1/5R3/RHEAGAEH1");	
 		
 		// assigns red and black player:
 		// List<Player> allPlayers = this.getPlayers();
@@ -236,8 +236,33 @@ public class XiangqiGame extends Game implements Serializable{
 		}	
 		return true;
 	}
-	
-	
+	//for metrics (McCabe)
+	public boolean cheatCheckExtended(String moveString, Player player) {
+		int row = "9876543210".indexOf(moveString.charAt(1));
+		int col = "abcdefghi".indexOf(moveString.charAt(0));
+		Position pos = new Position(row,col);
+		
+		// --> checks whether redPlayer starts:
+		if(this.getHistory().isEmpty() && player != this.redPlayer) {
+			return false;
+		}
+		// --> checks whether game not finished yet:
+		if(this.finished) {
+			return false;
+		}
+		// --> checks whether player tries to move playing-piece of other player:
+		if(player == this.redPlayer && !pos.isRed(board)) {
+			return false;
+		}
+		if(player != this.redPlayer && pos.isRed(board)) {
+			return false;
+		}	
+		// --> checks whether start Position of moveString is empty:
+		if(this.board.getBoardMatrix()[row][col] == '0') {
+			return false;
+		}
+		return true;
+	}
 	
 	// checks whether player is trying to cheat:
 	public boolean cheatCheck(String moveString, Player player) {
@@ -263,23 +288,7 @@ public class XiangqiGame extends Game implements Serializable{
 		if(!this.isPlayersTurn(player)) {
 			return false;
 		}
-		// --> checks whether redPlayer starts:
-		if(this.getHistory().isEmpty() && player != this.redPlayer) {
-			return false;
-		}
-		// --> checks whether game not finished yet:
-		if(this.finished) {
-			return false;
-		}
-		// --> checks whether player tries to move playing-piece of other player:
-		if(player == this.redPlayer && !pos.isRed(board)) {
-			return false;
-		}
-		if(player != this.redPlayer && pos.isRed(board)) {
-			return false;
-		}	
-		// --> checks whether start Position of moveString is empty:
-		if(this.board.getBoardMatrix()[row][col] == '0') {
+		if(!cheatCheckExtended(moveString, player)) {
 			return false;
 		}
 		
@@ -472,13 +481,15 @@ public class XiangqiGame extends Game implements Serializable{
 //			System.out.println(i.getMove());
 //		}
 		
-		XiangqiGame game = new XiangqiGame();
+		/*XiangqiGame game = new XiangqiGame();
 		Player player1 = new Player(new User("Denis", "1"), game);
 		Player player2 = new Player(new User("Daniil", "2"), game);
+		Board board = new Board("1heag1ehr/1r7/1c5c1/s1s1s1s1s/9/9/S1S1S1S1S/1C5C1/5R3/RHEAGAEH1");
 		game.addPlayer(player1);
 		game.addPlayer(player2);
-		
-		game.tryMove("g3-g4", player1);
-		game.tryMove("g6-g5", player2);
+		Advisor advisorBL = new Advisor(new Position(0, 3));
+		System.out.println(advisorBL.getPossibleMoves(game.getBoard(), player2));*/
+		//game.tryMove("g3-g4", player1);
+		//game.tryMove("g6-g5", player2);
 	}
 }
