@@ -24,6 +24,7 @@ public class Soldier implements Figur,Serializable {
 
 	@Override
 	public ArrayList<Move> getPossibleMoves(Board board, Player player) {
+		
 		ArrayList<Move> possibleMoves = new ArrayList<Move>();
 		
 		possibleMoves.addAll(moveLeft(position, board, player));
@@ -35,7 +36,10 @@ public class Soldier implements Figur,Serializable {
 	}
 	
 	public boolean isRiverCrossed (Position position, Board board) {
+		
 		char[][] boardMatrix = board.getBoardMatrix();
+		
+		// if black:
 		if (Character.isLowerCase(boardMatrix[position.getRow()][position.getColumn()])){
 			if (position.getRow() >= 5) {
 				return true;
@@ -44,6 +48,7 @@ public class Soldier implements Figur,Serializable {
 				return false;
 			}
 		}
+		// if red:
 		else {
 			if (position.getRow() <= 4) {
 				return true;
@@ -55,78 +60,92 @@ public class Soldier implements Figur,Serializable {
 	}
 	
 	public ArrayList<Move> moveForward(Position position, Board board, Player player) {
-		General friendGeneral = board.getFriendGeneral(position);
+				
 		ArrayList<Move> possibleMoves = new ArrayList<Move>();
+		
 		int lastRow = 0;
 		int nextStep = -1;
 		String figurePattern = "[GAEHRCS]";
-		// if black plays, then change the variable
+		
+		// if black plays, then change the variable:
 		if (!position.isRed(board)) {
 			lastRow = 9;
 			nextStep = 1;
 			figurePattern = "[gaehrcs]";
 		}
 		
-		// check if last row was reached
+		// check if last row was reached:
 		if (position.getRow() != lastRow) {
-			Position targetForward = new Position(position.getRow() + nextStep, position.getColumn());
-			String moveForward = createMoveFromPositions(position, targetForward);
 			
-			// check if friendly figure stays on the forward target position
-			if (!Character.toString(board.getBoardMatrix()[targetForward.getRow()][targetForward.getColumn()]).matches(figurePattern)) {
-				if (!friendGeneral.isThreatened(board, new Move(moveForward, board.getBoardState(), player)) && !friendGeneral.isCheck(board, new Move(moveForward, board.getBoardState(), player), player)) {
-				//if (true) {
-					possibleMoves.add(new Move(moveForward, board.getBoardState(), player));
+			Position targetForward = new Position(position.getRow() + nextStep, position.getColumn());
+			Move moveForward = new Move(createMoveFromPositions(position, targetForward), board.getBoardState(), player);
+			
+			// checks whether target position is on board:
+			if(targetForward.onBoard()) {
+				
+				// checks if friendly figure stays on the forward target position
+				if (!Character.toString(board.getBoardMatrix()[targetForward.getRow()][targetForward.getColumn()]).matches(figurePattern)) {
+					possibleMoves.add(moveForward);
 				}
 			}
+			
 		}
 		return possibleMoves;
 	};
 	
 	public ArrayList<Move> moveLeft(Position position, Board board, Player player){
+		
 		String figurePattern = "[GAEHRCS]";
+		
 		ArrayList<Move> possibleMoves = new ArrayList<Move>();
-		General friendGeneral = board.getFriendGeneral(position);
+		
 		// if black plays, then change the variable
 		if (!position.isRed(board)) {
 			figurePattern = "[gaehrcs]";
 		}
 		
 		if (isRiverCrossed(position, board)) {
-			Position targetLeft = new Position(position.getRow(), position.getColumn() - 1);
-			String moveLeft = createMoveFromPositions(position, targetLeft);
 			
-			// check if friendly figure stays on the left target position
-			if (!Character.toString(board.getBoardMatrix()[targetLeft.getRow()][targetLeft.getColumn()]).matches(figurePattern)) {
-				if (!friendGeneral.isThreatened(board, new Move(moveLeft, board.getBoardState(), player)) && !friendGeneral.isCheck(board, new Move(moveLeft, board.getBoardState(), player), player)) {
-				//if (true) {
-					possibleMoves.add(new Move(moveLeft, board.getBoardState(), player));
+			Position targetLeft = new Position(position.getRow(), position.getColumn() - 1);
+			Move moveLeft = new Move(createMoveFromPositions(position, targetLeft), board.getBoardState(), player);
+			
+			// checks whether target position on board:
+			if(targetLeft.onBoard()) {
+				
+				// checks whether friendly figure stays on the left target position:
+				if (!Character.toString(board.getBoardMatrix()[targetLeft.getRow()][targetLeft.getColumn()]).matches(figurePattern)) {
+					possibleMoves.add(moveLeft);
 				}
-			}
+			}	
 		}
 		return possibleMoves;
 	}
 	
 	public ArrayList<Move> moveRight(Position position, Board board, Player player){
+		
 		String figurePattern = "[GAEHRCS]";
+		
 		ArrayList<Move> possibleMoves = new ArrayList<Move>();
-		General friendGeneral = board.getFriendGeneral(position);
+		
 		// if black plays, then change the variable
 		if (!position.isRed(board)) {
 			figurePattern = "[gaehrcs]";
 		}
 		
 		if (isRiverCrossed(position, board)) {
-			Position targetRight = new Position(position.getRow(), position.getColumn() + 1);
-			String moveRight = createMoveFromPositions(position, targetRight);
 			
-			// check if friendly figure stays on the left target position
-			if (!Character.toString(board.getBoardMatrix()[targetRight.getRow()][targetRight.getColumn()]).matches(figurePattern)) {
-				if (!friendGeneral.isThreatened(board, new Move(moveRight, board.getBoardState(), player)) && !friendGeneral.isCheck(board, new Move(moveRight, board.getBoardState(), player), player)) {
-				//if (true) {
-					possibleMoves.add(new Move(moveRight, board.getBoardState(), player));
+			Position targetRight = new Position(position.getRow(), position.getColumn() + 1);
+			Move moveRight = new Move(createMoveFromPositions(position, targetRight), board.getBoardState(), player);
+			
+			// checks if target position is on board:
+			if(targetRight.onBoard()) {
+				
+				// checks if friendly figure stays on the left target position
+				if (!Character.toString(board.getBoardMatrix()[targetRight.getRow()][targetRight.getColumn()]).matches(figurePattern)) {
+					possibleMoves.add(moveRight);
 				}
 			}
+			
 		}
 		return possibleMoves;
 	}
