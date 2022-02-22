@@ -238,31 +238,7 @@ public class XiangqiGame extends Game implements Serializable{
 	}
 	
 	
-	public boolean cheatCheckPartTwo(String moveString, Player player) {
-		int row = "9876543210".indexOf(moveString.charAt(1));
-		int col = "abcdefghi".indexOf(moveString.charAt(0));
-		Position pos = new Position(row,col);
-		// --> checks whether redPlayer starts:
-		if(this.getHistory().isEmpty() && player != this.redPlayer) {
-			return false;
-		}
-		// --> checks whether game not finished yet:
-		if(this.finished) {
-			return false;
-		}
-		// --> checks whether player tries to move playing-piece of other player:
-		if(player == this.redPlayer && !pos.isRed(board)) {
-			return false;
-		}
-		if(player != this.redPlayer && pos.isRed(board)) {
-			return false;
-		}	
-		// --> checks whether start Position of moveString is empty:
-		if(this.board.getBoardMatrix()[row][col] == '0') {
-			return false;
-		}
-		return true;
-	}
+	
 	// checks whether player is trying to cheat:
 	public boolean cheatCheck(String moveString, Player player) {
 		
@@ -287,7 +263,23 @@ public class XiangqiGame extends Game implements Serializable{
 		if(!this.isPlayersTurn(player)) {
 			return false;
 		}
-		if(!cheatCheckPartTwo(moveString, player)) {
+		// --> checks whether redPlayer starts:
+		if(this.getHistory().isEmpty() && player != this.redPlayer) {
+			return false;
+		}
+		// --> checks whether game not finished yet:
+		if(this.finished) {
+			return false;
+		}
+		// --> checks whether player tries to move playing-piece of other player:
+		if(player == this.redPlayer && !pos.isRed(board)) {
+			return false;
+		}
+		if(player != this.redPlayer && pos.isRed(board)) {
+			return false;
+		}	
+		// --> checks whether start Position of moveString is empty:
+		if(this.board.getBoardMatrix()[row][col] == '0') {
 			return false;
 		}
 		
