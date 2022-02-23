@@ -62,10 +62,10 @@ public class Horse implements Figur,Serializable {
 						if(newPos.onBoard()) {
 							
 							// checks whether field is free or occupied by other player (and !isThreatende and !isCheck):
-							if(board.getBoardMatrix()[movesArray[2*i+j][0]][movesArray[2*i+j][1]] == '0' && !myGeneral.isThreatened(board, new Move(position.moveString(newPos), board.getBoardState(), player)) && !myGeneral.isCheck(board, new Move(position.moveString(newPos), board.getBoardState(), player), player)) {
+							if(board.getBoardMatrix()[movesArray[2*i+j][0]][movesArray[2*i+j][1]] == '0' && !myGeneral.isThreatened(board, new Move(position.moveString(newPos), board.getBoardState(), player)) && !myGeneral.isCheck(board, new Move(position.moveString(newPos), board.getBoardState(), player))) {
 								possibleMoves.add(new Move(position.moveString(newPos), board.getBoardState(), player));
 							}
-							else if(position.otherPlayerOnTargetField(board, newPos) && !myGeneral.isThreatened(board, new Move(position.moveString(newPos), board.getBoardState(), player)) && !myGeneral.isCheck(board, new Move(position.moveString(newPos), board.getBoardState(), player), player)) {
+							else if(position.otherPlayerOnTargetField(board, newPos) && !myGeneral.isThreatened(board, new Move(position.moveString(newPos), board.getBoardState(), player)) && !myGeneral.isCheck(board, new Move(position.moveString(newPos), board.getBoardState(), player))) {
 								possibleMoves.add(new Move(position.moveString(newPos), board.getBoardState(), player));	
 							}	
 						}

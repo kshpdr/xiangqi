@@ -66,7 +66,7 @@ public class Cannon implements Figur,Serializable {
 			if (figureBefore) {
 				// if so, then check, whether an enemy figure appear afterwards
 				if (posCheckRight(position, board, i)){
-					if (!friendGeneral.isThreatened(board, new Move(move, board.getBoardState(), player)) && !board.getFriendGeneral(position).isCheck(board, new Move(move, board.getBoardState(), player), player)) {
+					if (!friendGeneral.isThreatened(board, new Move(move, board.getBoardState(), player)) && !board.getFriendGeneral(position).isCheck(board, new Move(move, board.getBoardState(), player))) {
 						possibleMoves.add(new Move(move, board.getBoardState(), player));
 						break;	
 					}
@@ -81,7 +81,7 @@ public class Cannon implements Figur,Serializable {
 				continue;
 			}
 			// check whether general is threatened
-			if (!friendGeneral.isThreatened(board, new Move(move, board.getBoardState(), player)) && !board.getFriendGeneral(position).isCheck(board, new Move(move, board.getBoardState(), player), player)) {
+			if (!friendGeneral.isThreatened(board, new Move(move, board.getBoardState(), player)) && !board.getFriendGeneral(position).isCheck(board, new Move(move, board.getBoardState(), player))) {
 			//if (true) {
 				possibleMoves.add(new Move(move, board.getBoardState(), player));
 			}
@@ -108,7 +108,7 @@ public class Cannon implements Figur,Serializable {
 			if (figureBefore) {
 				// if so, then check, whether an enemy figure appear afterwards
 				if (posCheckLeft(position, board, i)){
-					if (!friendGeneral.isThreatened(board, new Move(move, board.getBoardState(), player)) && !board.getFriendGeneral(position).isCheck(board, new Move(move, board.getBoardState(), player), player)) {
+					if (!friendGeneral.isThreatened(board, new Move(move, board.getBoardState(), player)) && !board.getFriendGeneral(position).isCheck(board, new Move(move, board.getBoardState(), player))) {
 						possibleMoves.add(new Move(move, board.getBoardState(), player));
 						break;
 					}
@@ -124,7 +124,7 @@ public class Cannon implements Figur,Serializable {
 			}	
 			
 			// check whether general is threatened
-			if (!friendGeneral.isThreatened(board, new Move(move, board.getBoardState(), player)) && !board.getFriendGeneral(position).isCheck(board, new Move(move, board.getBoardState(), player), player)) {
+			if (!friendGeneral.isThreatened(board, new Move(move, board.getBoardState(), player)) && !board.getFriendGeneral(position).isCheck(board, new Move(move, board.getBoardState(), player))) {
 			//if (true) {
 				possibleMoves.add(new Move(move, board.getBoardState(), player));
 			}
@@ -151,7 +151,7 @@ public class Cannon implements Figur,Serializable {
 			if (figureBefore) {
 				// if so, then check, whether an enemy figure appear afterwards
 				if (posCheckForward(position, board, i)){
-					if (!friendGeneral.isThreatened(board, new Move(move, board.getBoardState(), player)) && !friendGeneral.isCheck(board, new Move(move, board.getBoardState(), player), player)) {
+					if (!friendGeneral.isThreatened(board, new Move(move, board.getBoardState(), player)) && !friendGeneral.isCheck(board, new Move(move, board.getBoardState(), player))) {
 						possibleMoves.add(new Move(move, board.getBoardState(), player));
 						break;
 					}
@@ -167,7 +167,7 @@ public class Cannon implements Figur,Serializable {
 			}		
 			
 			// check whether general is threatened
-			if (!friendGeneral.isThreatened(board, new Move(move, board.getBoardState(), player)) && !friendGeneral.isCheck(board, new Move(move, board.getBoardState(), player), player)) {
+			if (!friendGeneral.isThreatened(board, new Move(move, board.getBoardState(), player)) && !friendGeneral.isCheck(board, new Move(move, board.getBoardState(), player))) {
 			//if (true) {
 				possibleMoves.add(new Move(move, board.getBoardState(), player));
 			}
@@ -193,7 +193,7 @@ public class Cannon implements Figur,Serializable {
 			if (figureBefore) {
 				// if so, then check, whether an enemy figure appear afterwards
 				if (posCheckBackward(position, board, i)){
-					if (!friendGeneral.isThreatened(board, new Move(move, board.getBoardState(), player)) && !friendGeneral.isCheck(board, new Move(move, board.getBoardState(), player), player)) {
+					if (!friendGeneral.isThreatened(board, new Move(move, board.getBoardState(), player)) && !friendGeneral.isCheck(board, new Move(move, board.getBoardState(), player))) {
 						possibleMoves.add(new Move(move, board.getBoardState(), player));
 						break;	
 					}
@@ -209,7 +209,7 @@ public class Cannon implements Figur,Serializable {
 			}				
 			
 			// check whether general is threatened
-			if (!friendGeneral.isThreatened(board, new Move(move, board.getBoardState(), player)) && !friendGeneral.isCheck(board, new Move(move, board.getBoardState(), player), player)) {
+			if (!friendGeneral.isThreatened(board, new Move(move, board.getBoardState(), player)) && !friendGeneral.isCheck(board, new Move(move, board.getBoardState(), player))) {
 			//if (true) {
 				possibleMoves.add(new Move(move, board.getBoardState(), player));
 			}

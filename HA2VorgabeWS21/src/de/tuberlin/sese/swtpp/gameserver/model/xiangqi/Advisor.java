@@ -30,7 +30,7 @@ public class Advisor implements Figur,Serializable {
 				Position goal = new Position(row, col);
 				String moveString = Position.positionToString(position) + '-' + Position.positionToString(goal);	//make new possible move and check if this is diagonal move and will not threaten General
 				Move move = new Move(moveString, board.getBoardState(), player);
-				if((Math.abs(position.getRow() - row) == 1) && (Math.abs(position.getColumn() - col) == 1) && !String.valueOf(board.getBoardMatrix()[row][col]).matches(match) && !board.getFriendGeneral(position).isThreatened(board,move) && !board.getFriendGeneral(position).isCheck(board, move, player)) {
+				if((Math.abs(position.getRow() - row) == 1) && (Math.abs(position.getColumn() - col) == 1) && !String.valueOf(board.getBoardMatrix()[row][col]).matches(match) && !board.getFriendGeneral(position).isThreatened(board,move) && !board.getFriendGeneral(position).isCheck(board, move)) {
 					moves.add(move);
 				}
 			}

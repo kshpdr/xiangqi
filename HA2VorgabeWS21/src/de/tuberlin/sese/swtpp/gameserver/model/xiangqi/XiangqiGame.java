@@ -386,7 +386,7 @@ public class XiangqiGame extends Game implements Serializable{
 			ArrayList<Move> moves = figure.getPossibleMoves(board, enemyPlayer);
 			
 			for(Move move: moves) {
-				if(!enemyGeneral.isCheck(board, move, enemyPlayer)) {
+				if(!enemyGeneral.isCheck(board, move)) {
 					System.out.print("check false");
 					return false;
 				}
@@ -445,7 +445,7 @@ public class XiangqiGame extends Game implements Serializable{
 			// checks whether move is possible:
 			if(containsMove(possibleMoves, move)) {
 				// checks whether general is in-check:
-				if(!general.isCheck(board, move, player) && !general.isThreatened(board, move)) {
+				if(!general.isCheck(board, move) && !general.isThreatened(board, move)) {
 					
 					// executes move, updates boardMatrix, boardString and history:
 					doMove(move, figur);	

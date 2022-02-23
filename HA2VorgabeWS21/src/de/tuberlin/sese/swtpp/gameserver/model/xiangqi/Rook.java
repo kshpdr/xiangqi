@@ -60,7 +60,7 @@ public class Rook implements Figur,Serializable {
 			}		
 			
 			// checks whether general is threatened or in-check:
-			if (!friendGeneral.isThreatened(board, new Move(move, board.getBoardState(), player)) && !friendGeneral.isCheck(board, new Move(move, board.getBoardState(), player), player)) {
+			if (!friendGeneral.isThreatened(board, new Move(move, board.getBoardState(), player)) && !friendGeneral.isCheck(board, new Move(move, board.getBoardState(), player))) {
 				possibleMoves.add(new Move(move, board.getBoardState(), player));
 			}
 		}
@@ -86,7 +86,7 @@ public class Rook implements Figur,Serializable {
 			}			
 			
 			// check whether general is threatened or in-check:
-			if (!friendGeneral.isThreatened(board, new Move(move, board.getBoardState(), player)) && !friendGeneral.isCheck(board, new Move(move, board.getBoardState(), player), player)) {
+			if (!friendGeneral.isThreatened(board, new Move(move, board.getBoardState(), player)) && !friendGeneral.isCheck(board, new Move(move, board.getBoardState(), player))) {
 				possibleMoves.add(new Move(move, board.getBoardState(), player));
 			}
 		}
@@ -112,7 +112,7 @@ public class Rook implements Figur,Serializable {
 			}			
 			
 			// check whether general is threatened or in-check:
-			if (!friendGeneral.isThreatened(board, new Move(move, board.getBoardState(), player)) && !friendGeneral.isCheck(board, new Move(move, board.getBoardState(), player), player)) {
+			if (!friendGeneral.isThreatened(board, new Move(move, board.getBoardState(), player)) && !friendGeneral.isCheck(board, new Move(move, board.getBoardState(), player))) {
 				possibleMoves.add(new Move(move, board.getBoardState(), player));
 			}
 		}
@@ -137,7 +137,7 @@ public class Rook implements Figur,Serializable {
 			}			
 			
 			// check whether general is threatened or in-check:
-			if (!friendGeneral.isThreatened(board, new Move(move, board.getBoardState(), player)) && !friendGeneral.isCheck(board, new Move(move, board.getBoardState(), player), player)) {
+			if (!friendGeneral.isThreatened(board, new Move(move, board.getBoardState(), player)) && !friendGeneral.isCheck(board, new Move(move, board.getBoardState(), player))) {
 				possibleMoves.add(new Move(move, board.getBoardState(), player));
 			}
 		}
