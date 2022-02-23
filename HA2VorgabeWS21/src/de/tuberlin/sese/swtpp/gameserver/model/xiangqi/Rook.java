@@ -46,8 +46,6 @@ public class Rook implements Figur,Serializable {
 		
 		ArrayList<Move> possibleMoves = new ArrayList<Move>();
 		
-		General friendGeneral = board.getFriendGeneral(position);
-		
 		for (int i = position.getColumn() + 1; i < board.getBoardMatrix()[0].length; i++) {
 			
 			Position target = new Position(position.getRow(), i);
@@ -59,10 +57,7 @@ public class Rook implements Figur,Serializable {
 				break; 
 			}		
 			
-			// checks whether general is threatened or in-check:
-			if (!friendGeneral.isThreatened(board, new Move(move, board.getBoardState(), player)) && !friendGeneral.isCheck(board, new Move(move, board.getBoardState(), player))) {
-				possibleMoves.add(new Move(move, board.getBoardState(), player));
-			}
+			possibleMoves.add(new Move(move, board.getBoardState(), player));
 		}
 		return possibleMoves;
 	}
@@ -71,8 +66,6 @@ public class Rook implements Figur,Serializable {
 	public ArrayList<Move> leftMoves(Position position, Board board, Player player) {
 		
 		ArrayList<Move> possibleMoves = new ArrayList<Move>();
-		
-		General friendGeneral = board.getFriendGeneral(position);
 		
 		for (int i = position.getColumn() - 1; i >= 0; i--) {
 		
@@ -85,10 +78,7 @@ public class Rook implements Figur,Serializable {
 				break;
 			}			
 			
-			// check whether general is threatened or in-check:
-			if (!friendGeneral.isThreatened(board, new Move(move, board.getBoardState(), player)) && !friendGeneral.isCheck(board, new Move(move, board.getBoardState(), player))) {
-				possibleMoves.add(new Move(move, board.getBoardState(), player));
-			}
+			possibleMoves.add(new Move(move, board.getBoardState(), player));
 		}
 		return possibleMoves;
 	}
@@ -97,8 +87,6 @@ public class Rook implements Figur,Serializable {
 	public ArrayList<Move> forwardMoves(Position position, Board board, Player player) {
 		
 		ArrayList<Move> possibleMoves = new ArrayList<Move>();
-		
-		General friendGeneral = board.getFriendGeneral(position);
 		
 		for (int i = position.getRow() - 1; i >= 0; i--) {
 		
@@ -111,10 +99,7 @@ public class Rook implements Figur,Serializable {
 				break;
 			}			
 			
-			// check whether general is threatened or in-check:
-			if (!friendGeneral.isThreatened(board, new Move(move, board.getBoardState(), player)) && !friendGeneral.isCheck(board, new Move(move, board.getBoardState(), player))) {
-				possibleMoves.add(new Move(move, board.getBoardState(), player));
-			}
+			possibleMoves.add(new Move(move, board.getBoardState(), player));
 		}
 		return possibleMoves;
 	}
@@ -122,8 +107,6 @@ public class Rook implements Figur,Serializable {
 	public ArrayList<Move> backwardMoves(Position position, Board board, Player player) {
 		
 		ArrayList<Move> possibleMoves = new ArrayList<Move>();
-		
-		General friendGeneral = board.getFriendGeneral(position);
 		
 		for (int i = position.getRow() + 1; i < board.getBoardMatrix().length; i++) {
 		
@@ -136,10 +119,7 @@ public class Rook implements Figur,Serializable {
 				break; 
 			}			
 			
-			// check whether general is threatened or in-check:
-			if (!friendGeneral.isThreatened(board, new Move(move, board.getBoardState(), player)) && !friendGeneral.isCheck(board, new Move(move, board.getBoardState(), player))) {
-				possibleMoves.add(new Move(move, board.getBoardState(), player));
-			}
+			possibleMoves.add(new Move(move, board.getBoardState(), player));
 		}
 		return possibleMoves;
 	}

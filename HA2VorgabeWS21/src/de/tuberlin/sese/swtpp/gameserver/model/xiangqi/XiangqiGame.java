@@ -375,6 +375,7 @@ public class XiangqiGame extends Game implements Serializable{
 	public boolean isWonByCheckMate(Board board, Player player) {
 		
 		General enemyGeneral = getEnemyGeneral(player);
+		
 		Player enemyPlayer = redPlayer;
 		
 		if (isRedNext()) {
@@ -386,7 +387,7 @@ public class XiangqiGame extends Game implements Serializable{
 			ArrayList<Move> moves = figure.getPossibleMoves(board, enemyPlayer);
 			
 			for(Move move: moves) {
-				if(!enemyGeneral.isCheck(board, move)) {
+				if(!enemyGeneral.isCheck(board, move) && !enemyGeneral.isThreatened(board, move)) {
 					System.out.print("check false");
 					return false;
 				}
@@ -463,19 +464,20 @@ public class XiangqiGame extends Game implements Serializable{
 		}			
 		return false;
 	}
+
 	
 	public static void main(String[] args) {
 
 		XiangqiGame game = new XiangqiGame();
 		
-		game.setBoard("1heagRehr/1r7/1c5c1/s1s1s1s1s/9/9/S1S1S1S1S/1C5C1/9/RHEAGAEH1");
+		game.setBoard("rh1a2e1r/4ag3/1c7/s1s3s1s/9/S3S4/2S3S1S/1C2E2C1/4G4/1E1A1AEcR");
 		Player player1 = new Player(new User("Denis", "1"), game);
 		Player player2 = new Player(new User("Daniil", "2"), game);
 		game.addPlayer(player1);
 		game.addPlayer(player2);
 		
-		game.tryMove("c3-c4", player1);
-		game.tryMove("e9-e8", player2);
+		game.tryMove("e1-f1", player1);
+		game.tryMove("f9-e8", player2); 
 		game.tryMove("g6-g5", player2);
 	}
 }

@@ -23,14 +23,14 @@ public class General implements Figur,Serializable {
 		return position;
 	}
 	
-	public boolean checkDiagonal(Position position, int row, int col) { //to check if its diagonal move
+	public boolean checkDiagonal(Position position, int row, int col) { 
 		if(((Math.abs(position.getRow() - row) == 1) && (Math.abs(position.getColumn() - col) == 1))) {
 			return true;
 		}
 		return false;
 	}
 	public boolean checkOneStep(Position position, int row, int col) {
-		if(((Math.abs(position.getRow() - row)<2) && (Math.abs(position.getColumn() - col)< 2))) {
+		if(((Math.abs(position.getRow() - row) < 2) && (Math.abs(position.getColumn() - col) < 2))) {
 			return false;
 		}
 		return true;
@@ -81,16 +81,19 @@ public class General implements Figur,Serializable {
 		// copies board:
 		Board boardBuf = new Board(board.getBoardState());
 		
-		General blackGeneral = board.getBlackGeneral();
-		General redGeneral = board.getRedGeneral();
-		
-	
 		Position start = Position.stringToPosition(move.getMove().split("-")[0]);	
 		Position goal = Position.stringToPosition(move.getMove().split("-")[1]);
 		
 		// does move:
 		boardBuf.getBoardMatrix()[goal.getRow()][goal.getColumn()] = boardBuf.getBoardMatrix()[start.getRow()][start.getColumn()]; 
 		boardBuf.getBoardMatrix()[start.getRow()][start.getColumn()] = '0';
+		
+		// updates boardState of boardBuf by initializing a new board (-> to update positions):
+		boardBuf = new Board(boardBuf.boardMatrixToBoardString());
+		
+		General blackGeneral = boardBuf.getBlackGeneral();
+		General redGeneral = boardBuf.getRedGeneral();
+		
 		
 		// checks whether generals in same column:
 		if(redGeneral.getPosition().getColumn() != blackGeneral.getPosition().getColumn()) {
@@ -121,21 +124,46 @@ public class General implements Figur,Serializable {
 
 	
 	public boolean isCheck(Board board, Move move) {
+		
 		// copies board:
 		Board boardBuf = new Board(board.getBoardState());
+		
+		// checks if redGeneral or blackGeneral:
 		boolean isRed = position.isRed(board);
 		
 		Position start = Position.stringToPosition(move.getMove().split("-")[0]);	
 		Position goal = Position.stringToPosition(move.getMove().split("-")[1]);
 		
+		// executes move:
 		boardBuf.getBoardMatrix()[goal.getRow()][goal.getColumn()] = boardBuf.getBoardMatrix()[start.getRow()][start.getColumn()]; 
 		boardBuf.getBoardMatrix()[start.getRow()][start.getColumn()] = '0';
-
-		// ROOK & CANNON
-		if (isCheckRook(boardBuf.getBoardMatrix(), isRed) || isCheckCannon(boardBuf.getBoardMatrix(), isRed) || isCheckHorse(boardBuf.getBoardMatrix(), isRed) || isCheckSoldier(boardBuf.getBoardMatrix(), isRed)) {
-			return true;
+		
+		// checks, if we try to move general:
+		if((start.getRow() == this.getPosition().getRow()) && (start.getColumn() == this.getPosition().getColumn())) {
+			
+			// update position of red/black buffer general:
+			General bufGeneral = boardBuf.getBlackGeneral();
+			
+			if(position.isRed(board)) {
+				bufGeneral = boardBuf.getRedGeneral();
+			}
+			
+			// updates position:
+			bufGeneral.setPosition(goal);
+			
+			// calls isCheck-methods with bufGeneral:
+			if (bufGeneral.isCheckRook(boardBuf.getBoardMatrix(), isRed) || bufGeneral.isCheckCannon(boardBuf.getBoardMatrix(), isRed) || bufGeneral.isCheckHorse(boardBuf.getBoardMatrix(), isRed) || bufGeneral.isCheckSoldier(boardBuf.getBoardMatrix(), isRed)) {
+				return true;
+			}
 		}
 		
+		// calls isCheck-methods with "this" general (because we didn't move general):
+		else {
+			if (isCheckRook(boardBuf.getBoardMatrix(), isRed) || isCheckCannon(boardBuf.getBoardMatrix(), isRed) || isCheckHorse(boardBuf.getBoardMatrix(), isRed) || isCheckSoldier(boardBuf.getBoardMatrix(), isRed)) {
+				return true;
+			}
+		}
+	
 		return false;
 	}
 	

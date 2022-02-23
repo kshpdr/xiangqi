@@ -57,7 +57,7 @@ public class Cannon implements Figur,Serializable {
 	
 	public ArrayList<Move> rightMoves(Position position, Board board, Player player) {
 		ArrayList<Move> possibleMoves = new ArrayList<Move>();
-		General friendGeneral = board.getFriendGeneral(position);
+		
 		boolean figureBefore = false;
 		for (int i = position.getColumn() + 1; i < board.getBoardMatrix()[0].length; i++) {
 
@@ -66,10 +66,8 @@ public class Cannon implements Figur,Serializable {
 			if (figureBefore) {
 				// if so, then check, whether an enemy figure appear afterwards
 				if (posCheckRight(position, board, i)){
-					if (!friendGeneral.isThreatened(board, new Move(move, board.getBoardState(), player)) && !board.getFriendGeneral(position).isCheck(board, new Move(move, board.getBoardState(), player))) {
-						possibleMoves.add(new Move(move, board.getBoardState(), player));
-						break;	
-					}
+					possibleMoves.add(new Move(move, board.getBoardState(), player));
+					break;	
 				}
 				else {
 					continue;
@@ -80,11 +78,7 @@ public class Cannon implements Figur,Serializable {
 				figureBefore = true;
 				continue;
 			}
-			// check whether general is threatened
-			if (!friendGeneral.isThreatened(board, new Move(move, board.getBoardState(), player)) && !board.getFriendGeneral(position).isCheck(board, new Move(move, board.getBoardState(), player))) {
-			//if (true) {
-				possibleMoves.add(new Move(move, board.getBoardState(), player));
-			}
+			possibleMoves.add(new Move(move, board.getBoardState(), player));
 		}
 		return possibleMoves;
 	}
@@ -97,8 +91,9 @@ public class Cannon implements Figur,Serializable {
 	}
 	
 	public ArrayList<Move> leftMoves(Position position, Board board, Player player) {
+		
 		ArrayList<Move> possibleMoves = new ArrayList<Move>();
-		General friendGeneral = board.getFriendGeneral(position);
+
 		boolean figureBefore = false;
 		// left horizontal
 		for (int i = position.getColumn() - 1; i >= 0; i--) {
@@ -108,10 +103,8 @@ public class Cannon implements Figur,Serializable {
 			if (figureBefore) {
 				// if so, then check, whether an enemy figure appear afterwards
 				if (posCheckLeft(position, board, i)){
-					if (!friendGeneral.isThreatened(board, new Move(move, board.getBoardState(), player)) && !board.getFriendGeneral(position).isCheck(board, new Move(move, board.getBoardState(), player))) {
-						possibleMoves.add(new Move(move, board.getBoardState(), player));
-						break;
-					}
+					possibleMoves.add(new Move(move, board.getBoardState(), player));
+					break;
 				}
 				else {
 					continue;
@@ -123,11 +116,7 @@ public class Cannon implements Figur,Serializable {
 				continue;
 			}	
 			
-			// check whether general is threatened
-			if (!friendGeneral.isThreatened(board, new Move(move, board.getBoardState(), player)) && !board.getFriendGeneral(position).isCheck(board, new Move(move, board.getBoardState(), player))) {
-			//if (true) {
-				possibleMoves.add(new Move(move, board.getBoardState(), player));
-			}
+			possibleMoves.add(new Move(move, board.getBoardState(), player));
 		}
 		return possibleMoves;
 	}
@@ -141,7 +130,7 @@ public class Cannon implements Figur,Serializable {
 	
 	public ArrayList<Move> forwardMoves(Position position, Board board, Player player) {
 		ArrayList<Move> possibleMoves = new ArrayList<Move>();
-		General friendGeneral = board.getFriendGeneral(position);
+		
 		boolean figureBefore = false;
 		// forwards vertical
 		for (int i = position.getRow() - 1; i >= 0; i--) {
@@ -151,10 +140,8 @@ public class Cannon implements Figur,Serializable {
 			if (figureBefore) {
 				// if so, then check, whether an enemy figure appear afterwards
 				if (posCheckForward(position, board, i)){
-					if (!friendGeneral.isThreatened(board, new Move(move, board.getBoardState(), player)) && !friendGeneral.isCheck(board, new Move(move, board.getBoardState(), player))) {
-						possibleMoves.add(new Move(move, board.getBoardState(), player));
-						break;
-					}
+					possibleMoves.add(new Move(move, board.getBoardState(), player));
+					break;
 				}
 				else {
 					continue;
@@ -166,11 +153,7 @@ public class Cannon implements Figur,Serializable {
 				continue;
 			}		
 			
-			// check whether general is threatened
-			if (!friendGeneral.isThreatened(board, new Move(move, board.getBoardState(), player)) && !friendGeneral.isCheck(board, new Move(move, board.getBoardState(), player))) {
-			//if (true) {
-				possibleMoves.add(new Move(move, board.getBoardState(), player));
-			}
+			possibleMoves.add(new Move(move, board.getBoardState(), player));
 		}
 		return possibleMoves;
 	}
@@ -183,36 +166,34 @@ public class Cannon implements Figur,Serializable {
 	}
 	
 	public ArrayList<Move> backwardMoves(Position position, Board board, Player player) {
+		
 		ArrayList<Move> possibleMoves = new ArrayList<Move>();
-		General friendGeneral = board.getFriendGeneral(position);
+		
 		boolean figureBefore = false;
+		
 		for (int i = position.getRow() + 1; i < board.getBoardMatrix().length; i++) {
+			
 			String move = createMoveFromPositions(position, new Position(i, position.getColumn()));
 			
 			// check whether first figure on the way was found
 			if (figureBefore) {
 				// if so, then check, whether an enemy figure appear afterwards
 				if (posCheckBackward(position, board, i)){
-					if (!friendGeneral.isThreatened(board, new Move(move, board.getBoardState(), player)) && !friendGeneral.isCheck(board, new Move(move, board.getBoardState(), player))) {
-						possibleMoves.add(new Move(move, board.getBoardState(), player));
-						break;	
-					}
+					possibleMoves.add(new Move(move, board.getBoardState(), player));
+					break;
 				}
 				else {
 					continue;
 				}
 			}
+			
 			// when first figure on the way found
 			else if (board.getBoardMatrix()[i][position.getColumn()] != '0') {
 				figureBefore = true;
 				continue;
 			}				
 			
-			// check whether general is threatened
-			if (!friendGeneral.isThreatened(board, new Move(move, board.getBoardState(), player)) && !friendGeneral.isCheck(board, new Move(move, board.getBoardState(), player))) {
-			//if (true) {
-				possibleMoves.add(new Move(move, board.getBoardState(), player));
-			}
+			possibleMoves.add(new Move(move, board.getBoardState(), player));
 		}
 		return possibleMoves;
 	}
