@@ -63,22 +63,25 @@ public class Soldier implements Figur,Serializable {
 				
 		ArrayList<Move> possibleMoves = new ArrayList<Move>();
 		
+		// if red:
 		int lastRow = 0;
 		int nextStep = -1;
 		String figurePattern = "[GAEHRCS]";
 		
-		// if black plays, then change the variable:
+		// if black:
 		if (!position.isRed(board)) {
 			lastRow = 9;
 			nextStep = 1;
 			figurePattern = "[gaehrcs]";
 		}
 		
-		// check if last row was reached:
+		// checks if last row was reached:
 		if (position.getRow() != lastRow) {
 			
+			// new position:
 			Position targetForward = new Position(position.getRow() + nextStep, position.getColumn());
-			Move moveForward = new Move(createMoveFromPositions(position, targetForward), board.getBoardState(), player);
+			// new move:
+			Move moveForward = new Move(position.moveString(targetForward), board.getBoardState(), player);
 			
 			// checks whether target position is on board:
 			if(targetForward.onBoard()) {
@@ -95,11 +98,12 @@ public class Soldier implements Figur,Serializable {
 	
 	public ArrayList<Move> moveLeft(Position position, Board board, Player player){
 		
-		String figurePattern = "[GAEHRCS]";
-		
 		ArrayList<Move> possibleMoves = new ArrayList<Move>();
 		
-		// if black plays, then change the variable
+		// if red:
+		String figurePattern = "[GAEHRCS]";
+		
+		// if black:
 		if (!position.isRed(board)) {
 			figurePattern = "[gaehrcs]";
 		}
@@ -107,7 +111,7 @@ public class Soldier implements Figur,Serializable {
 		if (isRiverCrossed(position, board)) {
 			
 			Position targetLeft = new Position(position.getRow(), position.getColumn() - 1);
-			Move moveLeft = new Move(createMoveFromPositions(position, targetLeft), board.getBoardState(), player);
+			Move moveLeft = new Move(position.moveString(targetLeft), board.getBoardState(), player);
 			
 			// checks whether target position on board:
 			if(targetLeft.onBoard()) {
@@ -135,7 +139,7 @@ public class Soldier implements Figur,Serializable {
 		if (isRiverCrossed(position, board)) {
 			
 			Position targetRight = new Position(position.getRow(), position.getColumn() + 1);
-			Move moveRight = new Move(createMoveFromPositions(position, targetRight), board.getBoardState(), player);
+			Move moveRight = new Move(position.moveString(targetRight), board.getBoardState(), player);
 			
 			// checks if target position is on board:
 			if(targetRight.onBoard()) {
@@ -149,12 +153,4 @@ public class Soldier implements Figur,Serializable {
 		}
 		return possibleMoves;
 	}
-
-	public String createMoveFromPositions(Position currentPosition, Position targetPosition) {
-		String move = Position.positionToString(currentPosition);
-		move += '-';
-		move += Position.positionToString(targetPosition);
-		return move;
-	}
-	
 }
