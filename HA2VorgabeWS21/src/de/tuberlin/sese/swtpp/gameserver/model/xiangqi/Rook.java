@@ -74,7 +74,7 @@ public class Rook implements Figur,Serializable {
 			String move = createMoveFromPositions(position, target);
 			
 			// check whether other friendly figures on the way: if so, break.
-			if ((position.isRed(board) && Character.toString(board.getBoardMatrix()[position.getRow()][i]).matches("[GAEHRCS]")) || (!position.isRed(board) && Character.toString(board.getBoardMatrix()[position.getRow()][i]).matches("[aehrcs]"))){
+			if ((position.isRed(board) && Character.toString(board.getBoardMatrix()[position.getRow()][i]).matches("[GAEHRCS]")) || (!position.isRed(board) && Character.toString(board.getBoardMatrix()[position.getRow()][i]).matches("[gaehrcs]"))){
 				break;
 			}			
 			
