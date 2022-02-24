@@ -451,39 +451,40 @@ public class XiangqiGame extends Game implements Serializable{
 	
 	public static void main(String[] args) {
 
-		
-		XiangqiGame game = new XiangqiGame();
-		
-		game.setBoard("4g4/9/6H2/2R6/4S4/9/9/9/9/4G4");
-		Player player1 = new Player(new User("Denis", "1"), game);
-		Player player2 = new Player(new User("Daniil", "2"), game);
-		game.addPlayer(player1);
-		game.addPlayer(player2);
-		/*
-		System.out.println("Schwarze");
-		for (Figur figure : game.board.getBlackFigures()) {
-			System.out.print(game.board.getBoardMatrix()[figure.getPosition().getRow()][figure.getPosition().getColumn()] + " ");
-			System.out.println(Position.positionToString(figure.getPosition()) + " ");
-			for (Move move : figure.getPossibleMoves(game.board, player2)) {
-				System.out.print(move.getMove() + " ");
-			}
-			System.out.println();
-		}
-		
-		System.out.println("Rote");
-		for (Figur figure : game.board.getRedFigures()) {
-			System.out.print(game.board.getBoardMatrix()[figure.getPosition().getRow()][figure.getPosition().getColumn()] + " ");
-			System.out.println(Position.positionToString(figure.getPosition()) + " ");
-			for (Move move : figure.getPossibleMoves(game.board, player1)) {
-				System.out.print(move.getMove());
-			}
-			System.out.println();
-		}
-		*/
-		game.tryMove("c6-d6", player1);
-		game.tryMove("f7-e8", player2);
-		game.tryMove("e9-e8", player2);
-		game.tryMove("g6-g5", player2);
+//		
+//		XiangqiGame game = new XiangqiGame();
+//		
+//		game.setBoard("3a1ge2/2C6/4S3h/9/s1s5s/7s1/S1S2S1c1/2H4EC/1R6r/1HEA1G3");
+//		Player player1 = new Player(new User("Denis", "1"), game);
+//		Player player2 = new Player(new User("Daniil", "2"), game);
+//		game.addPlayer(player1);
+//		game.addPlayer(player2);
+//		
+//		System.out.println("Schwarze");
+//		for (Figur figure : game.board.getBlackFigures()) {
+//			System.out.print(game.board.getBoardMatrix()[figure.getPosition().getRow()][figure.getPosition().getColumn()] + " ");
+//			System.out.println(Position.positionToString(figure.getPosition()) + " ");
+//			for (Move move : figure.getPossibleMoves(game.board, player2)) {
+//				System.out.print(move.getMove() + " ");
+//			}
+//			System.out.println();
+//		}
+//		
+//		System.out.println("Rote");
+//		for (Figur figure : game.board.getRedFigures()) {
+//			System.out.print(game.board.getBoardMatrix()[figure.getPosition().getRow()][figure.getPosition().getColumn()] + " ");
+//			System.out.println(Position.positionToString(figure.getPosition()) + " ");
+//			for (Move move : figure.getPossibleMoves(game.board, player1)) {
+//				System.out.print(move.getMove());
+//			}
+//			System.out.println();
+//		}
+//		
+//	    System.out.print(game.tryMove("c8-c9", player1));
+//	    System.out.print(game.tryMove("f9-e9", player2));
+//		game.tryMove("f7-e8", player2);
+//		game.tryMove("e9-e8", player2);
+//		game.tryMove("g6-g5", player2);
 		
 	}
 }

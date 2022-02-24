@@ -21,13 +21,13 @@ public class Position implements Serializable{
 		return column;
 	}
 	
-	public void setRow(int row) {
-		this.row = row;
-	}
-	
-	public void setColumn(int column) {
-		this.column = column;
-	}
+//	public void setRow(int row) {
+//		this.row = row;
+//	}
+//	
+//	public void setColumn(int column) {
+//		this.column = column;
+//	}
 	
 	public static Position stringToPosition(String positionString) {
 		int row = 9 - (positionString.charAt(1) - '0');
@@ -68,10 +68,4 @@ public class Position implements Serializable{
 		
 		return positionToString(this) + "-" + positionToString(newPosition); 
 	}
-	
-	public static void main(String[] args) {
-		System.out.print(stringToPosition("e0").getRow());
-		//System.out.print(stringToPosition("e9").getColumn());
-	}
-
 }

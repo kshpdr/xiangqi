@@ -71,25 +71,25 @@ public class Board implements Serializable {
 		return boardState;
 	}
 	
-	public void setBoardState(String state) {
-		this.boardState = state;
-	}
+//	public void setBoardState(String state) {
+//		this.boardState = state;
+//	}
 	
 	public char[][] getBoardMatrix(){
 		return boardMatrix;
 	}
 	
-	public ArrayList<Figur> getFigures(){
-		return figures;
-	}
-	
-	public ArrayList<Figur> getRedFigures(){
-		return redFigures;
-	} 
-	
-	public ArrayList<Figur> getBlackFigures(){
-		return blackFigures;
-	} 
+//	public ArrayList<Figur> getFigures(){
+//		return figures;
+//	}
+//	
+//	public ArrayList<Figur> getRedFigures(){
+//		return redFigures;
+//	} 
+//	
+//	public ArrayList<Figur> getBlackFigures(){
+//		return blackFigures;
+//	} 
 	
 	public General getRedGeneral() {
 		return this.redGeneral;
@@ -157,21 +157,23 @@ public class Board implements Serializable {
 	}
 	
 	public General getRedGeneralFromBoard() {
+		General redGeneral = null;
 		for (Figur figure : figures) {
 			if (boardMatrix[figure.getPosition().getRow()][figure.getPosition().getColumn()] == 'G') {
-				return (General) figure;
+				redGeneral = (General) figure;
 			}
 		}
-		return null;
+		return redGeneral;
 	}
 	
 	public General getBlackGeneralFromBoard() {
+		General blackGeneral = null;
 		for (Figur figure : figures) {
 			if (boardMatrix[figure.getPosition().getRow()][figure.getPosition().getColumn()] == 'g') {
-				return (General) figure;
+				blackGeneral = (General) figure;
 			}
 		}
-		return null;
+		return blackGeneral;
 	}
 	
 	public General getFriendGeneral(Position position) {
@@ -183,22 +185,23 @@ public class Board implements Serializable {
 		}
 	};
 	
-	public General getEnemyGeneral(Position position) {
-		if (Character.isLowerCase(boardMatrix[position.getRow()][position.getColumn()])) {
-			return blackGeneral;
-		}
-		else {
-			return redGeneral;
-		}
-	};
+//	public General getEnemyGeneral(Position position) {
+//		if (Character.isLowerCase(boardMatrix[position.getRow()][position.getColumn()])) {
+//			return blackGeneral;
+//		}
+//		else {
+//			return redGeneral;
+//		}
+//	};
 	
 	public Figur getFigurFromBoard(Position position) {
+		Figur figureToFind = null;
 		for (Figur figure : figures) {
 			if (figure.getPosition().getRow() == position.getRow() && figure.getPosition().getColumn() == position.getColumn()) {
-				return figure;
+				figureToFind = figure;
 			}
 		}
-		return null;
+		return figureToFind;
 	}
 	
 public String boardMatrixToBoardString() {
@@ -241,14 +244,4 @@ public String boardMatrixToBoardString() {
 		}
 		return newString;
 	}
-
-
-	
-	public static void main(String[] args) {
-		System.out.print(Arrays.deepToString(boardFromState("rhea1a1h1/4g4/1c3r3/7cs/s1s1C4/9/S1S3SCS/R8/4A4/1HE1GAEHR")));
-	}
-
-	
-	
-
 }
