@@ -70,6 +70,125 @@ public class TryMoveIntegrationTest {
 	 *******************************************/
 	
 	@Test
+	// isCheckTest: --> check the isCheck move for black general and move of red horse
+	public void isCheckTest10() {
+		startGame("rhea1ae2/4g4/1c5H1/s1s1scs1s/9/9/S1S1S1S1S/1C3r1h1/4G2C1/RHEA1AE1R",false);
+	    assertMove("e8-f8",false,false);
+	    assertGameState("rhea1ae2/4g4/1c5H1/s1s1scs1s/9/9/S1S1S1S1S/1C3r1h1/4G2C1/RHEA1AE1R",false,false,false);
+	}
+	
+	@Test
+	// isCheckTest: --> check the isCheck move for black general and check of soldier
+	public void isCheckTest9() {
+		startGame("rhea1ae2/4g4/1c3Sc2/s1s1s1s1s/9/9/S1S1S3S/1C3r1h1/4G2C1/RHEA1AEHR",false);
+	    assertMove("e8-f8",false,false);
+	    assertGameState("rhea1ae2/4g4/1c3Sc2/s1s1s1s1s/9/9/S1S1S3S/1C3r1h1/4G2C1/RHEA1AEHR",false,false,false);
+	}
+	
+	@Test
+	// isCheckTest: --> check the isCheck move for red general and check of rook
+	public void isCheckTest8() {
+		startGame("rheag1e2/4a4/1c4c2/s1s1s1s1s/6S2/9/S1S1S3S/1C3r1h1/4G2C1/RHEA1AEHR",true);
+	    assertMove("e1-f1",true,false);
+	    assertGameState("rheag1e2/4a4/1c4c2/s1s1s1s1s/6S2/9/S1S1S3S/1C3r1h1/4G2C1/RHEA1AEHR",true,false,false);
+	}
+	
+	@Test
+	// isCheckTest: --> check the isCheck move for red general and check of soldier
+	public void isCheckTest7() {
+		startGame("rheag1e1r/4a4/1c4c2/s1s3s1s/6S2/9/S1S1S3S/1C3s1h1/4G2C1/RHEA1AEHR",true);
+	    assertMove("e1-f1",true,false);
+	    assertGameState("rheag1e1r/4a4/1c4c2/s1s3s1s/6S2/9/S1S1S3S/1C3s1h1/4G2C1/RHEA1AEHR",true,false,false);
+	}
+	
+	@Test
+	// isCheckTest: --> check the isCheck move for red general and check of horse
+	public void isCheckTest6() {
+		startGame("rheag1e1r/4a4/1c4c2/s1s1s1s1s/6S2/9/S1S1S3S/1C5h1/4G2C1/RHEA1AEHR",true);
+	    assertMove("e1-f1",true,false);
+	    assertGameState("rheag1e1r/4a4/1c4c2/s1s1s1s1s/6S2/9/S1S1S3S/1C5h1/4G2C1/RHEA1AEHR",true,false,false);
+	}
+	
+	
+	@Test
+	// isCheckTest: --> check the isCheck move for black horse
+	public void isCheckTest5() {
+		startGame("rheag1e1r/4a4/1c4c2/s1s1s1s1s/6S2/6h2/S1S1S3S/1C7/5G1C1/RHEA1AEHR",false);
+	    assertMove("g4-h2",false,true);
+	    assertGameState("rheag1e1r/4a4/1c4c2/s1s1s1s1s/6S2/9/S1S1S3S/1C5h1/5G1C1/RHEA1AEHR",true,false,false);
+	}
+	
+	@Test
+	// isCheckTest: --> check the isCheck move for black soldier
+	public void isCheckTest4() {
+		startGame("rheag1ehr/4a4/1c4c2/s1s1s3s/9/9/S1S1S1S1S/1C3AsC1/5G3/RHEA2EHR",false);
+	    assertMove("g2-g1",false,true);
+	    assertGameState("rheag1ehr/4a4/1c4c2/s1s1s3s/9/9/S1S1S1S1S/1C3A1C1/5Gs2/RHEA2EHR",true,false,false);
+	}
+	@Test
+	// isCheckTest: --> check the isCheck move for black cannon
+	public void isCheckTest3() {
+		startGame("rheag1ehr/4a4/1c4c2/s1s1s1s1s/9/9/S1S1S1S1S/1C3A1C1/5G3/RHEA2EHR",false);
+	    assertMove("g7-f7",false,true);
+	    assertGameState("rheag1ehr/4a4/1c3c3/s1s1s1s1s/9/9/S1S1S1S1S/1C3A1C1/5G3/RHEA2EHR",true,false,false);
+	}
+	
+	
+	@Test
+	// isCheckTest: --> check the isCheck move for black rook
+	public void isCheckTest2() {
+		startGame("rheag1eh1/4a4/1c4rc1/s1s1s1s1s/9/9/S1S1S1S1S/1C5C1/5G3/RHEA1AEHR",false);
+	    assertMove("g7-f7",false,true);
+	    assertGameState("rheag1eh1/4a4/1c3r1c1/s1s1s1s1s/9/9/S1S1S1S1S/1C5C1/5G3/RHEA1AEHR",true,false,false);
+	}
+	
+	@Test
+	// isCheckTest: --> check the isCheck move for red rook
+	public void isCheckTest1() {
+		startGame("rhea1gehr/4a4/1c5c1/s1s1s1s1s/9/9/S1S1S1S1S/1C4RC1/9/RHEAGAEH1",true);
+	    assertMove("g2-f2",true,true);
+	    assertGameState("rhea1gehr/4a4/1c5c1/s1s1s1s1s/9/9/S1S1S1S1S/1C3R1C1/9/RHEAGAEH1",false,false,false);
+	}
+	
+	@Test
+	// TodesblickTest --> simple check if the move of black advisor with no danger of threatening will proceed
+	public void TodesblickTest5() {
+		startGame("rheag1ehr/9/1c3a1c1/s1s1s1s1s/9/9/S1S1S1S1S/1C5C1/5G3/RHEA1AEHR",false);
+	    assertMove("f7-e8",false,true);
+	    assertGameState("rheag1ehr/4a4/1c5c1/s1s1s1s1s/9/9/S1S1S1S1S/1C5C1/5G3/RHEA1AEHR",true,false,false);
+	}
+	
+	@Test
+	// TodesblickTest --> simple check if the move of black advisor that cause threatening will validate
+	public void TodesblickTest4() {
+		startGame("rhea1gehr/9/1c3a1c1/s1s1s1s1s/9/9/S1S1S1S1S/1C5C1/5G3/RHEA1AEHR",false);
+	    assertMove("f7-e8",true,false);
+	    assertGameState("rhea1gehr/9/1c3a1c1/s1s1s1s1s/9/9/S1S1S1S1S/1C5C1/5G3/RHEA1AEHR",false,false,false);
+	}
+	@Test
+	// TodesblickTest --> simple check if the move of black general that cause threatening 
+	public void TodesblickTest3() {
+		startGame("rhea1aehr/4g4/1c5c1/s1s1s1s1s/9/9/S1S1S1S1S/1C5C1/5G3/RHEA1AEHR",false);
+	    assertMove("e8-f8",true,false);
+	    assertGameState("rhea1aehr/4g4/1c5c1/s1s1s1s1s/9/9/S1S1S1S1S/1C5C1/5G3/RHEA1AEHR",false,false,false);
+	}
+	@Test
+	// isThreatenedTest --> simple check of move of Red Advisor which causes threatening of general
+	public void TodesblickTest2() {
+	    startGame("rhea1aehr/5g3/1c5c1/s1s1s1s1s/9/9/S1S1S1S1S/1C3A1C1/5G3/RHEA2EHR",true);
+	    assertMove("f2-e1",true,false);
+	    assertGameState("rhea1aehr/5g3/1c5c1/s1s1s1s1s/9/9/S1S1S1S1S/1C3A1C1/5G3/RHEA2EHR",true,false,false);
+	}
+	
+	@Test
+	// isThreatenedTest --> simple check of move of Red which causes threatening of general
+	public void TodesblickTest1() {
+	    startGame("rhea1aehr/5g3/1c5c1/s1s1s1s1s/9/9/S1S1S1S1S/1C5C1/4G4/RHEA1AEHR",true);
+	    assertMove("e1-f1",true,false);
+	    assertGameState("rhea1aehr/5g3/1c5c1/s1s1s1s1s/9/9/S1S1S1S1S/1C5C1/4G4/RHEA1AEHR",true,false,false);
+	}
+	
+	@Test
 	public void exampleTest() {
 	    startGame("rheagaehr/9/1c5c1/s1s1s1s1s/9/9/S1S1S1S1S/1C5C1/9/RHEAGAEHR",true);
 	    assertMove("e3-e4",true,true);
@@ -251,5 +370,22 @@ public class TryMoveIntegrationTest {
 		assertGameState("rheaga1hr/9/1c5c1/s1s1s1s1s/2e6/9/S1S3S1S/1C5C1/9/RHEAGAEHR",false,false,false);
 	}
 
+	
+	@Test
+	// cheatCheck: --> checks whether player tries to make a move after game is finished:
+	public void cheatCheckTest6() {
+		startGame("3ege3/9/3Rs4/9/9/9/9/9/9/4G4",true);
+		assertMove("d7-e7",true,true);
+		assertMove("d9-b7",false,false);
+		assertGameState("3ege3/9/4R4/9/9/9/9/9/9/4G4",false,true,true);
+	}
+	
+	@Test
+	// cheatCheck: --> random valid move with blackPlayer (to cover branches in XiangqiGame):
+	public void validMoveWithBlackPlayer() {
+		startGame("3ege3/9/3Rs4/9/9/9/9/9/9/4G4",false);
+		assertMove("d9-b7",false,true);
+		assertGameState("4ge3/9/1e1Rs4/9/9/9/9/9/9/4G4",true,false,false);
+	}
 
 }

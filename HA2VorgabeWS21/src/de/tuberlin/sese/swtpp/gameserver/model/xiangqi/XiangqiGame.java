@@ -443,19 +443,36 @@ public class XiangqiGame extends Game implements Serializable{
 	
 	public static void main(String[] args) {
 
-		
 		XiangqiGame game = new XiangqiGame();
 		
-		game.setBoard("3ege3/9/3Rs4/9/9/9/9/9/9/4G4");
+		game.setBoard("rhea1gehr/4a4/1c5c1/s1s1s1s1s/9/9/S1S1S1S1S/1C4RC1/9/RHEAGAEH1");
 		Player player1 = new Player(new User("Denis", "1"), game);
 		Player player2 = new Player(new User("Daniil", "2"), game);
 		game.addPlayer(player1);
 		game.addPlayer(player2);
 		
+		System.out.println("Schwarze");
+		for (Figur figure : game.board.getBlackFigures()) {
+			System.out.print(game.board.getBoardMatrix()[figure.getPosition().getRow()][figure.getPosition().getColumn()] + " ");
+			System.out.println(Position.positionToString(figure.getPosition()) + " ");
+			for (Move move : figure.getPossibleMoves(game.board, player2)) {
+				System.out.print(move.getMove() + " ");
+			}
+			System.out.println();
+		}
 		
-		game.tryMove("d7-e7", player1);
-		game.tryMove("f9-e8", player2); 
+		System.out.println("Rote");
+		for (Figur figure : game.board.getRedFigures()) {
+			System.out.print(game.board.getBoardMatrix()[figure.getPosition().getRow()][figure.getPosition().getColumn()] + " ");
+			System.out.println(Position.positionToString(figure.getPosition()) + " ");
+			for (Move move : figure.getPossibleMoves(game.board, player1)) {
+				System.out.print(move.getMove());
+			}
+			System.out.println();
+		}
+		game.tryMove("g2-f2", player1);
+		game.tryMove("f7-e8", player2);
+		game.tryMove("e9-e8", player2);
 		game.tryMove("g6-g5", player2);
-		
 	}
 }
