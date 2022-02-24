@@ -111,7 +111,7 @@ public class General implements Figur,Serializable {
 				}
 				
 				// returns false, if other playing-piece on a position between blackGeneral and redGenerl:
-				else if((boardBuf.getBoardMatrix()[i][this.getPosition().getColumn()] != '0') && (boardBuf.getBoardMatrix()[i][this.getPosition().getColumn()] != 'G')) {
+				else {
 					return false;
 				}																			
 			}	
