@@ -452,6 +452,20 @@ public class TryMoveIntegrationTest {
 		assertMove("d0-h0",false, true);
 		assertGameState("r1ea1ge2/6h2/4SC3/s8/2s3s1s/9/S1S3S1S/2H2E3/1R2A4/1HE2G1c1",true,false,false);
 	}
+	@Test
+	// Cannon: --> checks general in check from left cannon:
+	public void CannonTest9() {
+		startGame("2Ca2e2/5g3/4S3h/9/s1s5s/7s1/S1S2S1c1/2H4EC/1R6r/1HEA1G3",false);
+		assertMove("f8-f9",false, false);
+		assertGameState("2Ca2e2/5g3/4S3h/9/s1s5s/7s1/S1S2S1c1/2H4EC/1R6r/1HEA1G3",false,false,false);
+	}
+	@Test
+	// Cannon: --> checks general in check from forward cannon:
+	public void CannonTest10() {
+		startGame("3a1ge2/9/5S2h/9/s1s5s/7s1/S1S2S1c1/4H2EC/1R6r/1HEACG3",false);
+		assertMove("f9-e9",false, false);
+		assertGameState("3a1ge2/9/5S2h/9/s1s5s/7s1/S1S2S1c1/4H2EC/1R6r/1HEACG3",false,false,false);
+	}
 	
 	@Test
 	// Rook: --> checks incorrect move cause of friendly figure:
@@ -466,6 +480,28 @@ public class TryMoveIntegrationTest {
 		startGame("r1ea1ge2/5C3/4S3h/s8/2s5s/7s1/S1S3Sc1/2H5C/1R2A3R/1HEA1GE2",false);
 		assertMove("a9-a3",false, false);
 		assertGameState("r1ea1ge2/5C3/4S3h/s8/2s5s/7s1/S1S3Sc1/2H5C/1R2A3R/1HEA1GE2",false,false,false);
+	}
+	@Test
+	// Rook: --> checks general in check from rook:
+	public void RookTest3() {
+		startGame("2ea1ge2/5C3/4S3h/9/s1s5s/7s1/S1S3Sc1/2H4EC/1R6r/1HEA1G3",false);
+		assertMove("i1-i0",false, true);
+		assertGameState("2ea1ge2/5C3/4S3h/9/s1s5s/7s1/S1S3Sc1/2H4EC/1R7/1HEA1G2r",true,false,false);
+	}
+	@Test
+	// Rook: --> checks general in check from left rook:
+	public void RookTest4() {
+		startGame("5ge2/1R2a4/5S2h/9/s1s5s/7s1/S1S2S1c1/4H2EC/8r/1HEACG3",true);
+		assertMove("b8-b9",true, true);
+		assertGameState("1R3ge2/4a4/5S2h/9/s1s5s/7s1/S1S2S1c1/4H2EC/8r/1HEACG3",false,false,false);
+	}
+	
+	@Test
+	// Rook: --> checks incorrect move cause of friendly figure:
+	public void SoldierTest1() {
+		startGame("r1ea1ge2/5C3/4S3h/s8/2s5s/7s1/S1S3Sc1/2H5C/1R2A3R/1HEA1GE2",false);
+		assertMove("a6-a5",false, true);
+		assertGameState("r1ea1ge2/5C3/4S3h/9/s1s5s/7s1/S1S3Sc1/2H5C/1R2A3R/1HEA1GE2",true,false,false);
 	}
 
 }
