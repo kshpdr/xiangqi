@@ -291,9 +291,9 @@ public class TryMoveIntegrationTest {
 	@Test
 	// Horse: --> checks valid move and hits other player's playing-piece:
 	public void HorseTest2() {
-		startGame("rheagaehr/9/9/9/9/9/9/1Cs4C1/9/RHEAGAEHR",true);
+		startGame("rheagaehr/9/9/9/4s4/9/9/1Cs4C1/9/RHEAGAEHR",true);
 		assertMove("b0-c2",true,true);
-		assertGameState("rheagaehr/9/9/9/9/9/9/1CH4C1/9/R1EAGAEHR",false,false,false);
+		assertGameState("rheagaehr/9/9/9/4s4/9/9/1CH4C1/9/R1EAGAEHR",false,false,false);
 	}
 	@Test
 	// Horse: --> checks invalid move to a free position:
@@ -387,5 +387,14 @@ public class TryMoveIntegrationTest {
 		assertMove("d9-b7",false,true);
 		assertGameState("4ge3/9/1e1Rs4/9/9/9/9/9/9/4G4",true,false,false);
 	}
+	
+	@Test
+	// cheatCheck: --> random valid move with blackPlayer (to cover branches in XiangqiGame):
+	public void isWonByPattCheck() {
+		startGame("4g4/9/6H2/2R6/4S4/9/9/9/9/4G4",true);
+		assertMove("c6-d6",true,true);
+		assertGameState("4g4/9/6H2/3R5/4S4/9/9/9/9/4G4",false,true,true);
+	}
+	
 
 }
