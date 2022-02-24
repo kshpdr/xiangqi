@@ -29,11 +29,6 @@ public class XiangqiGame extends Game implements Serializable{
 		
 		// initialization of board:
 		this.board = new Board("rheagaehr/9/1c5c1/s1s1s1s1s/9/9/S1S1S1S1S/1C5C1/9/RHEAGAEHR");	
-		
-		// assigns red and black player:
-		// List<Player> allPlayers = this.getPlayers();
-		// this.redPlayer = allPlayers.get(0);
-		// this.blackPlayer = allPlayers.get(1);
 	}
 
 	public String getType() {
@@ -205,15 +200,12 @@ public class XiangqiGame extends Game implements Serializable{
 
 	@Override
 	public void setBoard(String state) {
-		// Note: This method is for automatic testing. A regular game would not start at some artificial state.
-		//       It can be assumed that the state supplied is a regular board that can be reached during a game.
-		// TODO: implement
+		// This method is for automatic testing, a regular game would not start at some artificial state:
 		this.board = new Board(state);
 	}
 
 	@Override
 	public String getBoard() {
-		// TODO: implement
 		return this.board.getBoardState();
 	}
 	
@@ -243,10 +235,7 @@ public class XiangqiGame extends Game implements Serializable{
 		int col = "abcdefghi".indexOf(moveString.charAt(0));
 		Position pos = new Position(row,col);
 		
-		// --> checks whether redPlayer starts:
-		if(this.getHistory().isEmpty() && player != this.redPlayer) {
-			return false;
-		}
+		
 		// --> checks whether game not finished yet:
 		if(this.finished) {
 			return false;
@@ -258,10 +247,6 @@ public class XiangqiGame extends Game implements Serializable{
 		if(player != this.redPlayer && pos.isRed(board)) {
 			return false;
 		}	
-		// --> checks whether start Position of moveString is empty:
-		if(this.board.getBoardMatrix()[row][col] == '0') {
-			return false;
-		}
 		return true;
 	}
 	
@@ -271,14 +256,9 @@ public class XiangqiGame extends Game implements Serializable{
 		// start Position of move:
 		int row = "9876543210".indexOf(moveString.charAt(1));
 		int col = "abcdefghi".indexOf(moveString.charAt(0));
-		Position pos = new Position(row,col);
 		
 		// --> checks format of moveString:
 		if(!moveStringFormatCheck(moveString)) {
-			return false;
-		}
-		// checks whether user is player in current game:
-		if(!this.isPlayer(player.getUser())) {
 			return false;
 		}	
 		// --> checks whether startPosition and targetPosition of moveSting differ:
@@ -361,14 +341,11 @@ public class XiangqiGame extends Game implements Serializable{
 		
 		for(Figur figure : enemyFigures(board, player)) {
 			if(!figure.getPossibleMoves(board, player).isEmpty()) {
-				System.out.print("patt false");
 				return false;
 			}
 		}
-		System.out.print("patt true");
 		return true;
 	}
-	
 	
 	
 	// --> returns true, if enemy is in check-mate:
@@ -388,12 +365,10 @@ public class XiangqiGame extends Game implements Serializable{
 			
 			for(Move move: moves) {
 				if(!enemyGeneral.isCheck(board, move) && !enemyGeneral.isThreatened(board, move)) {
-					System.out.print("check false");
 					return false;
 				}
 			}
 		}
-		System.out.print("check true");
 		return true;
 	}
 	
@@ -450,9 +425,9 @@ public class XiangqiGame extends Game implements Serializable{
 					
 					// executes move, updates boardMatrix, boardString and history:
 					doMove(move, figur);	
-					// finishes if game is won:
+					// finishes and sets winner if game is won:
 					if(isWonByCheckMate(board,player) || isWonByPatt(board,player)) {
-						finish();
+						regularGameEnd(player);
 					}
 					// sets other player as nextPlayer:
 					nextTurn(player);
@@ -468,16 +443,19 @@ public class XiangqiGame extends Game implements Serializable{
 	
 	public static void main(String[] args) {
 
+		
 		XiangqiGame game = new XiangqiGame();
 		
-		game.setBoard("rh1a2e1r/4ag3/1c7/s1s3s1s/9/S3S4/2S3S1S/1C2E2C1/4G4/1E1A1AEcR");
+		game.setBoard("3ege3/9/3Rs4/9/9/9/9/9/9/4G4");
 		Player player1 = new Player(new User("Denis", "1"), game);
 		Player player2 = new Player(new User("Daniil", "2"), game);
 		game.addPlayer(player1);
 		game.addPlayer(player2);
 		
-		game.tryMove("e1-f1", player1);
+		
+		game.tryMove("d7-e7", player1);
 		game.tryMove("f9-e8", player2); 
 		game.tryMove("g6-g5", player2);
+		
 	}
 }
