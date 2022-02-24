@@ -396,5 +396,76 @@ public class TryMoveIntegrationTest {
 		assertGameState("4g4/9/6H2/3R5/4S4/9/9/9/9/4G4",false,true,true);
 	}
 	
+	@Test
+	// Cannon: --> checks correct attack at the black figure :
+	public void CannonTest1() {
+		startGame("r2ag1eh1/1C2a3r/1c2e2c1/s3s4/2s3s1s/4S4/S1S1H1S1S/7C1/1R2A4/1HEA1GE1R",true);
+		assertMove("h2-h9",true,true);
+		assertGameState("r2ag1eC1/1C2a3r/1c2e2c1/s3s4/2s3s1s/4S4/S1S1H1S1S/9/1R2A4/1HEA1GE1R",false,false,false);
+	}
+	@Test
+	// Cannon: --> checks correct attack at the black figure :
+	public void CannonTest2() {
+		startGame("r2ag1eh1/1C2a3r/1c2e2c1/s3s4/2s3s1s/4S4/S1S1H1S1S/7C1/1R2A4/1HEA1GE1R",true);
+		assertMove("b8-i8",true,true);
+		assertGameState("r2ag1eh1/4a3C/1c2e2c1/s3s4/2s3s1s/4S4/S1S1H1S1S/7C1/1R2A4/1HEA1GE1R",false,false,false);
+	}
+	@Test
+	// Cannon: --> checks correct move of black cannon without attacking:
+	public void CannonTest3() {
+		startGame("r2ag1eh1/4a3C/1c2e2c1/s3s4/2s3s1s/4S4/S1S1H1S1S/7C1/1R2A4/1HEA1GE1R",false);
+		assertMove("h7-h3",false,true);
+		assertGameState("r2ag1eh1/4a3C/1c2e4/s3s4/2s3s1s/4S4/S1S1H1ScS/7C1/1R2A4/1HEA1GE1R",true,false,false);
+	}
+	@Test
+	// Cannon: --> checks incorrect move of red cannon because otherwise isThreatened:
+	public void CannonTest4() {
+		startGame("r1ea1ge2/5C3/4S3h/s8/2s3s1s/9/S1S3ScS/2H4C1/1R2A3R/1HEA1GE2",true);
+		assertMove("f8-g8",true, false);
+		assertGameState("r1ea1ge2/5C3/4S3h/s8/2s3s1s/9/S1S3ScS/2H4C1/1R2A3R/1HEA1GE2",true,false,false);
+	}
+	@Test
+	// Cannon: --> checks correct move of red cannon without ruining todesBlick:
+	public void CannonTest5() {
+		startGame("r1ea1ge2/5C3/4S3h/s8/2s3s1s/9/S1S3ScS/2H4C1/1R2A3R/1HEA1GE2",true);
+		assertMove("f8-f7",true, true);
+		assertGameState("r1ea1ge2/9/4SC2h/s8/2s3s1s/9/S1S3ScS/2H4C1/1R2A3R/1HEA1GE2",false,false,false);
+	}
+	@Test
+	// Cannon: --> checks correct attack backwards:
+	public void CannonTest6() {
+		startGame("r1ea1ge2/6h2/4SC3/s8/2s3s1s/9/S1S3ScS/2H4C1/1R2A4/1HEA1GER1",false);
+		assertMove("h3-h0",false, true);
+		assertGameState("r1ea1ge2/6h2/4SC3/s8/2s3s1s/9/S1S3S1S/2H4C1/1R2A4/1HEA1GEc1",true,false,false);
+	}
+	@Test
+	// Cannon: --> checks correct attack left:
+	public void CannonTest7() {
+		startGame("r1ea1ge2/6h2/4SC3/s8/2s3s1s/9/S1S3S1S/2H2E1C1/1R2A4/1HEA1G1c1",false);
+		assertMove("h0-d0",false, true);
+		assertGameState("r1ea1ge2/6h2/4SC3/s8/2s3s1s/9/S1S3S1S/2H2E1C1/1R2A4/1HEc1G3",true,false,false);
+	}
+	@Test
+	// Cannon: --> checks correct attack right:
+	public void CannonTest8() {
+		startGame("r1ea1ge2/6h2/4SC3/s8/2s3s1s/9/S1S3S1S/2H2E3/1R2A4/1HEc1G1C1",false);
+		assertMove("d0-h0",false, true);
+		assertGameState("r1ea1ge2/6h2/4SC3/s8/2s3s1s/9/S1S3S1S/2H2E3/1R2A4/1HE2G1c1",true,false,false);
+	}
+	
+	@Test
+	// Rook: --> checks incorrect move cause of friendly figure:
+	public void RookTest1() {
+		startGame("r1ea1ge2/5C3/4S3h/s8/2s5s/7s1/S1S3Sc1/2H5C/1R2A3R/1HEA1GE2",true);
+		assertMove("i1-i5",true, false);
+		assertGameState("r1ea1ge2/5C3/4S3h/s8/2s5s/7s1/S1S3Sc1/2H5C/1R2A3R/1HEA1GE2",true,false,false);
+	}
+	@Test
+	// Rook: --> checks incorrect move cause of friendly figure:
+	public void RookTest2() {
+		startGame("r1ea1ge2/5C3/4S3h/s8/2s5s/7s1/S1S3Sc1/2H5C/1R2A3R/1HEA1GE2",false);
+		assertMove("a9-a3",false, false);
+		assertGameState("r1ea1ge2/5C3/4S3h/s8/2s5s/7s1/S1S3Sc1/2H5C/1R2A3R/1HEA1GE2",false,false,false);
+	}
 
 }
