@@ -412,39 +412,40 @@ public class XiangqiGame extends Game implements Serializable{
 	@Override
 	public boolean tryMove(String moveString, Player player) {
 		
-		if(cheatCheck(moveString, player)) {
+		if(!cheatCheck(moveString, player)) {
+			return false;
+		}
 			
-			Move move = new Move(moveString, this.board.getBoardState(), player);
-			
-			// calculates position:
-			Position position = new Position("9876543210".indexOf(moveString.charAt(1)),"abcdefghi".indexOf(moveString.charAt(0))); 
-			
-			// gets playing-piece on position:
-			Figur figur = this.board.getFigurFromBoard(position);
-			
-			// gets possible moves for playing-piece:
-			ArrayList<Move> possibleMoves = figur.getPossibleMoves(board, player);
-			General general = board.getFriendGeneral(position);
-			
-			// checks whether move is possible:
-			if(containsMove(possibleMoves, move)) {
-				// checks whether general is in-check:
-				if(!general.isCheck(board, move) && !general.isThreatened(board, move)) {
-					
-					// executes move, updates boardMatrix, boardString and history:
-					doMove(move, figur);	
-					// finishes and sets winner if game is won:
-					if(isWonByCheckMateOrPatt(board,player)) {
-						regularGameEnd(player);
-					}
-					// sets other player as nextPlayer:
-					nextTurn(player);
-					
-					return true;		
+		Move move = new Move(moveString, this.board.getBoardState(), player);
+		
+		// calculates position:
+		Position position = new Position("9876543210".indexOf(moveString.charAt(1)),"abcdefghi".indexOf(moveString.charAt(0))); 
+		
+		// gets playing-piece on position:
+		Figur figur = this.board.getFigurFromBoard(position);
+		
+		// gets possible moves for playing-piece:
+		ArrayList<Move> possibleMoves = figur.getPossibleMoves(board, player);
+		General general = board.getFriendGeneral(position);
+		
+		// checks whether move is possible:
+		if(containsMove(possibleMoves, move)) {
+			// checks whether general is in-check:
+			if(!general.isCheck(board, move) && !general.isThreatened(board, move)) {
+				
+				// executes move, updates boardMatrix, boardString and history:
+				doMove(move, figur);	
+				// finishes and sets winner if game is won:
+				if(isWonByCheckMateOrPatt(board,player)) {
+					regularGameEnd(player);
 				}
+				// sets other player as nextPlayer:
+				nextTurn(player);
+				
+				return true;		
 			}
-			
-		}			
+		}
+					
 		return false;
 	}
 

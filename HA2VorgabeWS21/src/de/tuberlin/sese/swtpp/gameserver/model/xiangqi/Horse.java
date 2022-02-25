@@ -8,6 +8,10 @@ import de.tuberlin.sese.swtpp.gameserver.model.Player;
 
 public class Horse implements Figur,Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7260048792230352211L;
 	Position position;
 
 	public Horse(Position position) {

@@ -8,6 +8,10 @@ import de.tuberlin.sese.swtpp.gameserver.model.Player;
 
 public class Elephant implements Figur,Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5048896298618037884L;
 	Position position;
 
 	public Elephant(Position position) {

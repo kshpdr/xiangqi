@@ -5,6 +5,10 @@ import java.io.Serializable;
 import de.tuberlin.sese.swtpp.gameserver.model.Move;
 
 public class Position implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6416825353518691869L;
 	private int row;
 	private int column;
 	

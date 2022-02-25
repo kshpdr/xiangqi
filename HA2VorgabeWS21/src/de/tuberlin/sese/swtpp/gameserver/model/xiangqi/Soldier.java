@@ -7,6 +7,10 @@ import de.tuberlin.sese.swtpp.gameserver.model.Move;
 import de.tuberlin.sese.swtpp.gameserver.model.Player;
 
 public class Soldier implements Figur,Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3775490982463758507L;
 	Position position;
 	
 	public Soldier(Position position) {

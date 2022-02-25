@@ -8,6 +8,10 @@ import de.tuberlin.sese.swtpp.gameserver.model.Move;
 import de.tuberlin.sese.swtpp.gameserver.model.Player;
 
 public class Advisor implements Figur,Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1161132302412462010L;
 	private Position position;
 	
 	public Advisor(Position pos) {

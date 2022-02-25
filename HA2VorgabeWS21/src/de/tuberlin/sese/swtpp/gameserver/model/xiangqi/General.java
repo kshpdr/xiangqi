@@ -7,8 +7,12 @@ import de.tuberlin.sese.swtpp.gameserver.model.Move;
 import de.tuberlin.sese.swtpp.gameserver.model.Player;
 
 public class General implements Figur,Serializable {
-	private static final long serialVersionUID = 5424778147226994452L;
 	
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8007269078793887376L;
 	//attributes
 	private Position position;
 	
@@ -274,14 +278,12 @@ public class General implements Figur,Serializable {
 					figurBefore = true;
 					continue;
 				}
+				// if next figure after that cannon, then check
+				else if (boardMatrix[i][position.getColumn()] == enemyCannon){
+					return true;
+				}
 				else {
-					// if next figure after that cannon, then check
-					if (boardMatrix[i][position.getColumn()] == enemyCannon) {
-						return true;
-					}
-					else {
-						break;
-					}
+					break;
 				}
 			}
 		}
@@ -301,14 +303,12 @@ public class General implements Figur,Serializable {
 					figurBefore = true;
 					continue;
 				}
-				else {
+				else if (boardMatrix[i][position.getColumn()] == enemyCannon){
 					// if next figure after that cannon, then check
-					if (boardMatrix[i][position.getColumn()] == enemyCannon) {
-						return true;
-					}
-					else {
-						break;
-					}
+					return true;
+				}
+				else {
+					break;
 				}
 			}
 		}
@@ -328,14 +328,12 @@ public class General implements Figur,Serializable {
 					figurBefore = true;
 					continue;
 				}
-				else {
+				else if (boardMatrix[position.getRow()][i] == enemyCannon){
 					// if next figure after that cannon, then check
-					if (boardMatrix[position.getRow()][i] == enemyCannon) {
-						return true;
-					}
-					else {
-						break;
-					}
+					return true;
+				}
+				else {
+					break;
 				}
 			}
 		}
@@ -355,14 +353,13 @@ public class General implements Figur,Serializable {
 					figurBefore = true;
 					continue;
 				}
-				else {
+				else if (boardMatrix[position.getRow()][i] == enemyCannon){
 					// if next figure after that cannon, then check
-					if (boardMatrix[position.getRow()][i] == enemyCannon) {
-						return true;
-					}
-					else {
-						break;
-					}
+					
+					return true;
+				}
+				else {
+					break;
 				}
 			}
 		}
@@ -411,11 +408,31 @@ public class General implements Figur,Serializable {
 		return false;
 	}
 	
-	
+	public boolean isCheckHorseExtension(char[][] boardMatrix, int i, char enemyHorse) {
+		
+		int row = position.getRow();
+		int col = position.getColumn();
+		
+		int[][] diagoArray = {{row+1,col+1},{row-1,col-1},{row+1,col-1},{row-1,col+1}};
+		int[][] movesArray = {{row+2,col+1},{row+1,col+2},{row-2,col-1},{row-1,col-2},{row+1,col-2},{row+2,col-1},{row-1,col+2},{row-2,col+1}};
+		
+		for(int j = 0; j < 2; j++) {
+			
+			// new position:
+			Position newPos = new Position(movesArray[2*i+j][0],movesArray[2*i+j][1]);
+			
+			// checks whether position is on board:
+			if(newPos.onBoard() && boardMatrix[movesArray[2*i+j][0]][movesArray[2*i+j][1]] == enemyHorse) {
+				return true;	
+			}
+		}
+		return false;
+	}
 	
 	public boolean isCheckHorse(char[][] boardMatrix, boolean isRed) {
 		
 		char enemyHorse;
+		boolean result = false;
 		
 		if(isRed) {
 			enemyHorse = 'h';
@@ -441,18 +458,10 @@ public class General implements Figur,Serializable {
 		for(int i = 0; i < 4; i++) {
 			
 			// checks whether "diagonal" position is on board and horse can't jump:
-			if(checkDiagonalAndJump(diagoArray, movesArray,  boardMatrix, i)) {
-					
+			if(checkDiagonalAndJump(diagoArray, movesArray,  boardMatrix, i)) {	
 				// iterates over possible moves for each direction:		
-				for(int j = 0; j < 2; j++) {
-					
-					// new position:
-					Position newPos = new Position(movesArray[2*i+j][0],movesArray[2*i+j][1]);
-					
-					// checks whether position is on board:
-					if(newPos.onBoard() && boardMatrix[movesArray[2*i+j][0]][movesArray[2*i+j][1]] == enemyHorse) {
-						return true;	
-					}
+				if(isCheckHorseExtension(boardMatrix, i, enemyHorse)) {
+					return true;
 				}
 			}
 		}	

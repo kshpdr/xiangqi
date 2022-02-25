@@ -9,6 +9,10 @@ import de.tuberlin.sese.swtpp.gameserver.model.Player;
 
 public class Rook implements Figur,Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 331644176606257825L;
 	Position position;
 	
 	public Rook(Position position) {

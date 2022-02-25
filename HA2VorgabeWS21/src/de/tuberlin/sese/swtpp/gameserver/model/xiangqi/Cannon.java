@@ -8,6 +8,10 @@ import de.tuberlin.sese.swtpp.gameserver.model.Player;
 
 public class Cannon implements Figur,Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2776946097141880936L;
 	Position position;
 	
 	public Cannon (Position position) {

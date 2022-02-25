@@ -9,6 +9,10 @@ import java.util.Arrays;
 import de.tuberlin.sese.swtpp.gameserver.model.Player;
 
 public class Board implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3913867224174035329L;
 	private char[][] boardMatrix;
 	private String boardState;
 	
