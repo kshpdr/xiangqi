@@ -121,7 +121,12 @@ public class General implements Figur,Serializable {
 		return true;
 	}
 	
-
+	public boolean bufGeneralCheck(Board boardBuf, General bufGeneral, boolean isRed ) {
+		if (bufGeneral.isCheckRook(boardBuf.getBoardMatrix(), isRed) || bufGeneral.isCheckCannon(boardBuf.getBoardMatrix(), isRed) || bufGeneral.isCheckHorse(boardBuf.getBoardMatrix(), isRed) || bufGeneral.isCheckSoldier(boardBuf.getBoardMatrix(), isRed)) {
+			return true;
+		}
+		return false;
+	}
 	
 	public boolean isCheck(Board board, Move move) {
 		
@@ -152,7 +157,7 @@ public class General implements Figur,Serializable {
 			bufGeneral.setPosition(goal);
 			
 			// calls isCheck-methods with bufGeneral:
-			if (bufGeneral.isCheckRook(boardBuf.getBoardMatrix(), isRed) || bufGeneral.isCheckCannon(boardBuf.getBoardMatrix(), isRed) || bufGeneral.isCheckHorse(boardBuf.getBoardMatrix(), isRed) || bufGeneral.isCheckSoldier(boardBuf.getBoardMatrix(), isRed)) {
+			if (bufGeneralCheck(boardBuf, bufGeneral, isRed)) {
 				return true;
 			}
 		}
@@ -177,7 +182,7 @@ public class General implements Figur,Serializable {
 			else if (boardMatrix[position.getRow()][i] != enemyRook) {
 				break;
 			}
-			else if (boardMatrix[position.getRow()][i] == enemyRook) {
+			else {
 				return true;
 			}
 		}
@@ -194,7 +199,7 @@ public class General implements Figur,Serializable {
 			else if (boardMatrix[position.getRow()][i] != enemyRook) {
 				break;
 			}
-			else if (boardMatrix[position.getRow()][i] == enemyRook) {
+			else {
 				return true;
 			}
 		}
@@ -211,7 +216,7 @@ public class General implements Figur,Serializable {
 			else if (boardMatrix[i][position.getColumn()] != enemyRook) {
 				break;
 			}
-			else if (boardMatrix[i][position.getColumn()] == enemyRook) {
+			else {
 				return true;
 			}
 		}
@@ -228,7 +233,7 @@ public class General implements Figur,Serializable {
 			else if (boardMatrix[i][position.getColumn()] != enemyRook) {
 				break;
 			}
-			else if (boardMatrix[i][position.getColumn()] == enemyRook) {
+			else {
 				return true;
 			}
 		}
