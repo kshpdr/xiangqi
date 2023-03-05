@@ -1,7 +1,0 @@
-INDEX VERSION 1.4+/Users/koselev/Desktop/swtpp_ha/.metadata/.plugins/org.eclipse.wst.jsdt.core/indexes
-1695659554.index
-921925931.index
-1984871286.index
-4087343718.index
-3897171833.index
-3016991100.index
